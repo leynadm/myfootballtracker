@@ -1,33 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { ChakraProvider } from '@chakra-ui/react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/Auth";
+import Login from './pages/authentication/Login';
+import ForgotPassword from './pages/authentication/ForgotPassword';
+import AuthRoute from './context/AuthRoute';
+import SignUp from './pages/authentication/SignUp';
+import LandingPage from './pages/home/LandingPage';
+import Home from './pages/home/Home';
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-    
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <ChakraProvider>
+
+    <AuthProvider>
+
+          <Router>
+            <Routes>
+              {/* If the user is signed in and tries to access signup, reroute him to home */}
+              <Route element={<AuthRoute type="signup" />}>
+                <Route element={<SignUp />} path="/signup" />
+              </Route>
+
+              {/* If the user isn't signed him, reroute him to login */}
+              <Route element={<AuthRoute type="login" />}>
+                <Route element={<Login />} path="/login" />
+              </Route>
+
+              <Route element={<ForgotPassword />} path="/forgot-password" />
+
+              {/* If the user is signed in and tries to access login, reroute him to home */}
+              <Route element={<AuthRoute type="home" />}>
+                <Route
+                  path="/home/*"
+                  element={
+                    <Home
+                    />
+                  }
+                />
+              </Route>
+
+              <Route element={<AuthRoute type="/" />}>
+                <Route path="/" element={<LandingPage />} />
+              </Route>
+            </Routes>
+          </Router>
+
+      </AuthProvider>
+
+
+ 
+    </ChakraProvider>
     </>
   )
 }
