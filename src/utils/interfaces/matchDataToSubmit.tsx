@@ -1,0 +1,60 @@
+interface MatchDataToSubmit {
+    positionsPlayed: {
+      [key: string]: boolean;
+    };
+    matchDate: Date;
+    matchDuration: number;
+    cityName: string;
+    stadiumName: string;
+    matchType: string;
+    homeTeamGoals: number;
+    awayTeamGoals: number;
+    goalsScored: number;
+    assistsProvided: number;
+    yellowCardsReceived: number;
+    redCardsReceived: number;
+    foulsCommited: number;
+    foulsObtained: number;
+    getOnTheScoresheet: boolean;
+    bagABrace: boolean;
+    scoreAHattrick: boolean;
+    fantasticFour: boolean;
+    pokerMaster: boolean;
+    historyMaker: boolean;
+    letTheShowBegin: boolean;
+    hawkeye: boolean;
+    cannonball: boolean;
+    noExcuses: boolean;
+    cornerstonePresence: boolean;
+    marksman: boolean;
+    coldBloodedBeast: boolean;
+    aerialThreat: boolean;
+    silkySmooth: boolean;
+    luckMaker: boolean;
+    heelOfAGoal: boolean;
+    innateTalent: boolean;
+    laPulga: boolean;
+    oneInAMillion: boolean;
+    lastMinuteHero: boolean;
+    finalWord: boolean;
+    heartRate: number;
+    distance: number;
+    distanceUnit: string;
+    matchPerformance: number;
+    aPleasureDoingBusiness: boolean;
+    foodOnTheTable: boolean;
+    assistsMaestro: boolean;
+    industrialProvider: boolean;
+    puppetMaster: boolean;
+    omniscient: boolean;
+    youShallNotPass: boolean;
+    tacklingTitan: boolean;
+    leadFromTheBack: boolean;
+    theSaviour: boolean;
+    counterAttackingCatalyst: boolean;
+    livingInAFortress: boolean;
+    theOnlyHero: boolean;
+    instantReflexes: boolean;
+  }
+
+  export default MatchDataToSubmit

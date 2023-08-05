@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   HStack,
-
   Button,
   Menu,
   MenuButton,
@@ -18,6 +17,8 @@ import {
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { HamburgerIcon, AddIcon } from '@chakra-ui/icons'
+import OverallMatchInfo from "../game/OverallMatchInfo";
+
 
 interface Props {
   children: React.ReactNode
@@ -126,7 +127,10 @@ export default function Overview() {
         ) : null}
       </Box>
 
-      <Box p={4}>Main Content Here</Box>
+      <Box p={4}>
+      <OverallMatchInfo/>
+
+      </Box>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider,extendTheme } from '@chakra-ui/react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/Auth";
 import Login from './pages/authentication/Login';
@@ -12,9 +12,17 @@ import './App.css'
 
 function App() {
 
+  const theme = extendTheme({
+    fonts: {
+      html: `'Outfit', sans-serif`,
+      body: `'Outfit', sans-serif`,
+      input: `'Outfit', sans-serif`
+    },
+  })
+
   return (
     <>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}> 
 
     <AuthProvider>
 
