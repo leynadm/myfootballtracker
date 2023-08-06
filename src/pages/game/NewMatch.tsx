@@ -1,8 +1,8 @@
 import football_field from "../../assets/football_field.svg";
 import { useNavigate } from "react-router-dom";
-import { Radio, RadioGroup, useTab } from "@chakra-ui/react";
 import MatchHighlight from "../../components/MatchHighlight";
 import addNewMatch from "../../utils/firebaseFunctions/addNewMatch";
+import addNewMatchToOverallStats from "../../utils/firebaseFunctions/addNewMatchToOverallStats";
 import {
   Button,
   Text,
@@ -33,7 +33,8 @@ import {
   FormControl,
   Divider,
   FormErrorMessage,
-  useToast
+  useToast,
+  Heading, Radio, RadioGroup,
 } from "@chakra-ui/react";
 
 import { PiSoccerBallFill } from "react-icons/pi";
@@ -85,10 +86,12 @@ import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
-import addNewMatchToOverallStats from "../../utils/firebaseFunctions/addNewMatchToOverallStats";
+import createOverallStatsDoc from "../../utils/firebaseFunctions/createOverallStatsDoc";
+import MatchDataToSubmit from "../../utils/interfaces/matchDataToSubmit";
 
 import { useContext, useState,FormEvent } from "react";
 import { AuthContext } from "../../context/Auth";
+import { AddIcon } from '@chakra-ui/icons'
 
 import { Tooltip } from '@chakra-ui/react'
 
@@ -153,7 +156,7 @@ export default function NewMatch() {
   const [coldBloodedBeast, setColdBloodedBeast] = useState(false)
   const [aerialThreat, setAerialThreat] = useState(false)
   const [silkySmooth,setSiklySmooth] = useState(false)
-  const [luckMaker, setLuckMaker] = useState(false)
+  const [luckyCharm, setLuckyCharm] = useState(false)
   const [heelOfAGoal, setHeelOfAGoal] = useState(false)
   const [innateTalent, setInnateTalent] = useState(false)
   const [laPulga, setLaPulga] = useState(false)
@@ -179,7 +182,7 @@ export default function NewMatch() {
   const [theOnlyHero, setTheOnlyHero] = useState(false)
   const [instantReflexes, setInstantReflexes] = useState(false)
 
-  const dataToSubmit = {
+  const dataToSubmit:MatchDataToSubmit = {
     positionsPlayed: positionsPlayed,
     matchDate: matchDate,
     matchDuration: matchDuration,
@@ -209,7 +212,7 @@ export default function NewMatch() {
     coldBloodedBeast: coldBloodedBeast,
     aerialThreat: aerialThreat,
     silkySmooth: silkySmooth,
-    luckMaker: luckMaker,
+    luckyCharm: luckyCharm,
     heelOfAGoal:heelOfAGoal,
     innateTalent: innateTalent,
     laPulga:laPulga,
@@ -233,7 +236,7 @@ export default function NewMatch() {
     counterAttackingCatalyst: counterAttackingCatalyst,
     livingInAFortress: livingInAFortress,
     theOnlyHero: theOnlyHero,
-    instantReflexes: instantReflexes,
+    instantReflexes: instantReflexes
   };
 
 
@@ -277,10 +280,10 @@ export default function NewMatch() {
       return;
     }
 
-    addNewMatch(dataToSubmit);
-/* 
+    addNewMatch(dataToSubmit, currentUser.uid); 
     addNewMatchToOverallStats(dataToSubmit,currentUser.uid)
- */
+
+ 
     toast({
       title: "Your match was registered succesfully!",
       status: "success",
@@ -307,6 +310,12 @@ export default function NewMatch() {
       
 
       <Box paddingBottom="75px">
+{/* 
+        <Box display="flex" justifyContent="center" gap={2} alignItems="center">
+        <AddIcon/>
+        <Heading size="md" textAlign="center">Add a new match</Heading>
+        </Box>
+ */}
         <Container>
           <Text textAlign="center" mt={2}>
             Position Played
@@ -956,8 +965,8 @@ export default function NewMatch() {
                             highlightTitle="Luck Maker"
                             highlightText="Score from a rebound."
                             highlightIcon={GiHorseshoe}
-                            highlightState={luckMaker}
-                            setHighlightState={setLuckMaker}
+                            highlightState={luckyCharm}
+                            setHighlightState={setLuckyCharm}
                           />
 
                           <MatchHighlight
@@ -1343,3 +1352,4 @@ export default function NewMatch() {
     </>
   );
 }
+ 

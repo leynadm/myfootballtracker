@@ -1,5 +1,5 @@
 export default function LandingPage() {
     return (
-    <>Lala</>
+    <><div>Lala</div></>
     )
   }

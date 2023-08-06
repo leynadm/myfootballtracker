@@ -1,6 +1,18 @@
 interface MatchDataToSubmit {
     positionsPlayed: {
-      [key: string]: boolean;
+      GK?:boolean;
+      CB?:boolean;
+      RB?:boolean;
+      LB?:boolean;
+      DMF?:boolean;
+      CMF?:boolean;
+      AMF?:boolean;
+      RMF?:boolean;
+      LMF?:boolean;
+      LWF?:boolean;
+      RWF?:boolean;
+      SS?:boolean;
+      CF?:boolean;
     };
     matchDate: Date;
     matchDuration: number;
@@ -30,7 +42,7 @@ interface MatchDataToSubmit {
     coldBloodedBeast: boolean;
     aerialThreat: boolean;
     silkySmooth: boolean;
-    luckMaker: boolean;
+    luckyCharm: boolean;
     heelOfAGoal: boolean;
     innateTalent: boolean;
     laPulga: boolean;
@@ -55,6 +67,19 @@ interface MatchDataToSubmit {
     livingInAFortress: boolean;
     theOnlyHero: boolean;
     instantReflexes: boolean;
+    GK_p?:boolean;
+    CB_p?:boolean;
+    RB_p?:boolean;
+    LB_p?:boolean;
+    DMF_p?:boolean;
+    CMF_p?:boolean;
+    AMF_p?:boolean;
+    RMF_p?:boolean;
+    LMF_p?:boolean;
+    LWF_p?:boolean;
+    RWF_p?:boolean;
+    SS_p?:boolean;
+    CF_p?:boolean;
   }
 
   export default MatchDataToSubmit

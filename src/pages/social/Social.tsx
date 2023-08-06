@@ -1,5 +1,5 @@
 export default function Social() {
     return (
-    <>Social</>
+    <><div>Social</div></>
     )
   }

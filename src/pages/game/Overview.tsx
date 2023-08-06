@@ -139,7 +139,10 @@ export default function Overview() {
 
       <Box p={4}>
 
+
+
         <Routes>
+        <Route path="" index element={<OverallMatchInfo />} />
           <Route path="profile" index element={<Profile />} />
 
           <Route path="new-game" index element={<NewMatch />} />

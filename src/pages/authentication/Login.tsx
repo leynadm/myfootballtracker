@@ -1,6 +1,7 @@
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineLogin } from "react-icons/md";
 import createUserDoc from "../../utils/firebaseFunctions/createUserDoc";
+import createOverallStatsDoc from "../../utils/firebaseFunctions/createOverallStatsDoc";
 import {
   Flex,
   Box,
@@ -42,6 +43,7 @@ function Login() {
         const newUserCheck = getAdditionalUserInfo(result);
         if (newUserCheck?.isNewUser) {
           createUserDoc(user.uid, user.displayName);
+          createOverallStatsDoc(user.uid)
         }
         
         // IdP data available using getAdditionalUserInfo(result)

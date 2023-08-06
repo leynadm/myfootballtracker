@@ -4,7 +4,7 @@ import { db } from "../../config/firebase";
 import MatchDataToSubmit from "../interfaces/matchDataToSubmit";
 
 
-async function addNewMatch(dataToSubmit: MatchDataToSubmit, userId:string) {
+async function updateOverallStatsDoc(dataToSubmit: MatchDataToSubmit, userId:string) {
   const { GK, CB, RB, LB, DMF, CMF, AMF, RMF, LMF, LWF, RWF, SS, CF } =
     dataToSubmit.positionsPlayed;
 
@@ -23,6 +23,8 @@ async function addNewMatch(dataToSubmit: MatchDataToSubmit, userId:string) {
   const CF_p = CF ?? null;
   
   try {
+
+    const userOverallStatsDoc = doc(db,"users","stats","overall-stats")
 
     const userDocRef = doc(db, "users", userId);
     const userMatchesColRef = collection(userDocRef, "matches");
@@ -111,5 +113,4 @@ async function addNewMatch(dataToSubmit: MatchDataToSubmit, userId:string) {
   }
 }
 
-export default addNewMatch;
- 
+export default updateOverallStatsDoc;
