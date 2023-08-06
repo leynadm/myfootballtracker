@@ -4,14 +4,7 @@ import { Radio, RadioGroup, useTab } from "@chakra-ui/react";
 import MatchHighlight from "../../components/MatchHighlight";
 import addNewMatch from "../../utils/firebaseFunctions/addNewMatch";
 import {
-  Flex,
-  Avatar,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   Text,
   useColorModeValue,
   Stack,
@@ -43,9 +36,6 @@ import {
   useToast
 } from "@chakra-ui/react";
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { HamburgerIcon, AddIcon } from "@chakra-ui/icons";
-import { PinInput, PinInputField } from '@chakra-ui/react'
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { Select } from "@chakra-ui/react";
@@ -62,7 +52,6 @@ import { GiPokerHand } from "react-icons/gi";
 import { PiNumberFourFill } from "react-icons/pi";
 import { GiBowman } from "react-icons/gi";
 import { GiLuciferCannon } from "react-icons/gi";
-import { IoDiamondSharp } from "react-icons/to";
 import { FaBook } from "react-icons/fa";
 import { GiTrophyCup } from "react-icons/gi";
 import { GiSnakeBite } from "react-icons/gi";
@@ -277,8 +266,6 @@ export default function NewMatch() {
       if (positionsPlayed[key] === true) {
         positionSelected = false;
       }
-
-      console.log(`${key}: ${positionsPlayed[key]}`);
     }
 
     if (positionSelected) {
@@ -317,49 +304,7 @@ export default function NewMatch() {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <HamburgerIcon />
-            </MenuButton>
-            <MenuList>
-              <MenuItem>Download</MenuItem>
-              <MenuItem>Create a Copy</MenuItem>
-              <MenuItem>Mark as Draft</MenuItem>
-              <MenuItem>Delete</MenuItem>
-              <MenuItem>Attend a Workshop</MenuItem>
-            </MenuList>
-          </Menu>
-
-          <Box>Logo</Box>
-
-          <Flex alignItems={"center"}>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-        </Flex>
-      </Box>
+      
 
       <Box paddingBottom="75px">
         <Container>
@@ -655,6 +600,7 @@ export default function NewMatch() {
                       placeholder="Stadium Name"
                       onChange={(e) => setStadiumName(e.target.value)}
                     />
+                    
                   </InputGroup>
                 </FormControl>
               </InputGroup>
@@ -791,7 +737,7 @@ export default function NewMatch() {
                   onChange={(e) => setFoulsObtained(parseInt(e.target.value))}
                 />
               </InputGroup>
-              <Accordion defaultIndex={[0]} allowMultiple>
+              <Accordion allowMultiple>
                 <AccordionItem>
                   <h2>
                     <AccordionButton>
@@ -1284,7 +1230,7 @@ export default function NewMatch() {
                             highlightState={theOnlyHero}
                             setHighlightState={setTheOnlyHero}
                           />
-
+ 
                           <MatchHighlight
                             highlightTitle="Instant Reflexes"
                             highlightText="You played as a goalkeeper and made multiple saves."
@@ -1298,7 +1244,7 @@ export default function NewMatch() {
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
-              <Accordion defaultIndex={[0]} allowMultiple>
+              <Accordion allowMultiple>
                 <AccordionItem>
                   <h2>
                     <AccordionButton>

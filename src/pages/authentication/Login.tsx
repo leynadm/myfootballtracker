@@ -1,5 +1,6 @@
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineLogin } from "react-icons/md";
+import createUserDoc from "../../utils/firebaseFunctions/createUserDoc";
 import {
   Flex,
   Box,
@@ -18,7 +19,8 @@ import {
 import {
   getAuth,
   signInWithPopup,
-  GoogleAuthProvider
+  GoogleAuthProvider,
+  getAdditionalUserInfo
 } from "firebase/auth";
 
 import {auth} from "../../config/firebase";
@@ -37,6 +39,11 @@ function Login() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        const newUserCheck = getAdditionalUserInfo(result);
+        if (newUserCheck?.isNewUser) {
+          createUserDoc(user.uid, user.displayName);
+        }
+        
         // IdP data available using getAdditionalUserInfo(result)
         // ...
       }).catch((error) => {

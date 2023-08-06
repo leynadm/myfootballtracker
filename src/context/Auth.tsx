@@ -27,59 +27,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setCurrentUser(user);
 
       if (user) {
-        if (user?.isAnonymous === false) {
-          const docRef = doc(db, "users", user.uid);
-          const docSnap = await getDoc(docRef);
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
 
-          if (docSnap.exists()) {
-            const userData = docSnap.data() as User;
-            setCurrentUserData(userData);
-          }
-        } else {
-          setCurrentUserData({
-            fullname: ["guest", "user", "guest user"],
-            name: "guest",
-            sex: "male",
-            surname: "user",
-            profileImage: "",
-            verified: false,
-            privateAccount: false,
-            blocked: [],
-            hideProfile: false,
-            hidePowerLevel: true,
-            hideFollowers: false,
-            hideFollowing: false,
-            powerLevel: 0,
-            strengthLevel: 0,
-            experienceLevel: 0,
-            firstPowerExercise: "No Exercise Selected Yet",
-            secondPowerExercise: "No Exercise Selected Yet",
-            thirdPowerExercise: "No Exercise Selected Yet",
-            weight: 0,
-          });
+        if (docSnap.exists()) {
+          const userData = docSnap.data() as User;
+          setCurrentUserData(userData);
         }
+
+        setLoginFetchTrigger(true);
       }
-      setLoginFetchTrigger(true);
     });
 
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    const handleOffline = () => {
-      setLoginFetchTrigger(true); // Set the trigger to false when offline
-    };
-
-    const handleOnline = () => {
-      setLoginFetchTrigger(true); // Set the trigger to true when online
-    };
-
-    window.addEventListener("offline", handleOffline);
-    window.addEventListener("online", handleOnline);
-
     return () => {
-      window.removeEventListener("offline", handleOffline);
-      window.removeEventListener("online", handleOnline);
+      unsubscribe(); // Add a return function to unsubscribe the listener
     };
   }, []);
 
@@ -92,22 +53,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       return;
     }
 
-    if (currentUser.isAnonymous === false) {
-      try {
-        const docRef = doc(db, "users", currentUser.uid);
-        const docSnap = await getDoc(docRef);
+    try {
+      const docRef = doc(db, "users", currentUser.uid);
+      const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const userData = docSnap.data() as User;
-          setCurrentUserData(userData);
-          return userData;
-        }
-      } catch (error) {
-
-        console.error("Error while fetching user data:", error);
+      if (docSnap.exists()) {
+        const userData = docSnap.data() as User;
+        setCurrentUserData(userData);
+        return userData;
       }
+    } catch (error) {
+      console.error("Error while fetching user data:", error);
     }
   }
+
   return (
     <AuthContext.Provider
       value={{

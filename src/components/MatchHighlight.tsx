@@ -8,7 +8,7 @@ interface MatchHighlightProps {
   highlightText: string;
   highlightIcon: IconType;
   highlightState: boolean;
-  setHighlightState: React.Dispatch<React.SetStateAction<boolean>>;
+  setHighlightState: Dispatch<SetStateAction<boolean>>;
 }
 
 function MatchHighlight({

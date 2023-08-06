@@ -18,7 +18,10 @@ import {
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { HamburgerIcon, AddIcon } from '@chakra-ui/icons'
 import OverallMatchInfo from "../game/OverallMatchInfo";
-
+import Profile from "../game/Profile";
+import NewMatch from "../game/NewMatch";
+import { Routes, Route } from "react-router-dom";
+import { auth } from "../../config/firebase";
 
 interface Props {
   children: React.ReactNode
@@ -44,11 +47,18 @@ const NavLink = (props: Props) => {
   )
 }
 
+
+
 export default function Overview() {
   const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate()
 
-    function handleClickAction(){
+
+    function handleProfileClick(){
+      navigate("profile")
+    }
+
+    function handleNewMatchClickAction(){
         navigate("new-game")
     }
   return (
@@ -57,14 +67,14 @@ export default function Overview() {
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <HamburgerIcon/>
+              <HamburgerIcon />
             </MenuButton>
             <MenuList>
               <MenuItem>Download</MenuItem>
               <MenuItem>Create a Copy</MenuItem>
               <MenuItem>Mark as Draft</MenuItem>
               <MenuItem>Delete</MenuItem>
-              <MenuItem>Attend a Workshop</MenuItem>
+              <MenuItem onClick={()=>auth.signOut()}>Log Out</MenuItem>
             </MenuList>
           </Menu>
           <HStack spacing={8} alignItems={"center"}>
@@ -86,7 +96,7 @@ export default function Overview() {
               size={"sm"}
               mr={4}
               leftIcon={<AddIcon />}
-              onClick={handleClickAction}
+              onClick={handleNewMatchClickAction}
             >
               Match
             </Button>
@@ -107,10 +117,10 @@ export default function Overview() {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
+                <MenuItem>Settings</MenuItem>
+                <MenuItem>Account</MenuItem>
                 <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -128,8 +138,12 @@ export default function Overview() {
       </Box>
 
       <Box p={4}>
-      <OverallMatchInfo/>
 
+        <Routes>
+          <Route path="profile" index element={<Profile />} />
+
+          <Route path="new-game" index element={<NewMatch />} />
+        </Routes>
       </Box>
     </>
   );
