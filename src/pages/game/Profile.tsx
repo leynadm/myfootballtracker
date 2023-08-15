@@ -1,4 +1,4 @@
-import { useContext, useState,FormEvent } from "react";
+import { useContext, useState, FormEvent, useEffect } from "react";
 import {
   Button,
   Text,
@@ -22,7 +22,7 @@ import {
   Select,
   useToast,
   Divider,
-  Switch
+  Switch,
 } from "@chakra-ui/react";
 import { AuthContext } from "../../context/Auth";
 import { LiaRulerVerticalSolid } from "react-icons/lia";
@@ -34,11 +34,14 @@ import { BsYoutube } from "react-icons/bs";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { MdVerified } from "react-icons/md";
 import updateProfile from "../../utils/firebaseFunctions/updateProfile";
+import countriesList from "../../utils/countries";
 export default function Profile() {
   const { currentUser, currentUserData } = useContext(AuthContext);
 
   const [sex, setSex] = useState(currentUserData.sex);
-  const [profileImage, setProfileImage] = useState(currentUserData.profileImage)
+  const [profileImage, setProfileImage] = useState(
+    currentUserData.profileImage
+  );
   const [preferredFoot, setPreferredFoot] = useState(
     currentUserData.preferredFoot
   );
@@ -48,7 +51,8 @@ export default function Profile() {
   const [measurementSystem, setMeasurementSystem] = useState(
     currentUserData.measurementSystem
   );
-  const [shirtName, setShirtName] = useState(currentUserData.shirtName)
+  const [shirtName, setShirtName] = useState(currentUserData.shirtName);
+  const [clubName, setClubName] = useState(currentUserData.clubName);
   const [firstName, setFirstName] = useState(currentUserData.firstName);
   const [lastName, setLastName] = useState(currentUserData.lastName);
   const [verified, setVerified] = useState(currentUserData.verified);
@@ -74,11 +78,22 @@ export default function Profile() {
     currentUserData.youtubeChannel
   );
   const [height, setHeight] = useState(currentUserData.height);
-
+  const [selectedCountry, setSelectedCountry] = useState(
+    currentUserData.country.country
+  );
+  const [selectedCountryCode, setSelectedCountryCode] = useState(
+    currentUserData.country.countryCode
+  );
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
     fontSize: "sm",
+  };
+
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedIndex = event.target.selectedIndex;
+    setSelectedCountryCode(countriesList[selectedIndex - 1].code);
+    setSelectedCountry(countriesList[selectedIndex - 1].name);
   };
 
   const handleHeightChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -143,38 +158,45 @@ export default function Profile() {
     heightOptions[0] // Set the default selected height
   );
 
-    const userDataToUpdate ={
-      shirtName:shirtName,
-      firstName:firstName,
-      lastName:lastName,
-      sex:sex,
-      verified:verified,
-      profileImage:profileImage,
-      hideProfile:hideProfile,
-      hideSupporters:hideSupporters,
-      hideSupporting:hideSupporting,
-      preferredFoot:preferredFoot,
-      shirtNumber:shirtNumber,
-      playingExperience:playingExperience,
-      instagramProfile:instagramProfile,
-      facebookProfile:facebookProfile,
-      youtubeChannel:youtubeChannel,
-      height:height,
-    }
+  const userDataToUpdate = {
+    shirtName: shirtName,
+    firstName: firstName,
+    lastName: lastName,
+    sex: sex,
+    verified: verified,
+    profileImage: profileImage,
+    hideProfile: hideProfile,
+    hideSupporters: hideSupporters,
+    hideSupporting: hideSupporting,
+    preferredPosition: preferredPosition,
+    preferredFoot: preferredFoot,
+    shirtNumber: shirtNumber,
+    playingExperience: playingExperience,
+    instagramProfile: instagramProfile,
+    facebookProfile: facebookProfile,
+    youtubeChannel: youtubeChannel,
+    height: height,
+    country: { country: selectedCountry, countryCode: selectedCountryCode },
+  };
 
-  const toast = useToast()
+  const toast = useToast();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-   
-    updateProfile(userDataToUpdate,currentUser.uid)
+
+    updateProfile(userDataToUpdate, currentUser.uid);
 
     toast({
       title: "Your profile was updated succesfully!",
       status: "success",
       isClosable: true,
+      position:"top"
     });
   };
+
+  useEffect(()=>{
+    console.log(shirtNumber)
+  },[shirtNumber])
 
   return (
     <>
@@ -200,7 +222,30 @@ export default function Profile() {
               </Text>
               <MdVerified size="2rem" />
             </WrapItem>
-           
+
+            <Box display="flex" alignItems="center" gap={2}>
+              <FormControl>
+                <Select
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                  placeholder="Select the country you represent"
+                >
+                  {countriesList.map((option, index) => (
+                    <option key={index} value={option.name}>
+                      {option.name}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+
+              {selectedCountry !== "" && (
+                <img
+                  src={`https://flagsapi.com/${selectedCountryCode}/flat/48.png`}
+                  alt="Country Flag"
+                />
+              )}
+            </Box>
+
             <InputGroup gap={3}>
               <FormControl isRequired>
                 <FormLabel>Shirt Name</FormLabel>
@@ -212,7 +257,7 @@ export default function Profile() {
                 />
               </FormControl>
             </InputGroup>
-           
+
             <InputGroup gap={3}>
               <FormControl isRequired>
                 <FormLabel>First name</FormLabel>
@@ -235,25 +280,18 @@ export default function Profile() {
               </FormControl>
             </InputGroup>
 
-            <InputGroup alignItems="center" gap={3}>
-              {measurementSystem === "metric" ? (
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none">
-                      <LiaRulerVerticalSolid color="gray.300" size="1.5rem" />
-                    </InputLeftElement>
+            <FormControl>
+                <FormLabel>Your Club Name</FormLabel>
+                <Input
+                  variant="filled"
+                  placeholder="Your club name"
+                  value={clubName}
+                  onChange={(e) => setClubName(e.target.value)}
+                />
+              </FormControl>
 
-                    <Input
-                      onChange={(e) => setHeight(e.target.value)}
-                      min={0}
-                      variant="filled"
-                      type="number"
-                      placeholder="Height (cm)"
-                      value={height}
-                    />
-                  </InputGroup>
-                </FormControl>
-              ) : (
+            <InputGroup alignItems="center" gap={3}>
+              {measurementSystem === "imperial" ? (
                 <FormControl>
                   <Select
                     defaultValue={height}
@@ -269,6 +307,23 @@ export default function Profile() {
                       </option>
                     ))}
                   </Select>
+                </FormControl>
+              ) : (
+                <FormControl>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none">
+                      <LiaRulerVerticalSolid color="gray.300" size="1.5rem" />
+                    </InputLeftElement>
+
+                    <Input
+                      onChange={(e) => setHeight(e.target.value)}
+                      min={0}
+                      variant="filled"
+                      type="number"
+                      placeholder="Height (cm)"
+                      value={height}
+                    />
+                  </InputGroup>
                 </FormControl>
               )}
               <InputGroup>
@@ -286,24 +341,18 @@ export default function Profile() {
                 onChange={(e) => setPreferredPosition(e.target.value)}
               >
                 <option value="GK">Goalkeeper (GK)</option>
-                <option value="centerback">Center-back (CB)</option>
-                <option value="leftback">Left-back (LB)</option>
-                <option value="rightback">Right-back (RB)</option>
-                <option value="defensivemidfielder">
-                  Defensive Midfielder (DMF)
-                </option>
-                <option value="centralmidfielder">
-                  Central Midfielder (CMF)
-                </option>
-                <option value="leftmidfielder">Left Midfielder (LMF)</option>
-                <option value="rightmidfielder">Right Midfielder (RMF)</option>
-                <option value="attackingmidfielder">
-                  Attacking Midfielder (AMF)
-                </option>
-                <option value="leftwinger">Left Winger (LWF)</option>
-                <option value="rightwinger">Right Winger (RWF)</option>
-                <option value="secondstricker">Second Striker (SS)</option>
-                <option value="Central Forward">Central Forward (CF)</option>
+                <option value="CB">Center-back (CB)</option>
+                <option value="LB">Left-back (LB)</option>
+                <option value="RB">Right-back (RB)</option>
+                <option value="DMF">Defensive Midfielder (DMF)</option>
+                <option value="CMF">Central Midfielder (CMF)</option>
+                <option value="MF">Left Midfielder (LMF)</option>
+                <option value="RMF">Right Midfielder (RMF)</option>
+                <option value="AMF">Attacking Midfielder (AMF)</option>
+                <option value="LWF">Left Winger (LWF)</option>
+                <option value="RWF">Right Winger (RWF)</option>
+                <option value="SS">Second Striker (SS)</option>
+                <option value="CF">Central Forward (CF)</option>
               </Select>
             </InputGroup>
 
@@ -337,7 +386,7 @@ export default function Profile() {
                   <Input
                     onChange={(e) => setShirtNumber(e.target.value)}
                     min={1}
-                    max={100}
+                    max={99}
                     variant="filled"
                     type="number"
                     placeholder="Favorite Shirt Number"
@@ -448,29 +497,37 @@ export default function Profile() {
             </InputGroup>
 
             <FormControl display="flex" alignItems="center" gap={2}>
-            <Switch id="hide-profile" onChange={()=>setHideProfile(!hideProfile)} isChecked={hideProfile} />
+              <Switch
+                id="hide-profile"
+                onChange={() => setHideProfile(!hideProfile)}
+                isChecked={hideProfile}
+              />
               <FormLabel htmlFor="hide-profile" mb="0">
                 Hide your profile from searches?
               </FormLabel>
-
             </FormControl>
 
             <FormControl display="flex" alignItems="center" gap={2}>
-            <Switch id="hide-supporters"  onChange={()=>setHideSupporters(!hideSupporters)} isChecked={hideSupporters}/>
+              <Switch
+                id="hide-supporters"
+                onChange={() => setHideSupporters(!hideSupporters)}
+                isChecked={hideSupporters}
+              />
               <FormLabel htmlFor="hide-supporters" mb="0">
                 Hide your supporters?
               </FormLabel>
-
             </FormControl>
 
             <FormControl display="flex" alignItems="center" gap={2}>
-            <Switch id="hide-supporting"  onChange={()=>setHideSupporting(!hideSupporting)} isChecked={hideSupporting} />
+              <Switch
+                id="hide-supporting"
+                onChange={() => setHideSupporting(!hideSupporting)}
+                isChecked={hideSupporting}
+              />
               <FormLabel htmlFor="hide-supporting" mb="0">
                 Hide who you support?
               </FormLabel>
-
             </FormControl>
-
 
             <Button
               rightIcon={GrDocumentUpdate}

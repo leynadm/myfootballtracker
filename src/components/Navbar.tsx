@@ -25,7 +25,7 @@ export default function Navbar() {
   }
 
   function handleClickStats(){
-    navigate("stats")
+    navigate("statistics")
   }
 
   return (

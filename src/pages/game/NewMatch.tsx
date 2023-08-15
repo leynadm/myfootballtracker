@@ -1,8 +1,8 @@
 import football_field from "../../assets/football_field.svg";
 import { useNavigate } from "react-router-dom";
 import MatchHighlight from "../../components/MatchHighlight";
-import addNewMatch from "../../utils/firebaseFunctions/addNewMatch";
-import addNewMatchToOverallStats from "../../utils/firebaseFunctions/addNewMatchToOverallStats";
+import addNewMatchData from "../../utils/firebaseFunctions/addNewMatchData";
+import checkMatchesPlayed from "../../utils/firebaseFunctions/checkMatchesPlayed";
 import {
   Button,
   Text,
@@ -34,9 +34,28 @@ import {
   Divider,
   FormErrorMessage,
   useToast,
-  Heading, Radio, RadioGroup,
+  Heading,
+  Radio,
+  RadioGroup,
+  Textarea,
 } from "@chakra-ui/react";
 
+import { BsFillCameraReelsFill } from "react-icons/bs";
+
+import { GiMoonOrbit } from "react-icons/gi";
+import { GiGiant } from "react-icons/gi";
+import { FaMonument } from "react-icons/fa";
+import { GiHumanPyramid } from "react-icons/gi";
+import { GiMaze } from "react-icons/gi";
+import { GiMountaintop } from "react-icons/gi";
+import { GoTelescope } from "react-icons/go";
+import { BsFillSignStopFill } from "react-icons/bs";
+import { GiAngryEyes } from "react-icons/gi";
+import { FaGitkraken } from "react-icons/fa";
+import { GiAngelWings } from "react-icons/gi";
+import { GiGalaxy } from "react-icons/gi";
+import { GiSlingshot } from "react-icons/gi";
+import { BsShieldX } from "react-icons/bs";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { Select } from "@chakra-ui/react";
@@ -86,18 +105,10 @@ import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
-import createOverallStatsDoc from "../../utils/firebaseFunctions/createOverallStatsDoc";
 import MatchDataToSubmit from "../../utils/interfaces/matchDataToSubmit";
 
-import { useContext, useState,FormEvent } from "react";
+import { useContext, useState, FormEvent, useEffect } from "react";
 import { AuthContext } from "../../context/Auth";
-import { AddIcon } from '@chakra-ui/icons'
-
-import { Tooltip } from '@chakra-ui/react'
-
-interface Props {
-  children: React.ReactNode;
-}
 
 interface PositionsPlayed {
   [key: string]: boolean;
@@ -115,78 +126,235 @@ export default function NewMatch() {
     color: "black",
   };
 
-
-  const toast = useToast()
-  const {currentUser} = useContext(AuthContext)
+  const toast = useToast();
+  const { currentUser } = useContext(AuthContext);
   const [winValue, setWinValue] = useState("");
- 
-  const [sliderValue, setSliderValue] = useState(5)
+
+  const [sliderValue, setSliderValue] = useState(5);
   const labelStyles = {
-    mt: '2',
-    ml: '-2.5',
-    fontSize: 'sm',
-  }
+    mt: "2",
+    ml: "-2.5",
+    fontSize: "sm",
+  };
 
   const [positionsPlayed, setPositionsPlayed] = useState<PositionsPlayed>({});
   const [matchDate, setMatchDate] = useState<Date>(new Date());
-  const [matchDuration, setMatchDuration] = useState(0)
-  const [cityName, setCityName] = useState("")
-  const [stadiumName, setStadiumName] = useState("")
-  const [matchType, setMatchType] = useState("")
-  const [homeTeamGoals, setHomeTeamGoals] = useState(0)
-  const [awayTeamGoals, setAwayTeamGoals] = useState(0)
-  const [goalsScored, setGoalsScored] = useState(0)
-  const [assistsProvided, setAssistsProvided] = useState(0)
-  const [yellowCardsReceived, setYellowCardsReceived] = useState(0)
-  const [redCardsReceived, setRedCardsReceived] = useState(0)
-  const [foulsCommited, setFoulsCommited] = useState(0)
-  const [foulsObtained, setFoulsObtained] = useState(0)
-  const [getOnTheScoresheet, setGetOnTheScoresheet] = useState(false)
-  const [bagABrace, setBagABrace] = useState(false)
-  const [scoreAHattrick, setScoreAHattrick] = useState(false)
-  const [fantasticFour, setFantasticFour] = useState(false)
-  const [pokerMaster, setPokerMaster] = useState(false)
-  const [historyMaker, setHistoryMaker] = useState(false)
-  const [letTheShowBegin, setLetTheShowBegin] = useState(false)
-  const [hawkeye, setHawkeye] = useState(false)
-  const [cannonball, setCannonball] = useState(false)
-  const [noExcuses, setNoExcuses] = useState(false)
-  const [cornerstonePresence, setCornerstonePresence] = useState(false)
-  const [marksman, setMarksman] = useState(false)
-  const [coldBloodedBeast, setColdBloodedBeast] = useState(false)
-  const [aerialThreat, setAerialThreat] = useState(false)
-  const [silkySmooth,setSiklySmooth] = useState(false)
-  const [luckyCharm, setLuckyCharm] = useState(false)
-  const [heelOfAGoal, setHeelOfAGoal] = useState(false)
-  const [innateTalent, setInnateTalent] = useState(false)
-  const [laPulga, setLaPulga] = useState(false)
-  const [oneInAMillion, setOneInAMillion] = useState(false)
-  const [lastMinuteHero, setLastMinuteHero] = useState(false)
-  const [finalWord, setFinalWord] = useState(false)
-  const [heartRate, setHeartRate] = useState(0)
-  const [distance, setDistance] = useState(0)
-  const [distanceUnit, setDistanceUnit] = useState("m")
-  const [matchPerformance, setMatchPerformance] = useState(5)
-  const [aPleasureDoingBusiness, setAPleasureDoingBusiness] = useState(false)
-  const [foodOnTheTable, setFoodOnTheTable] = useState(false)
-  const [assistsMaestro, setAssistsMaestro] = useState(false)
-  const [industrialProvider, setIndustrialProvider] = useState(false)
-  const [puppetMaster, setPuppetMaster] = useState(false)
-  const [omniscient, setOmniscient] = useState(false)
-  const [youShallNotPass, setYouShallNotPass] = useState(false)
-  const [tacklingTitan, setTacklingTitan] = useState(false)
-  const [leadFromTheBack, setLeadFromTheBack] = useState(false)
-  const [theSaviour, setTheSaviour] = useState(false)
-  const [counterAttackingCatalyst, setCounterAttackingCatalust] = useState(false)
-  const [livingInAFortress, setLivingInAFortress] = useState(false)
-  const [theOnlyHero, setTheOnlyHero] = useState(false)
-  const [instantReflexes, setInstantReflexes] = useState(false)
+  const [matchDuration, setMatchDuration] = useState(0);
+  const [cityName, setCityName] = useState("");
+  const [opponentTeamName, setOpponentTeamName] = useState("");
+  const [stadiumName, setStadiumName] = useState("");
+  const [matchType, setMatchType] = useState("");
+  const [homeTeamGoals, setHomeTeamGoals] = useState(0);
+  const [awayTeamGoals, setAwayTeamGoals] = useState(0);
+  const [goalsScored, setGoalsScored] = useState(0);
+  const [assistsProvided, setAssistsProvided] = useState(0);
+  const [yellowCardsReceived, setYellowCardsReceived] = useState(0);
+  const [redCardsReceived, setRedCardsReceived] = useState(0);
+  const [foulsCommited, setFoulsCommited] = useState(0);
+  const [foulsObtained, setFoulsObtained] = useState(0);
+  const [getOnTheScoresheet, setGetOnTheScoresheet] = useState(false);
+  const [bagABrace, setBagABrace] = useState(false);
+  const [scoreAHattrick, setScoreAHattrick] = useState(false);
+  const [fantasticFour, setFantasticFour] = useState(false);
+  const [pokerMaster, setPokerMaster] = useState(false);
+  const [historyMaker, setHistoryMaker] = useState(false);
+  const [letTheShowBegin, setLetTheShowBegin] = useState(false);
+  const [slingshot, setSlingshot] = useState(false);
+  const [aroundThePlanet, SetAroundThePlanet] = useState(false);
+  const [hawkeye, setHawkeye] = useState(false);
+  const [cannonball, setCannonball] = useState(false);
+  const [noExcuses, setNoExcuses] = useState(false);
+  const [cornerstonePresence, setCornerstonePresence] = useState(false);
+  const [marksman, setMarksman] = useState(false);
+  const [telescopeVision, setTelescopeVision] = useState(false);
+  const [coldBloodedBeast, setColdBloodedBeast] = useState(false);
+  const [aerialThreat, setAerialThreat] = useState(false);
+  const [silkySmooth, setSiklySmooth] = useState(false);
+  const [luckyCharm, setLuckyCharm] = useState(false);
+  const [heelOfAGoal, setHeelOfAGoal] = useState(false);
+  const [innateTalent, setInnateTalent] = useState(false);
+  const [laPulga, setLaPulga] = useState(false);
+  const [oneInAMillion, setOneInAMillion] = useState(false);
+  const [lastMinuteHero, setLastMinuteHero] = useState(false);
+  const [finalWord, setFinalWord] = useState(false);
+  const [heartRate, setHeartRate] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [distanceUnit, setDistanceUnit] = useState("m");
+  const [matchRecordingLink, setMatchRecordingLink] = useState("");
+  const [matchPerformance, setMatchPerformance] = useState(5);
+  const [aPleasureDoingBusiness, setAPleasureDoingBusiness] = useState(false);
+  const [foodOnTheTable, setFoodOnTheTable] = useState(false);
+  const [assistsMaestro, setAssistsMaestro] = useState(false);
+  const [industrialProvider, setIndustrialProvider] = useState(false);
+  const [puppetMaster, setPuppetMaster] = useState(false);
+  const [omniscient, setOmniscient] = useState(false);
+  const [youShallNotPass, setYouShallNotPass] = useState(false);
+  const [tacklingTitan, setTacklingTitan] = useState(false);
+  const [leadFromTheBack, setLeadFromTheBack] = useState(false);
+  const [theSaviour, setTheSaviour] = useState(false);
+  const [counterAttackingCatalyst, setCounterAttackingCatalust] =
+    useState(false);
+  const [livingInAFortress, setLivingInAFortress] = useState(false);
+  const [theOnlyHero, setTheOnlyHero] = useState(false);
+  const [instantReflexes, setInstantReflexes] = useState(false);
+  const [textareaValue, setTextareaValue] = useState("");
+  const [youStopHere, setYouStopHere] = useState(false);
+  const [imNotKidding, setImNotKidding] = useState(false);
+  const [theKraken, setTheKraken] = useState(false);
+  const [guardianAngel, setGuardianAngel] = useState(false);
+  const [protectorOfTheGalaxy, setProtectorOfTheGalaxy] = useState(false);
+  const [theGiant, setTheGiant] = useState(false);
+  const [oneManArmy, setOneManArmy] = useState(false);
+  const [theMonument, setTheMonument] = useState(false);
+  const [thePathBreaker, setThePathBreaker] = useState(false);
+  const [theMountain, setTheMountain] = useState(false);
 
-  const dataToSubmit:MatchDataToSubmit = {
+  function checkGoalsRadioValue() {
+    if (goalsRadioValue === "getOnTheScoresheet") {
+      setGetOnTheScoresheet(true);
+    } else {
+      setGetOnTheScoresheet(false);
+    }
+
+    if (goalsRadioValue === "bagABrace") {
+      setBagABrace(true);
+    } else {
+      setBagABrace(false);
+    }
+
+    if (goalsRadioValue === "scoreAHattrick") {
+      setScoreAHattrick(true);
+    } else {
+      setScoreAHattrick(false);
+    }
+
+    if (goalsRadioValue === "fantasticFour") {
+      setFantasticFour(true);
+    } else {
+      setFantasticFour(false);
+    }
+
+    if (goalsRadioValue === "pokerMaster") {
+      setPokerMaster(true);
+    } else {
+      setPokerMaster(false);
+    }
+
+    if (goalsRadioValue === "historyMaker") {
+      setHistoryMaker(true);
+    } else {
+      setHistoryMaker(false);
+    }
+  }
+
+  function checkSavesRadioValue() {
+    if (savesRadioValue === "youStopHere") {
+      setYouStopHere(true);
+    } else {
+      setYouStopHere(false);
+    }
+
+    if (savesRadioValue === "imNotKidding") {
+      setImNotKidding(true);
+    } else {
+      setImNotKidding(false);
+    }
+
+    if (savesRadioValue === "theKraken") {
+      setTheKraken(true);
+    } else {
+      setTheKraken(false);
+    }
+
+    if (savesRadioValue === "guardianAngel") {
+      setGuardianAngel(true);
+    } else {
+      setGuardianAngel(false);
+    }
+
+    if (savesRadioValue === "protectorOfTheGalaxy") {
+      setProtectorOfTheGalaxy(true);
+    } else {
+      setProtectorOfTheGalaxy(false);
+    }
+  }
+
+  function checkDefenceRadioValue() {
+    if (defenceRadioValue === "theGiant") {
+      setTheGiant(true);
+    } else {
+      setTheGiant(false);
+    }
+
+    if (defenceRadioValue === "oneManArmy") {
+      setOneManArmy(true);
+    } else {
+      setOneManArmy(false);
+    }
+
+    if (defenceRadioValue === "theMonument") {
+      setTheMonument(true);
+    } else {
+      setTheMonument(false);
+    }
+
+    if (defenceRadioValue === "thePathBreaker") {
+      setThePathBreaker(true);
+    } else {
+      setThePathBreaker(false);
+    }
+
+    if (defenceRadioValue === "theMountain") {
+      setTheMonument(true);
+    } else {
+      setTheMonument(false);
+    }
+  }
+
+  function checkAssistsRadioValue() {
+    if (assistsRadioValue === "aPleasureDoingBusiness") {
+      setAPleasureDoingBusiness(true);
+    } else {
+      setAPleasureDoingBusiness(false);
+    }
+
+    if (assistsRadioValue === "foodOnTheTable") {
+      setFoodOnTheTable(true);
+    } else {
+      setFoodOnTheTable(false);
+    }
+
+    if (assistsRadioValue === "assistsMaestro") {
+      setAssistsMaestro(true);
+    } else {
+      setAssistsMaestro(false);
+    }
+
+    if (assistsRadioValue === "industrialProvider") {
+      setIndustrialProvider(true);
+    } else {
+      setIndustrialProvider(false);
+    }
+
+    if (assistsRadioValue === "puppetMaster") {
+      setPuppetMaster(true);
+    } else {
+      setPuppetMaster(false);
+    }
+
+    if (goalsRadioValue === "omniscient") {
+      setOmniscient(true);
+    } else {
+      setOmniscient(false);
+    }
+  }
+  const dataToSubmit: MatchDataToSubmit = {
+    winValue: winValue,
     positionsPlayed: positionsPlayed,
     matchDate: matchDate,
     matchDuration: matchDuration,
     cityName: cityName,
+    opponentTeamName: opponentTeamName,
     stadiumName: stadiumName,
     matchType: matchType,
     homeTeamGoals: homeTeamGoals,
@@ -205,17 +373,20 @@ export default function NewMatch() {
     historyMaker: historyMaker,
     letTheShowBegin: letTheShowBegin,
     hawkeye: hawkeye,
+    slingshot: slingshot,
+    aroundThePlanet: aroundThePlanet,
     cannonball: cannonball,
-    cornerstonePresence:cornerstonePresence,
-    marksman:marksman,
-    noExcuses:noExcuses,
+    cornerstonePresence: cornerstonePresence,
+    marksman: marksman,
+    telescopeVision: telescopeVision,
+    noExcuses: noExcuses,
     coldBloodedBeast: coldBloodedBeast,
     aerialThreat: aerialThreat,
     silkySmooth: silkySmooth,
     luckyCharm: luckyCharm,
-    heelOfAGoal:heelOfAGoal,
+    heelOfAGoal: heelOfAGoal,
     innateTalent: innateTalent,
-    laPulga:laPulga,
+    laPulga: laPulga,
     oneInAMillion: oneInAMillion,
     lastMinuteHero: lastMinuteHero,
     finalWord: finalWord,
@@ -236,9 +407,20 @@ export default function NewMatch() {
     counterAttackingCatalyst: counterAttackingCatalyst,
     livingInAFortress: livingInAFortress,
     theOnlyHero: theOnlyHero,
-    instantReflexes: instantReflexes
+    instantReflexes: instantReflexes,
+    matchComments: textareaValue,
+    youStopHere: youStopHere,
+    imNotKidding: imNotKidding,
+    theKraken: theKraken,
+    guardianAngel: guardianAngel,
+    protectorOfTheGalaxy: protectorOfTheGalaxy,
+    theGiant: theGiant,
+    oneManArmy: oneManArmy,
+    theMonument: theMonument,
+    thePathBreaker: thePathBreaker,
+    theMountain: theMountain,
+    matchRecordingLink: matchRecordingLink,
   };
-
 
   const handleClick = (boxName: string) => {
     // Toggle the clicked state of the box
@@ -246,8 +428,6 @@ export default function NewMatch() {
       ...prevPositionsPlayed,
       [boxName]: !prevPositionsPlayed[boxName],
     }));
-
-    console.log(positionsPlayed)
   };
 
   const handleMatchDateChange = (e) => {
@@ -259,11 +439,13 @@ export default function NewMatch() {
     console.log(dateObject); // This will be a valid Date object
   };
 
-
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    checkGoalsRadioValue();
+    checkAssistsRadioValue();
+    checkSavesRadioValue();
+    checkDefenceRadioValue();
     let positionSelected = true;
     for (const key in positionsPlayed) {
       if (positionsPlayed[key] === true) {
@@ -280,37 +462,68 @@ export default function NewMatch() {
       return;
     }
 
-    addNewMatch(dataToSubmit, currentUser.uid); 
-    addNewMatchToOverallStats(dataToSubmit,currentUser.uid)
+    const validityCheckPromise = checkMatchesPlayed(
+      dataToSubmit,
+      currentUser.uid
+    );
 
- 
-    toast({
-      title: "Your match was registered succesfully!",
-      status: "success",
-      isClosable: true,
-    });
+    validityCheckPromise
+      .then((result) => {
+        if (result === "duplicate match") {
+          toast({
+            title: "Duplicate match detected!",
+            description: "Match with same date/time already registered.",
+            status: "warning",
+            isClosable: true,
+            position: "top",
+          });
+        } else {
+          addNewMatchData(dataToSubmit, currentUser.uid)
+            .then(() => {
+              toast({
+                title: "Your match was registered successfully!",
+                status: "success",
+                isClosable: true,
+                position: "top",
+              });
+            })
+            .catch((error) => {
+              console.error("Error registering match:", error);
+              console.log(error);
+              toast({
+                title: "Error registering match",
+                status: "error",
+                description: "An error occurred while registering the match.",
+                isClosable: true,
+                position: "top",
+              });
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error during validity check:", error);
+      });
   };
 
   const colors = useColorModeValue(
-    ['red.50', 'teal.50', 'blue.50','orange.50'],
+    ["red.50", "teal.50", "blue.50", "orange.50"],
 
-    ['red.900', 'teal.900', 'blue.900','orange.900'],
-  
-    )
-  const [tabIndex, setTabIndex] = useState(0)
-  const bg = colors[tabIndex]
+    ["red.900", "teal.900", "blue.900", "orange.900"]
+  );
+  const [tabIndex, setTabIndex] = useState(0);
+  const bg = colors[tabIndex];
 
-  const [goalsRadioValue, setGoalsRadioValue] = useState('')
-  const [assistsRadioValue, setAssistsRadioValue] = useState('')
+  const [goalsRadioValue, setGoalsRadioValue] = useState("");
+  const [assistsRadioValue, setAssistsRadioValue] = useState("");
+  const [savesRadioValue, setSavesRadioValue] = useState("");
+  const [defenceRadioValue, setDefenceSavesRadioValue] = useState("");
 
-  const [requiredField, setRequiredField] = useState(false)
+  const [requiredField, setRequiredField] = useState(false);
 
   return (
     <>
-      
-
       <Box paddingBottom="75px">
-{/* 
+        {/* 
         <Box display="flex" justifyContent="center" gap={2} alignItems="center">
         <AddIcon/>
         <Heading size="md" textAlign="center">Add a new match</Heading>
@@ -580,6 +793,24 @@ export default function NewMatch() {
                   />
                 </InputGroup>
               </FormControl>
+
+              <FormControl isRequired>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    <BsShieldX color="gray.300" />
+                  </InputLeftElement>
+                  <Input
+                    type="text"
+                    placeholder="Opponent's Team Name"
+                    onChange={(e) => setOpponentTeamName(e.target.value)}
+                  />
+                </InputGroup>
+
+                <FormErrorMessage>
+                  {requiredField && "This field is required."}
+                </FormErrorMessage>
+              </FormControl>
+
               <InputGroup gap={2}>
                 <FormControl isRequired>
                   <InputGroup>
@@ -609,7 +840,6 @@ export default function NewMatch() {
                       placeholder="Stadium Name"
                       onChange={(e) => setStadiumName(e.target.value)}
                     />
-                    
                   </InputGroup>
                 </FormControl>
               </InputGroup>
@@ -756,16 +986,16 @@ export default function NewMatch() {
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4}>
+                  <AccordionPanel p={0}>
                     <Tabs onChange={(index) => setTabIndex(index)} bg={bg}>
-                      <TabList>
-                        <Tab>Attack</Tab>
-                        <Tab>Midfield</Tab>
-                        <Tab>Defence</Tab>
-                        <Tab>GK</Tab>
+                      <TabList display="flex" justifyContent="center">
+                        <Tab fontSize="smaller">Attack</Tab>
+                        <Tab fontSize="smaller">Midfield.</Tab>
+                        <Tab fontSize="smaller">Defence</Tab>
+                        <Tab fontSize="smaller">GK</Tab>
                       </TabList>
                       <TabPanels>
-                        <TabPanel>
+                        <TabPanel p={3}>
                           <RadioGroup
                             onChange={(e) => setGoalsRadioValue(e)}
                             value={goalsRadioValue}
@@ -781,17 +1011,18 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<BiBullseye />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
-                                    Get on the scoresheet
+                                    Get on the Scoresheet
                                   </Text>
                                   <Text fontSize="small">
                                     Score 1 goal in a single match.
                                   </Text>
                                 </Box>
 
-                                <Radio value="1" />
+                                <Radio value="getOnTheScoresheet" />
                               </Box>
 
                               <Box
@@ -804,6 +1035,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<BsBraces />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -814,7 +1046,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="2" />
+                                <Radio value="bagABrace" />
                               </Box>
 
                               <Box
@@ -827,6 +1059,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<GoGoal />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -837,7 +1070,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="3" />
+                                <Radio value="scoreAHattrick" />
                               </Box>
 
                               <Box
@@ -850,6 +1083,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<PiNumberFourFill />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -860,7 +1094,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="4" />
+                                <Radio value="fantasticFour" />
                               </Box>
 
                               <Box
@@ -873,6 +1107,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<GiPokerHand />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -883,7 +1118,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="5" />
+                                <Radio value="pokerMaster" />
                               </Box>
 
                               <Box
@@ -896,6 +1131,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<FaBook />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -906,7 +1142,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="6" />
+                                <Radio value="historyMaker" />
                               </Box>
                             </Stack>
                           </RadioGroup>
@@ -917,6 +1153,23 @@ export default function NewMatch() {
                             highlightState={letTheShowBegin}
                             setHighlightState={setLetTheShowBegin}
                           />
+
+                          <MatchHighlight
+                            highlightTitle="Slingshot"
+                            highlightText="Score a goal from a volley."
+                            highlightIcon={GiSlingshot}
+                            highlightState={slingshot}
+                            setHighlightState={setSlingshot}
+                          />
+
+                          <MatchHighlight
+                            highlightTitle="Around The Planet"
+                            highlightText="Score a goal with a delicate finesse shot."
+                            highlightIcon={GiMoonOrbit}
+                            highlightState={aroundThePlanet}
+                            setHighlightState={SetAroundThePlanet}
+                          />
+
                           <MatchHighlight
                             highlightTitle="Hawkeye"
                             highlightText="Score a goal directly from a free-kick"
@@ -962,7 +1215,7 @@ export default function NewMatch() {
                             setHighlightState={setSiklySmooth}
                           />
                           <MatchHighlight
-                            highlightTitle="Luck Maker"
+                            highlightTitle="Lucky Charm"
                             highlightText="Score from a rebound."
                             highlightIcon={GiHorseshoe}
                             highlightState={luckyCharm}
@@ -970,7 +1223,7 @@ export default function NewMatch() {
                           />
 
                           <MatchHighlight
-                            highlightTitle="Heel Of A Goal"
+                            highlightTitle="Heel of A Goal"
                             highlightText="Score a goal with your backheel."
                             highlightIcon={PiHighHeel}
                             highlightState={heelOfAGoal}
@@ -1017,7 +1270,7 @@ export default function NewMatch() {
                             setHighlightState={setFinalWord}
                           />
                         </TabPanel>
-                        <TabPanel>
+                        <TabPanel p={3}>
                           <RadioGroup
                             onChange={(e) => setAssistsRadioValue(e)}
                             value={assistsRadioValue}
@@ -1033,6 +1286,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<FaHandsHelping />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1043,7 +1297,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="1" />
+                                <Radio value="aPleasureDoingBusiness" />
                               </Box>
 
                               <Box
@@ -1056,6 +1310,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<FaBreadSlice />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1066,7 +1321,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="2" />
+                                <Radio value="foodOnTheTable" />
                               </Box>
 
                               <Box
@@ -1079,6 +1334,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<ImMagicWand />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1089,7 +1345,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="3" />
+                                <Radio value="assistsMaestro" />
                               </Box>
 
                               <Box
@@ -1102,6 +1358,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<ImTruck />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1112,7 +1369,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="4" />
+                                <Radio value="industrialProvider" />
                               </Box>
 
                               <Box
@@ -1125,6 +1382,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<GiMagicPalm />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1135,7 +1393,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="5" />
+                                <Radio value="puppetMaster" />
                               </Box>
 
                               <Box
@@ -1148,6 +1406,7 @@ export default function NewMatch() {
                                   aria-label="highlight icon"
                                   icon={<FaRegEye />}
                                   fontSize="1.25rem"
+                                  backgroundColor="lightgray"
                                 />
                                 <Box>
                                   <Text fontSize="small" fontWeight="bold">
@@ -1158,7 +1417,7 @@ export default function NewMatch() {
                                   </Text>
                                 </Box>
 
-                                <Radio value="6" />
+                                <Radio value="omniscient" />
                               </Box>
 
                               <MatchHighlight
@@ -1177,11 +1436,149 @@ export default function NewMatch() {
                                 setHighlightState={setMarksman}
                               />
 
+                              <MatchHighlight
+                                highlightTitle="Telescope Vision"
+                                highlightText="Provide an assist with a pass from your own half of the pitch."
+                                highlightIcon={GoTelescope}
+                                highlightState={telescopeVision}
+                                setHighlightState={setTelescopeVision}
+                              />
                             </Stack>
                           </RadioGroup>
                         </TabPanel>
 
                         <TabPanel>
+                          <RadioGroup
+                            onChange={(e) => setDefenceSavesRadioValue(e)}
+                            value={defenceRadioValue}
+                          >
+                            <Stack direction="column">
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiGiant />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    The Giant
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Stop between 1-3 opponent attacks during the
+                                    game.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="theGiant" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="2"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiHumanPyramid />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    One Man Army
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Stop between 4-7 opponent attacks during the
+                                    game.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="oneManArmy" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<FaMonument />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    The Monument
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Stop between 8-12 opponent attacks during
+                                    the game.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="theMonument" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiMaze />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    The Path Breaker
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Stop between 13-16 opponent attacks during
+                                    the game.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="thePathBreaker" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiMountaintop />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    The Mountain
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Stop 17+ opponent attacks during the game.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="theMountain" />
+                              </Box>
+                            </Stack>
+                          </RadioGroup>
+
                           <MatchHighlight
                             highlightTitle="You Shall Not Pass"
                             highlightText="You played as a defender and your team didn't concede any goal."
@@ -1200,7 +1597,7 @@ export default function NewMatch() {
 
                           <MatchHighlight
                             highlightTitle="Lead From The Back"
-                            highlightText="You played as a defender and took charge of the team defensive structure."
+                            highlightText="You played as a defender and organized your team's defence."
                             highlightIcon={GiCaptainHatProfile}
                             highlightState={leadFromTheBack}
                             setHighlightState={setLeadFromTheBack}
@@ -1224,6 +1621,133 @@ export default function NewMatch() {
                         </TabPanel>
 
                         <TabPanel>
+                          <RadioGroup
+                            onChange={(e) => setSavesRadioValue(e)}
+                            value={savesRadioValue}
+                          >
+                            <Stack direction="column">
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<BsFillSignStopFill />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    You Stop Here!
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Make between 1-3 saves during the match.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="youStopHere" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="2"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiAngryEyes />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    I'm Not Kidding
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Make between 4-7 saves during the match.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="imNotKidding" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<FaGitkraken />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    The Kraken
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Make between 8-12 saves during the match.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="theKraken" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiAngelWings />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    Guardian Angel
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Make between 13-16 saves during the match.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="guardianAngel" />
+                              </Box>
+
+                              <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 8fr 1fr"
+                                gap="1"
+                                alignItems="center"
+                              >
+                                <IconButton
+                                  aria-label="highlight icon"
+                                  icon={<GiGalaxy />}
+                                  fontSize="1.25rem"
+                                  backgroundColor="lightgray"
+                                />
+                                <Box>
+                                  <Text fontSize="small" fontWeight="bold">
+                                    Protector Of The Galaxy
+                                  </Text>
+                                  <Text fontSize="small">
+                                    Make 17+ saves during the match.
+                                  </Text>
+                                </Box>
+
+                                <Radio value="protectorOfTheGalaxy" />
+                              </Box>
+                            </Stack>
+                          </RadioGroup>
+
                           <MatchHighlight
                             highlightTitle="Living In A Fortress"
                             highlightText="You played as a goalkeeper and your team didn't concede any goal."
@@ -1239,10 +1763,10 @@ export default function NewMatch() {
                             highlightState={theOnlyHero}
                             setHighlightState={setTheOnlyHero}
                           />
- 
+
                           <MatchHighlight
                             highlightTitle="Instant Reflexes"
-                            highlightText="You played as a goalkeeper and made multiple saves."
+                            highlightText="Make a one-on-one save against an opposing player."
                             highlightIcon={GiFeline}
                             highlightState={instantReflexes}
                             setHighlightState={setInstantReflexes}
@@ -1258,12 +1782,12 @@ export default function NewMatch() {
                   <h2>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
-                        Additional Performance Indicators
+                        Additional Indicators
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel gap={2}>
+                  <AccordionPanel gap={2} p={0}>
                     <InputGroup>
                       <InputLeftElement pointerEvents="none">
                         <BsFillHeartPulseFill color="gray.300" />
@@ -1297,9 +1821,33 @@ export default function NewMatch() {
                         <option value="mi">mi</option>
                       </Select>
                     </InputGroup>
+
+                    <FormControl>
+                      <InputGroup mt={2}>
+                        <InputLeftElement pointerEvents="none">
+                          <BsFillCameraReelsFill color="gray.300" />
+                        </InputLeftElement>
+                        <Input
+                          type="text"
+                          placeholder="Add match recording link"
+                          onChange={(e) =>
+                            setMatchRecordingLink(e.target.value)
+                          }
+                        />
+                      </InputGroup>
+                    </FormControl>
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>
+              <Text>Match Comments</Text>
+              <Textarea
+                value={textareaValue}
+                variant="filled"
+                onChange={(e) => setTextareaValue(e.target.value)}
+                placeholder="Add your thoguhts about the match."
+                size="sm"
+              />
+
               <Text textAlign="center">Rate your match performance</Text>
               <Box pt={6} pb={2} pl={3} pr={3}>
                 <Slider
@@ -1343,7 +1891,7 @@ export default function NewMatch() {
                 type="submit"
                 onClick={() => handleSubmit}
               >
-                Submit Match
+                Add New Match
               </Button>
             </Stack>
           </form>
@@ -1352,4 +1900,3 @@ export default function NewMatch() {
     </>
   );
 }
- 

@@ -18,10 +18,14 @@ import {
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { HamburgerIcon, AddIcon } from '@chakra-ui/icons'
 import OverallMatchInfo from "../game/OverallMatchInfo";
-import Profile from "../game/Profile";
 import NewMatch from "../game/NewMatch";
+import MatchHistory from './MatchHistory'
 import { Routes, Route } from "react-router-dom";
 import { auth } from "../../config/firebase";
+import { OverallStatsContext } from '../../context/OverallStats'
+
+import Achievements from './Achievements'
+import { useContext } from 'react'
 
 interface Props {
   children: React.ReactNode
@@ -50,12 +54,19 @@ const NavLink = (props: Props) => {
 
 
 export default function Overview() {
+
+  const {overallStatsData, overallChartsData} = useContext(OverallStatsContext)
+
   const { isOpen, onOpen, onClose } = useDisclosure()
     const navigate = useNavigate()
 
 
-    function handleProfileClick(){
-      navigate("profile")
+    function handleAchievementsClick(){
+      navigate("achievements")
+    }
+
+    function handleMatchHistoryClick(){
+      navigate("match-history")
     }
 
     function handleNewMatchClickAction(){
@@ -70,10 +81,9 @@ export default function Overview() {
               <HamburgerIcon />
             </MenuButton>
             <MenuList>
-              <MenuItem>Download</MenuItem>
-              <MenuItem>Create a Copy</MenuItem>
-              <MenuItem>Mark as Draft</MenuItem>
-              <MenuItem>Delete</MenuItem>
+              <MenuItem onClick={handleMatchHistoryClick}>Match History</MenuItem>
+              <MenuItem onClick={handleAchievementsClick}>Achievements</MenuItem>
+              <MenuItem>Help</MenuItem>
               <MenuItem onClick={()=>auth.signOut()}>Log Out</MenuItem>
             </MenuList>
           </Menu>
@@ -100,7 +110,7 @@ export default function Overview() {
             >
               Match
             </Button>
-
+{/* 
             <Menu>
               <MenuButton
                 as={Button}
@@ -123,6 +133,7 @@ export default function Overview() {
                 <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
               </MenuList>
             </Menu>
+             */}
           </Flex>
         </Flex>
 
@@ -142,10 +153,10 @@ export default function Overview() {
 
 
         <Routes>
-        <Route path="" index element={<OverallMatchInfo />} />
-          <Route path="profile" index element={<Profile />} />
-
+          <Route path="" index element={<OverallMatchInfo />} />
           <Route path="new-game" index element={<NewMatch />} />
+          <Route path="match-history" index element={<MatchHistory />} />
+          <Route path="achievements" index element={<Achievements overallStatsData={overallStatsData} overallChartsData={overallChartsData}/>} />
         </Routes>
       </Box>
     </>

@@ -13,13 +13,14 @@ interface ProfileData{
     hideSupporters:boolean;
     hideSupporting:boolean;
     preferredFoot:string;
+    preferredPosition:string;
     shirtNumber:string;
     playingExperience:number;
     instagramProfile:string;
     facebookProfile:string;
     youtubeChannel:string;
     height:string;
-
+    country:object
 }
 
 async function updateProfile(userDataToUpdate: ProfileData, userId:string) {
@@ -43,13 +44,14 @@ async function updateProfile(userDataToUpdate: ProfileData, userId:string) {
         hideSupporters:userDataToUpdate.hideSupporters,
         hideSupporting:userDataToUpdate.hideSupporting,
         preferredFoot:userDataToUpdate.preferredFoot,
+        preferredPosition:userDataToUpdate.preferredPosition,
         shirtNumber:userDataToUpdate.shirtNumber,
         playingExperience:userDataToUpdate.playingExperience,
         instagramProfile:userDataToUpdate.instagramProfile,
         facebookProfile:userDataToUpdate.facebookProfile,
         youtubeChannel:userDataToUpdate.youtubeChannel,
         height:userDataToUpdate.height,
-
+        country:userDataToUpdate.country
         
     })
 

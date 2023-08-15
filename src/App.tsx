@@ -1,31 +1,28 @@
-import { ChakraProvider,extendTheme } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/Auth";
-import Login from './pages/authentication/Login';
-import ForgotPassword from './pages/authentication/ForgotPassword';
-import AuthRoute from './context/AuthRoute';
-import SignUp from './pages/authentication/SignUp';
-import LandingPage from './pages/home/LandingPage';
-import Home from './pages/home/Home';
+import Login from "./pages/authentication/Login";
+import ForgotPassword from "./pages/authentication/ForgotPassword";
+import AuthRoute from "./context/AuthRoute";
+import SignUp from "./pages/authentication/SignUp";
+import LandingPage from "./pages/home/LandingPage";
+import Home from "./pages/home/Home";
 
-import './App.css'
+import "./App.css";
 
 function App() {
-
   const theme = extendTheme({
     fonts: {
       html: `'Outfit', sans-serif`,
       body: `'Outfit', sans-serif`,
-      input: `'Outfit', sans-serif`
+      input: `'Outfit', sans-serif`,
     },
-  })
+  });
 
   return (
     <>
-    <ChakraProvider theme={theme}> 
-
-    <AuthProvider>
-
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
           <Router>
             <Routes>
               {/* If the user is signed in and tries to access signup, reroute him to home */}
@@ -42,13 +39,7 @@ function App() {
 
               {/* If the user is signed in and tries to access login, reroute him to home */}
               <Route element={<AuthRoute type="home" />}>
-                <Route
-                  path="/home/*"
-                  element={
-                    <Home
-                    />
-                  }
-                />
+                <Route path="/home/*" element={<Home />} />
               </Route>
 
               <Route element={<AuthRoute type="/" />}>
@@ -56,14 +47,10 @@ function App() {
               </Route>
             </Routes>
           </Router>
-
-      </AuthProvider>
-
-
- 
-    </ChakraProvider>
+        </AuthProvider>
+      </ChakraProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

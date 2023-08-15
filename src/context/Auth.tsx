@@ -3,7 +3,7 @@ import { auth } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import User from "../utils/interfaces/User";
-
+import { dummyCurrentUserData } from "../utils/dummyContextVariables";
 // Create the context to hold the data and share it among all components
 interface AuthProviderProps {
   children: ReactNode;
@@ -29,10 +29,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (user) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
+        console.log('checking if user is inside Auth')
 
+        console.log(docSnap)
         if (docSnap.exists()) {
           const userData = docSnap.data() as User;
+          console.log(userData)
           setCurrentUserData(userData);
+        } else {
+
+          setCurrentUserData(dummyCurrentUserData)
+          
         }
 
         setLoginFetchTrigger(true);
@@ -59,8 +66,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (docSnap.exists()) {
         const userData = docSnap.data() as User;
+        console.log('docSnap for userData exists:')
+        console.log(userData)
         setCurrentUserData(userData);
-        return userData;
       }
     } catch (error) {
       console.error("Error while fetching user data:", error);

@@ -38,19 +38,21 @@ async function createUserDoc(userID: string, fullname: string | null) {
         profileImage: "",
         privateAccount: false,
         blocked: [],
+        clubName:"Free Agent",
         hideProfile: false,
         hideSupporters: false,
         hideSupporting: false,
         preferredFoot: "",
-        preferredPosition:"",
+        preferredPosition: "",
         shirtNumber: "",
         skillLevel: "",
         playingExperience: 0,
-        instagramProfile:"",
-        facebookProfile:"",
-        youtubeChannel:"",
-        height:"",
-        onboarding:false
+        instagramProfile: "",
+        facebookProfile: "",
+        youtubeChannel: "",
+        height: "",
+        onboarding: false,
+        country: { 'country': "", 'countryCode': "" },
       });
     }
   } catch (error) {

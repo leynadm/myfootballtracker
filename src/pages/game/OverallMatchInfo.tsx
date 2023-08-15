@@ -1,30 +1,14 @@
 import playerTshirt from "../../assets/player_tshirt.png";
+import LoadingSkeleton from "../../components/LoadingSkeletin";
 import {
   Button,
   Text,
-  useColorModeValue,
   Stack,
-  Input,
   Box,
   Container,
   Grid,
-  InputGroup,
-  InputLeftElement,
   IconButton,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  FormControl,
   Divider,
-  FormErrorMessage,
-  useToast,
   Badge,
   WrapItem,
   Stat,
@@ -47,7 +31,11 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
+
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { TbRectangleVerticalFilled } from "react-icons/tb";
@@ -56,48 +44,15 @@ import { BiPlusMedical } from "react-icons/bi";
 import { FaRegHandshake } from "react-icons/fa";
 import { FaHandPeace } from "react-icons/fa";
 import { AiOutlineDislike } from "react-icons/ai";
+import { GiSoccerKick } from "react-icons/gi";
+import { BsStarHalf } from "react-icons/bs";
+import { GiSoccerField } from "react-icons/gi";
 
-import { GoGoal } from "react-icons/go";
-import { BsBraces } from "react-icons/bs";
-import { BiBullseye } from "react-icons/bi";
-import { GiPokerHand } from "react-icons/gi";
-import { PiNumberFourFill } from "react-icons/pi";
-import { GiBowman } from "react-icons/gi";
-import { GiLuciferCannon } from "react-icons/gi";
-import { FaBook } from "react-icons/fa";
-import { GiTrophyCup } from "react-icons/gi";
-import { GiSnakeBite } from "react-icons/gi";
-import { GiCommercialAirplane } from "react-icons/gi";
-import { MdTheaterComedy } from "react-icons/md";
-import { FaFeatherAlt } from "react-icons/fa";
-import { GiHorseshoe } from "react-icons/gi";
-import { MdBalance } from "react-icons/md";
-import { GiAcrobatic } from "react-icons/gi";
-import { GiScorpionTail } from "react-icons/gi";
-import { FaHandsHelping } from "react-icons/fa";
-import { FaBreadSlice } from "react-icons/fa";
-import { ImMagicWand } from "react-icons/im";
-import { ImTruck } from "react-icons/im";
-import { GiMagicPalm } from "react-icons/gi";
-import { FaRegEye } from "react-icons/fa";
-import { GiBrickWall } from "react-icons/gi";
-import { GiCaptainHatProfile } from "react-icons/gi";
-import { GiColombianStatue } from "react-icons/gi";
-import { LiaCrossSolid } from "react-icons/lia";
-import { PiArrowsCounterClockwiseDuotone } from "react-icons/pi";
-import { GiLockedFortress } from "react-icons/gi";
-import { GiGoalKeeper } from "react-icons/gi";
-import { GiFeline } from "react-icons/gi";
-import { BsFillHeartPulseFill } from "react-icons/bs";
-import { GiPathDistance } from "react-icons/gi";
-import { MdOutlineScoreboard } from "react-icons/md";
-import { BiSolidEditAlt } from "react-icons/bi";
-import { BsCalendarDate } from "react-icons/bs";
-import { GiWingfoot } from "react-icons/gi";
-import { LuFlagTriangleLeft } from "react-icons/lu";
-import { PiHighHeel } from "react-icons/pi";
-import { BiCross } from "react-icons/bi";
+import { OverallStatsContext } from "../../context/OverallStats";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/Auth";
 
+import MatchHighlightsTable from "../../components/MatchHighlightsTable";
 export default function OverallMatchInfo() {
   const boxStyle = {
     /*  */
@@ -112,918 +67,625 @@ export default function OverallMatchInfo() {
     color: "white",
   };
 
+  const { currentUserData } = useContext(AuthContext);
+  
+  const { overallStatsData, dataLoadedTrigger } =
+    useContext(OverallStatsContext);
+
+  const calculateBackgroundColor = (value: number) => {
+
+    const colorRange = [
+      "#008000", // Dark Blue
+      "#BFFF00",
+      "#0000C0",
+      "#0000E0",
+      "#0000FF", // Blue
+      "#00A000", // Light Green
+      "#00C000",
+      "#00E000",
+      "#00FF00",
+      "#40FF00",
+      "#80FF00",
+      "#BFFF00",
+      "#FFFF00", // Gold
+      "#FFD700",
+      "#FFAA00",
+    ];
+
+    const index = Math.min(
+      Math.max(Math.floor(((value - 1) / 100) * (colorRange.length - 1)), 0),
+      14
+    );
+
+    return colorRange[index];
+  };
+
+  const calculateTextColor = (value: number) => {
+    const colorRange = [
+      "#000000", // Dark Blue
+      "#FFFFFF",
+      "#FFFFFF",
+      "#FFFFFF",
+      "#0000FF", // Blue
+      "#000000", // Light Green
+      "#000000",
+      "#000000",
+      "#000000",
+      "#000000",
+      "#000000",
+      "#000000",
+      "#000000", // Gold
+      "#000000",
+      "#000000",
+    ];
+
+    const index = Math.floor(((value - 1) / 100) * (colorRange.length - 1));
+    return colorRange[index];
+  };
+
+  useEffect(() => {
+
+    console.log(overallStatsData)
+  }, [dataLoadedTrigger]);
+
+  useEffect(()=>{
+    
+  },[])
+
+
   return (
     <>
-      <Container pb="50px">
-        <Stack spacing={1}>
-          <WrapItem
-            display="flex"
-            justifyContent="space-evenly"
-            alignItems="center"
-            gap={2}
-          >
-            <WrapItem justifyContent="center" alignItems="center" gap={1}>
-              <Text fontSize="1.5rem" fontWeight="bold">
-                7
+      {dataLoadedTrigger ? (
+        <Container pb="50px">
+          <Stack spacing={1}>
+            {currentUserData.clubName !== "" ? (
+              <Text>{currentUserData.clubName}</Text>
+            ) : (
+              <Text>Free Agent</Text>
+            )}
+
+            <WrapItem display="flex" alignItems="center" gap={2}>
+              <Box display="flex" alignItems="center" gap={2}>
+                {currentUserData.country.country !== "" && (
+                  <img
+                    src={`https://flagsapi.com/${currentUserData.country.countryCode}/flat/32.png`}
+                    alt="Country Flag"
+                  />
+                )}
+
+                {currentUserData.shirtNumber !== "" ? (
+                  <Text fontSize="1.25rem" fontWeight="bold">
+                    {currentUserData.shirtNumber}
+                  </Text>
+                ) : (
+                  <Text fontSize="1.25rem">0</Text>
+                )}
+
+                <img src={playerTshirt} alt="tshirt" width="20rem" />
+              </Box>
+              <Text fontSize="1.5rem" fontWeight="bold" flexGrow={1}>
+                {currentUserData.shirtName}
               </Text>
-              <img src={playerTshirt} alt="tshirt" width="20rem" />
+
+              {currentUserData.preferredPosition !== "" ? (
+              <Badge
+                borderRadius="5px"
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                color="white"
+                m={1}
+              >
+                {currentUserData.preferredPosition}
+              </Badge>
+            ) : (
+              <Badge
+                borderRadius="5px"
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                color="white"
+                m={1}
+              >
+                Bench
+              </Badge>
+            )}
             </WrapItem>
-            <Text fontSize="1.5rem" fontWeight="bold">
-              Daniel Matei
-            </Text>
-            <Badge fontSize="1.5rem">LWF</Badge>
-          </WrapItem>
-          <Divider />
-          <Grid
-            templateAreas={`"LWF CF RWF"
+
+            <Divider />
+            <Grid
+              templateAreas={`"LWF CF RWF"
                           "LWF SS RWF"
                           "LMF AMF RMF"
                           "LMF CMF RMF"
                           "LMF DMF RMF"
                           "LB CB RB"
                           "LB GK RB"`}
-            gap="1"
-            gridAutoColumns="1fr 2fr 1fr"
-            color="blackAlpha.700"
-            fontWeight="bold"
-            marginTop="0.5rem"
-            height="50vh"
-          >
-            <Box style={boxStyle} gridArea="CF">
-              CF ({2})
-            </Box>
+              gap="1"
+              gridAutoColumns="1fr 2fr 1fr"
+              color="blackAlpha.700"
+              fontWeight="bold"
+              marginTop="0.5rem"
+              height="50vh"
+            >
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    parseInt(overallStatsData.CF_p)
+                  ),
+                  color: calculateTextColor(overallStatsData.CF_p),
+                }}
+                gridArea="CF"
+              >
+                CF ({overallStatsData.CF_p})
+              </Box>
 
-            <Box style={boxStyle} gridArea="SS" backgroundColor="gold">
-              SS
-            </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.SS_p
+                  ),
+                  color: calculateTextColor(overallStatsData.SS_p),
+                }}
+                gridArea="SS"
+              >
+                SS ({overallStatsData.SS_p})
+              </Box>
 
-            <Box style={boxStyle} gridArea="LWF">
-              LWF
-            </Box>
-            <Box style={boxStyle} gridArea="RWF">
-              RWF
-            </Box>
-            <Box style={boxStyle} gridArea="LMF">
-              LMF
-            </Box>
-            <Box style={boxStyle} gridArea="AMF">
-              AMF
-            </Box>
-            <Box style={boxStyle} gridArea="RMF">
-              RMF
-            </Box>
-            <Box style={boxStyle} gridArea="CMF">
-              CMF
-            </Box>
-            <Box style={boxStyle} gridArea="DMF">
-              DMF
-            </Box>
-            <Box style={boxStyle} gridArea="LB">
-              LB
-            </Box>
-            <Box style={boxStyle} gridArea="CB">
-              CB
-            </Box>
-            <Box style={boxStyle} gridArea="RB">
-              RB
-            </Box>
-            <Box style={boxStyle} gridArea="GK">
-              GK
-            </Box>
-          </Grid>
-          <Divider />
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.LWF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.LWF_p),
+                }}
+                gridArea="LWF"
+              >
+                LWF ({overallStatsData.LWF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.RWF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.RWF_p),
+                }}
+                gridArea="RWF"
+              >
+                RWF ({overallStatsData.RWF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.LMF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.LMF_p),
+                }}
+                gridArea="LMF"
+              >
+                LMF ({overallStatsData.LMF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.AMF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.AMF_p),
+                }}
+                gridArea="AMF"
+              >
+                AMF ({overallStatsData.AMF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.RMF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.RMF_p),
+                }}
+                gridArea="RMF"
+              >
+                RMF ({overallStatsData.RMF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.CMF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.CMF_p),
+                }}
+                gridArea="CMF"
+              >
+                CMF ({overallStatsData.CMF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.DMF_p
+                  ),
+                  color: calculateTextColor(overallStatsData.DMF_p),
+                }}
+                gridArea="DMF"
+              >
+                DMF ({overallStatsData.DMF_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.LB_p
+                  ),
+                  color: calculateTextColor(overallStatsData.LB_p),
+                }}
+                gridArea="LB"
+              >
+                LB ({overallStatsData.LB_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.CB_p
+                  ),
+                  color: calculateTextColor(overallStatsData.CB_p),
+                }}
+                gridArea="CB"
+              >
+                CB ({overallStatsData.CB_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.RB_p
+                  ),
+                  color: calculateTextColor(overallStatsData.RB_p),
+                }}
+                gridArea="RB"
+              >
+                RB ({overallStatsData.RB_p})
+              </Box>
+              <Box
+                style={{
+                  ...boxStyle,
+                  backgroundColor: calculateBackgroundColor(
+                    overallStatsData.GK_p
+                  ),
+                  color: calculateTextColor(overallStatsData.GK_p),
+                }}
+                gridArea="GK"
+              >
+                GK ({overallStatsData.GK_p})
+              </Box>
+            </Grid>
+            <Divider />
 
-          <Box display="flex" gap={1}>
-            <Stat textAlign="center" borderRadius="5px" bg="blue.100">
-              <StatLabel>Victories</StatLabel>
+            <Box display="flex" gap={1}>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="gray.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Matches Played</StatLabel>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <FaHandPeace fontSize="1.5rem" />
-                <StatNumber textAlign="center">9</StatNumber>
-              </WrapItem>
-              <StatHelpText fontSize="small">Win %</StatHelpText>
-            </Stat>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <GiSoccerField fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.matchesPlayed}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">
+                  Avg. Length{" "}
+                  {`${
+                    isNaN(
+                      overallStatsData.matchDuration /
+                        overallStatsData.matchesPlayed
+                    )
+                      ? 0
+                      : (
+                          overallStatsData.matchDuration /
+                          overallStatsData.matchesPlayed
+                        ).toFixed(0)
+                  } min`}
+                </StatHelpText>
+              </Stat>
 
-            <Stat textAlign="center" borderRadius="5px" bg="blue.100">
-              <StatLabel>Draws</StatLabel>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="gray.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Avg. Match Perf.</StatLabel>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <FaRegHandshake fontSize="1.5rem" />
-                <StatNumber textAlign="center">3</StatNumber>
-              </WrapItem>
-              <StatHelpText fontSize="small">Draw %</StatHelpText>
-            </Stat>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <BsStarHalf fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {`${
+                      isNaN(
+                        overallStatsData.matchPerformance /
+                          overallStatsData.matchesPlayed
+                      )
+                        ? "0.0"
+                        : (
+                            overallStatsData.matchPerformance /
+                            overallStatsData.matchesPlayed
+                          ).toFixed(1)
+                    }`}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">Highest Score 9.0</StatHelpText>
+              </Stat>
+            </Box>
+            <Divider mt={2} />
 
-            <Stat textAlign="center" borderRadius="5px" bg="blue.100">
-              <StatLabel>Defeats</StatLabel>
+            <Box display="flex" gap={1}>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="blue.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Wins</StatLabel>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <AiOutlineDislike fontSize="1.5rem" />
-                <StatNumber textAlign="center">1</StatNumber>
-              </WrapItem>
-              <StatHelpText fontSize="small">Loss %</StatHelpText>
-            </Stat>
-          </Box>
-          <Divider mt={2} />
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap={1}
-          >
-            <Stat textAlign="center" borderRadius="5px" bg="gray.100">
-              <StatLabel>Goals Scored</StatLabel>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <FaHandPeace fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.wins}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">{`${
+                  isNaN(overallStatsData.wins / overallStatsData.matchesPlayed)
+                    ? "0.00%"
+                    : (
+                        (overallStatsData.wins /
+                          overallStatsData.matchesPlayed) *
+                        100
+                      ).toFixed(2)
+                }%`}</StatHelpText>
+              </Stat>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <PiSoccerBallFill fontSize="1.5rem" />
-                <StatNumber>14</StatNumber>
-              </WrapItem>
-              <StatHelpText fontSize="small">GPM</StatHelpText>
-            </Stat>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="blue.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Draws</StatLabel>
 
-            <Stat textAlign="center" borderRadius="5px" bg="gray.100">
-              <StatLabel>Assists Provided</StatLabel>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <FaRegHandshake fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.draws}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">{`${
+                  isNaN(overallStatsData.draws / overallStatsData.matchesPlayed)
+                    ? "0.00%"
+                    : (
+                        (overallStatsData.draws /
+                          overallStatsData.matchesPlayed) *
+                        100
+                      ).toFixed(2)
+                }%`}</StatHelpText>
+              </Stat>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <GiBarefoot fontSize="1.5rem" />
-                <StatNumber textAlign="center">9</StatNumber>
-              </WrapItem>
-              <StatHelpText fontSize="small">APM </StatHelpText>
-            </Stat>
-          </Box>
-          <Divider mt={2} />
-          <Box display="flex" gap={1}>
-            <Stat textAlign="center" borderRadius="5px" bg="green.100">
-              <StatLabel>Yellow Received</StatLabel>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="blue.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Defeats</StatLabel>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <TbRectangleVerticalFilled color="yellow" fontSize="1.5rem" />
-                <StatNumber>2</StatNumber>
-              </WrapItem>
-            </Stat>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <AiOutlineDislike fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.defeats}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">{`${
+                  isNaN(
+                    overallStatsData.defeats / overallStatsData.matchesPlayed
+                  )
+                    ? "0.00%"
+                    : (
+                        (overallStatsData.defeats /
+                          overallStatsData.matchesPlayed) *
+                        100
+                      ).toFixed(2)
+                }%`}</StatHelpText>
+              </Stat>
+            </Box>
+            <Divider mt={2} />
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="gray.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Goals Scored</StatLabel>
 
-            <Stat textAlign="center" borderRadius="5px" bg="green.100">
-              <StatLabel>
-                Red <br />
-                Received
-              </StatLabel>
-              <WrapItem
-                gap={1}
-                alignItems="center"
-                justifyContent="center"
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <PiSoccerBallFill fontSize="1.5rem" />
+                  <StatNumber>{overallStatsData.goalsScored}</StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">
+                  GPM{" "}
+                  {`${
+                    isNaN(
+                      overallStatsData.goalsScored /
+                        overallStatsData.matchesPlayed
+                    )
+                      ? "0.0"
+                      : (
+                          overallStatsData.goalsScored /
+                          overallStatsData.matchesPlayed
+                        ).toFixed(1)
+                  }`}
+                </StatHelpText>
+              </Stat>
+
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="gray.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Assists Provided</StatLabel>
+
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <GiBarefoot fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.assistsProvided}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">
+                  APM{" "}
+                  {`${
+                    isNaN(
+                      overallStatsData.assistsProvided /
+                        overallStatsData.matchesPlayed
+                    )
+                      ? "0.0"
+                      : (
+                          overallStatsData.assistsProvided /
+                          overallStatsData.matchesPlayed
+                        ).toFixed(1)
+                  }`}
+                </StatHelpText>
+              </Stat>
+
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="gray.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Goal Contrib.</StatLabel>
+
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <GiSoccerKick fontSize="1.5rem" />
+                  <StatNumber textAlign="center">
+                    {overallStatsData.assistsProvided +
+                      overallStatsData.goalsScored}
+                  </StatNumber>
+                </WrapItem>
+                <StatHelpText fontSize="small">
+                  Min/GC{" "}
+                  {`${
+                    isNaN(
+                      overallStatsData.matchDuration /
+                        (overallStatsData.assistsProvided +
+                          overallStatsData.goalsScored)
+                    )
+                      ? "0.0"
+                      : (
+                          overallStatsData.matchDuration /
+                          (overallStatsData.assistsProvided +
+                            overallStatsData.goalsScored)
+                        ).toFixed(1)
+                  }`}{" "}
+                  min
+                </StatHelpText>
+              </Stat>
+            </Box>
+            <Divider mt={2} />
+            <Box display="flex" gap={1}>
+              <Stat
+                textAlign="center"
                 borderRadius="5px"
                 bg="green.100"
+                alignSelf="stretch"
               >
-                <TbRectangleVerticalFilled color="red" fontSize="1.5rem" />
-                <StatNumber>0</StatNumber>
-              </WrapItem>
-            </Stat>
-            <Stat textAlign="center" borderRadius="5px" bg="green.100">
-              <StatLabel>Fouls Committed</StatLabel>
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <GiWhistle fontSize="1.5rem" />
+                <StatLabel>
+                  Yellow <br />
+                  Received
+                </StatLabel>
 
-                <StatNumber>7</StatNumber>
-              </WrapItem>
-            </Stat>
-            <Stat textAlign="center" borderRadius="5px" bg="green.100">
-              <StatLabel>Fouls Obtained</StatLabel>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <TbRectangleVerticalFilled color="yellow" fontSize="1.5rem" />
+                  <StatNumber>
+                    {overallStatsData.yellowCardsReceived}
+                  </StatNumber>
+                </WrapItem>
+              </Stat>
 
-              <WrapItem gap={1} alignItems="center" justifyContent="center">
-                <BiPlusMedical fontSize="1.5rem" />
-                <StatNumber>2</StatNumber>
-              </WrapItem>
-            </Stat>
-          </Box>
-          <Divider mt={2} />
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="green.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>
+                  Red <br />
+                  Received
+                </StatLabel>
+                <WrapItem
+                  gap={1}
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRadius="5px"
+                  bg="green.100"
+                >
+                  <TbRectangleVerticalFilled color="red" fontSize="1.5rem" />
+                  <StatNumber>{overallStatsData.redCardsReceived}</StatNumber>
+                </WrapItem>
+              </Stat>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="green.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Fouls Committed</StatLabel>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <GiWhistle fontSize="1.5rem" />
 
-          <Box>
-            <Accordion allowMultiple>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      Attack Highlights
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel p={0} m={0}>
-                  <TableContainer>
-                    <Table variant="striped" colorScheme="teal">
-                      <Thead>
-                        <Tr>
-                          <Th>Icon</Th>
-                          <Th>Highlight Name</Th>
-                          <Th>Times</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<BiBullseye />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Get on the scoresheet
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
+                  <StatNumber>{overallStatsData.foulsCommited}</StatNumber>
+                </WrapItem>
+              </Stat>
+              <Stat
+                textAlign="center"
+                borderRadius="5px"
+                bg="green.100"
+                alignSelf="stretch"
+              >
+                <StatLabel>Fouls Obtained</StatLabel>
 
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<BsBraces />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Bag a brace
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
+                <WrapItem gap={1} alignItems="center" justifyContent="center">
+                  <BiPlusMedical fontSize="1.5rem" />
+                  <StatNumber>{overallStatsData.foulsObtained}</StatNumber>
+                </WrapItem>
+              </Stat>
+            </Box>
+            <Divider mt={2} />
 
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GoGoal />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Score a Hat-Trick
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<PiNumberFourFill />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Fantastic Four
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiPokerHand />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Poker Master
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<FaBook />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            History Maker
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<MdTheaterComedy />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Let the Show Begin
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiBowman />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Hawkeye
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiLuciferCannon />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Cannonball
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiWingfoot />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            No Excuses
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiSnakeBite />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Cold-blooded Beast
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiCommercialAirplane />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Aerial Threat
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<FaFeatherAlt />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Silky Smooth
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiHorseshoe />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Lucky Charm
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<PiHighHeel />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Heel Of A Goal
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiAcrobatic />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Innate Talent
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiPathDistance />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            La Pulga
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiScorpionTail />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            One In A Million
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<MdBalance />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Last Minute Hero
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiTrophyCup />}
-                              fontSize="1.5rem"
-                              bg="red.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Final Word
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      Midfield Highlights
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel p={0} m={0}>
-                  <TableContainer>
-                    <Table variant="striped" colorScheme="teal">
-                      <Thead>
-                        <Tr>
-                          <Th>Icon</Th>
-                          <Th>Highlight Name</Th>
-                          <Th>Times</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<FaHandsHelping />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td
-                            pl={0}
-                            pr={0}
-                            textAlign="start"
-                            fontSize="smaller"
-                          >
-                            A Pleasure Doing Business
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<FaBreadSlice />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Food On The Table
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<ImMagicWand />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Assist Maestro
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<ImTruck />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Industrial Provider
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiMagicPalm />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Puppet Master
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<FaRegEye />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Omniscient
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<LuFlagTriangleLeft />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Cornerstone Presence
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<BiCross />}
-                              fontSize="1.5rem"
-                              bg="teal.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Marksman
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      Defence Highlights
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel p={0} m={0}>
-                  <TableContainer>
-                    <Table variant="striped" colorScheme="blue">
-                      <Thead>
-                        <Tr>
-                          <Th>Icon</Th>
-                          <Th>Highlight Name</Th>
-                          <Th>Times</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiBrickWall />}
-                              fontSize="1.5rem"
-                              bg="blue.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            You Shall Not Pass
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiColombianStatue />}
-                              fontSize="1.5rem"
-                              bg="blue.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Tackling Titan
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiCaptainHatProfile />}
-                              fontSize="1.5rem"
-                              bg="blue.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Lead From The Back
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<LiaCrossSolid />}
-                              fontSize="1.5rem"
-                              bg="blue.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            The Saviour
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<PiArrowsCounterClockwiseDuotone />}
-                              fontSize="1.5rem"
-                              bg="blue.200"
-                            />
-                          </Td>
-                          <Td
-                            pl={0}
-                            pr={0}
-                            textAlign="start"
-                            fontSize="smaller"
-                          >
-                            Counter-Attacking Catalyst
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      Goalkeeping Highlights
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel p={0} m={0}>
-                  <TableContainer>
-                    <Table variant="striped" colorScheme="orange">
-                      <Thead>
-                        <Tr>
-                          <Th>Icon</Th>
-                          <Th>Highlight Name</Th>
-                          <Th>Times</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiLockedFortress />}
-                              fontSize="1.5rem"
-                              bg="orange.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            Living In A Fortress
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiGoalKeeper />}
-                              fontSize="1.5rem"
-                              bg="orange.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                            The Only Hero
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-
-                        <Tr textAlign="center">
-                          <Td p={0} m={0} textAlign="center">
-                            <IconButton
-                              aria-label="highlight icon"
-                              icon={<GiFeline />}
-                              fontSize="1.5rem"
-                              bg="orange.200"
-                            />
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="start">
-                          Instant Reflexes
-                          </Td>
-                          <Td pl={0} pr={0} textAlign="center">
-                            x 4
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-          </Box>
-        </Stack>
-      </Container>
+            <Box>
+              <MatchHighlightsTable overallStatsData={overallStatsData} />
+            </Box>
+          </Stack>
+        </Container>
+      ) : (
+        // Display the Skeleton while data is loading
+        <LoadingSkeleton />
+      )}
     </>
   );
 }

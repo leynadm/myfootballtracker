@@ -67,7 +67,7 @@ async function createOverallStatsDoc(userId:string) {
       finalWord: 0,
       heartRate: 0,
       distance: 0,
-      distanceUnitArr: {},
+      distanceUnitArr: [],
       matchPerformance: 0,
       aPleasureDoingBusiness: 0,
       foodOnTheTable: 0,
@@ -83,6 +83,10 @@ async function createOverallStatsDoc(userId:string) {
       livingInAFortress: 0,
       theOnlyHero: 0,
       instantReflexes: 0,
+      matchDateArrOnly:[],
+      wins:0,
+      defeats:0,
+      draws:0,
       GK_p:0,
       CB_p:0,
       RB_p:0,
@@ -95,7 +99,20 @@ async function createOverallStatsDoc(userId:string) {
       LWF_p:0,
       RWF_p:0,
       SS_p:0,
-      CF_p:0
+      CF_p:0,
+      slingshot: 0,
+      aroundThePlanet:0,
+      youStopHere:0,
+      imNotKidding:0,
+      theKraken:0,
+      guardianAngel:0,
+      protectorOfTheGalaxy:0,
+      theGiant:0,
+      oneManArmy:0,
+      theMonument:0,
+      thePathBreaker:0,
+      theMountain:0,
+      telescopeVision:0
     });
   } catch (error) {
     // Handle the error here

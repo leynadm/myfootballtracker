@@ -2,6 +2,7 @@ import { FcGoogle } from "react-icons/fc";
 import { MdOutlineLogin } from "react-icons/md";
 import createUserDoc from "../../utils/firebaseFunctions/createUserDoc";
 import createOverallStatsDoc from "../../utils/firebaseFunctions/createOverallStatsDoc";
+import createChartStatsDoc from "../../utils/firebaseFunctions/createChartStatsDoc";
 import {
   Flex,
   Box,
@@ -16,14 +17,14 @@ import {
   useColorModeValue,
   Center,
 } from "@chakra-ui/react";
-
+import { Link } from "react-router-dom";
 import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  getAdditionalUserInfo
+  getAdditionalUserInfo, signInWithEmailAndPassword
 } from "firebase/auth";
-
+import { ChangeEvent, useState } from "react";
 import {auth} from "../../config/firebase";
 
 function Login() {
@@ -32,6 +33,8 @@ function Login() {
   const provider = new GoogleAuthProvider();  
   authentication.useDeviceLanguage();
 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   function SignInWithGoogle() {
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -44,6 +47,7 @@ function Login() {
         if (newUserCheck?.isNewUser) {
           createUserDoc(user.uid, user.displayName);
           createOverallStatsDoc(user.uid)
+          createChartStatsDoc(user.uid)
         }
         
         // IdP data available using getAdditionalUserInfo(result)
@@ -60,6 +64,32 @@ function Login() {
       });
   }
  
+
+  function handleLogIn(e: ChangeEvent<HTMLFormElement>) {
+    console.log('works?')
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        if (
+          errorCode === "auth/wrong-password" ||
+          errorCode === "auth/user-not-found" ||
+          errorCode === "auth/invalid-email"
+        ) {
+            console.log('something')
+        } else {
+          console.log('another toast')
+        }
+      });
+  }
+
   return (
     <Flex
       minH={"100vh"}
@@ -71,6 +101,7 @@ function Login() {
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign in to your account</Heading>
         </Stack>
+        <form onSubmit={()=>handleLogIn}>
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "gray.700")}
@@ -78,22 +109,31 @@ function Login() {
           p={8}
         >
           <Stack spacing={4}>
+            
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input type="email" onChange={(e)=>setEmail(e.target.value)} />
             </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input type="password" onChange={(e)=>setPassword(e.target.value)} />
             </FormControl>
+            
+            
             <Stack spacing={10}>
+            
               <Stack
-                direction={{ base: "column", sm: "row" }}
+                direction={{ base: "row" }}
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Remember me</Checkbox>
+                
+                <Link to="forgot-password">
                 <Text color={"blue.400"}>Forgot password?</Text>
+                </Link>
+                <Link to="/signup">
+                <Text color={"blue.400"}>Do you need account?</Text>
+                </Link>
               </Stack>
               <Button
                 leftIcon={<MdOutlineLogin />}
@@ -102,13 +142,13 @@ function Login() {
                 _hover={{
                   bg: "blue.500",
                 }}
-                
-                onClick={SignInWithGoogle}
-                
+                onClick={handleLogIn}
                 >
                 Sign in
               </Button>
-              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}>
+              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}
+                onClick={SignInWithGoogle}
+              >
                 <Center>
                   <Text>Sign in with Google</Text>
                 </Center>
@@ -116,6 +156,7 @@ function Login() {
             </Stack>
           </Stack>
         </Box>
+        </form>
       </Stack>
     </Flex>
   );

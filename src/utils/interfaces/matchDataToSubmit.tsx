@@ -1,4 +1,5 @@
 interface MatchDataToSubmit {
+    winValue:string;
     positionsPlayed: {
       GK?:boolean;
       CB?:boolean;
@@ -17,6 +18,7 @@ interface MatchDataToSubmit {
     matchDate: Date;
     matchDuration: number;
     cityName: string;
+    opponentTeamName:string;
     stadiumName: string;
     matchType: string;
     homeTeamGoals: number;
@@ -35,10 +37,13 @@ interface MatchDataToSubmit {
     historyMaker: boolean;
     letTheShowBegin: boolean;
     hawkeye: boolean;
+    slingshot: boolean;
+    aroundThePlanet:boolean;
     cannonball: boolean;
     noExcuses: boolean;
     cornerstonePresence: boolean;
     marksman: boolean;
+    telescopeVision:boolean;
     coldBloodedBeast: boolean;
     aerialThreat: boolean;
     silkySmooth: boolean;
@@ -80,6 +85,18 @@ interface MatchDataToSubmit {
     RWF_p?:boolean;
     SS_p?:boolean;
     CF_p?:boolean;
+    matchComments:string;
+    youStopHere:boolean;
+    imNotKidding:boolean;
+    theKraken:boolean;
+    guardianAngel:boolean;
+    protectorOfTheGalaxy:boolean;
+    theGiant:boolean;
+    oneManArmy:boolean;
+    theMonument:boolean;
+    thePathBreaker:boolean;
+    theMountain:boolean;
+    matchRecordingLink:string
   }
 
   export default MatchDataToSubmit

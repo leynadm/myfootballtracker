@@ -1,24 +1,30 @@
 export interface User {
-    id?:string
-    fullname: [string,string,string];
-    name: string;
-    sex: string;
-    surname: string;
-    profileImage:string
-    verified:boolean
-    privateAccount:boolean
-    blocked:[]
-    hideProfile:boolean,
-    hidePowerLevel:boolean,
-    hideFollowers:boolean,
-    hideFollowing:boolean,
-    powerLevel:number,
-    strengthLevel:number,
-    experienceLevel:number,
-    firstPowerExercise:string,
-    secondPowerExercise:string,
-    thirdPowerExercise:string,
-    weight:number
-  }
+  firstName: string;
+  lastName: string;
+  sex: string;
+  verified: boolean;
+  fullname: string[
+  ];
+  profileImage: string;
+  privateAccount: boolean;
+  clubName:string;
+  blocked: string[];
+  hideProfile: boolean;
+  hideSupporters: boolean;
+  hideSupporting: boolean;
+  preferredFoot: string;
+  preferredPosition:string;
+  shirtNumber: string;
+  skillLevel: string;
+  playingExperience: number;
+  instagramProfile:string;
+  facebookProfile:string;
+  youtubeChannel:string;
+  height:string;
+  onboarding:boolean;
+  country:object;
+  id?:string
+  stats?:object
+}
 
   export default User

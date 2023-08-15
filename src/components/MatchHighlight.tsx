@@ -34,6 +34,7 @@ function MatchHighlight({
         aria-label="highlight icon"
         icon={createElement(highlightIcon)}
         fontSize="1.25rem"
+        bg="lightgray"
       />
       <Box>
         <Text fontSize="small" fontWeight="bold">
