@@ -1,5 +1,5 @@
 import playerTshirt from "../../assets/player_tshirt.png";
-import LoadingSkeleton from "../../components/LoadingSkeletin";
+import LoadingSkeleton from "../../components/LoadingSkeleton";
 import {
   Button,
   Text,
@@ -59,6 +59,7 @@ export default function OverallMatchInfo() {
     weight: "100%",
     height: "100%",
     display: "flex",
+    flexDirection:"column",
     justifyContent: "center",
     alignItems: "center",
     transition: "background-color 0.2s", // Add a smooth transition effect
@@ -72,51 +73,64 @@ export default function OverallMatchInfo() {
   const { overallStatsData, dataLoadedTrigger } =
     useContext(OverallStatsContext);
 
+  const [totalPositions, setTotalPositions] = useState(0)
+
+
+   
+function calculatePositionsPlayed(){
+  
+  console.log(overallStatsData.positionsPlayed)
+  let positionsPlayed = 0
+  for (const value of Object.values(overallStatsData.positionsPlayed)) {
+    positionsPlayed += value;
+  }
+
+  setTotalPositions(positionsPlayed)
+} 
+
   const calculateBackgroundColor = (value: number) => {
 
+    console.log('inside calcualteBackgroundColor:')
+    console.log(value)
+    
     const colorRange = [
-      "#008000", // Dark Blue
-      "#BFFF00",
-      "#0000C0",
-      "#0000E0",
-      "#0000FF", // Blue
-      "#00A000", // Light Green
-      "#00C000",
-      "#00E000",
-      "#00FF00",
-      "#40FF00",
-      "#80FF00",
-      "#BFFF00",
-      "#FFFF00", // Gold
-      "#FFD700",
-      "#FFAA00",
+      "#228B22", // Forestgreen
+      "#00A36C", // Olive
+      "#8FBC8F", // Mediumseagreen
+      "#9ACD32", // Yellowgreen
+      "#32CD32", // Lime Green
+      "#00FF00", // Lime
+      "#ADFF2F", // Greenyellow
     ];
 
-    const index = Math.min(
-      Math.max(Math.floor(((value - 1) / 100) * (colorRange.length - 1)), 0),
-      14
-    );
+    let backgroundColorToUse = "";
+    if (value === 0) {
+      backgroundColorToUse = "green";
+    } else if (value >= 1 && value <= 20) {
+      backgroundColorToUse = colorRange[0];
+    } else if (value >= 21 && value <= 40) {
+      backgroundColorToUse = colorRange[1];
+    } else if (value >= 41 && value <= 50) {
+      backgroundColorToUse = colorRange[2];
+    } else if (value >= 51 && value <= 60) {
+      backgroundColorToUse = colorRange[3];
+    } else if (value >= 61 && value <= 70) {
+      backgroundColorToUse = colorRange[4];
+    } else if (value >= 71 && value <= 80) {
+      backgroundColorToUse = colorRange[5];
+    } else if (value >= 81 && value <= 100) {
+      backgroundColorToUse = colorRange[6];
+    } else if (value >= 101) {
+      backgroundColorToUse = "#FFD700";
+    }
+    
 
-    return colorRange[index];
+    return backgroundColorToUse;
   };
 
   const calculateTextColor = (value: number) => {
     const colorRange = [
       "#000000", // Dark Blue
-      "#FFFFFF",
-      "#FFFFFF",
-      "#FFFFFF",
-      "#0000FF", // Blue
-      "#000000", // Light Green
-      "#000000",
-      "#000000",
-      "#000000",
-      "#000000",
-      "#000000",
-      "#000000",
-      "#000000", // Gold
-      "#000000",
-      "#000000",
     ];
 
     const index = Math.floor(((value - 1) / 100) * (colorRange.length - 1));
@@ -125,12 +139,7 @@ export default function OverallMatchInfo() {
 
   useEffect(() => {
 
-    console.log(overallStatsData)
   }, [dataLoadedTrigger]);
-
-  useEffect(()=>{
-    
-  },[])
 
 
   return (
@@ -168,28 +177,28 @@ export default function OverallMatchInfo() {
               </Text>
 
               {currentUserData.preferredPosition !== "" ? (
-              <Badge
-                borderRadius="5px"
-                fontSize="1rem"
-                fontWeight="bold"
-                bg="black"
-                color="white"
-                m={1}
-              >
-                {currentUserData.preferredPosition}
-              </Badge>
-            ) : (
-              <Badge
-                borderRadius="5px"
-                fontSize="1rem"
-                fontWeight="bold"
-                bg="black"
-                color="white"
-                m={1}
-              >
-                Bench
-              </Badge>
-            )}
+                <Badge
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  color="white"
+                  m={1}
+                >
+                  {currentUserData.preferredPosition}
+                </Badge>
+              ) : (
+                <Badge
+                  borderRadius="5px"
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  color="white"
+                  m={1}
+                >
+                  Bench
+                </Badge>
+              )}
             </WrapItem>
 
             <Divider />
@@ -218,7 +227,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="CF"
               >
-                CF ({overallStatsData.CF_p})
+                <Text textAlign="center">CF</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.CF_p})</Text>
+                <Text>
+
+                {`${
+                    isNaN(((
+                      overallStatsData.CF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.CF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
 
               <Box
@@ -231,7 +258,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="SS"
               >
-                SS ({overallStatsData.SS_p})
+                <Text textAlign="center">SS</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.SS_p})</Text>
+
+                <Text>
+                {`${
+                    isNaN(((
+                      overallStatsData.SS_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.SS_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
 
               <Box
@@ -244,7 +289,24 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LWF"
               >
-                LWF ({overallStatsData.LWF_p})
+                
+                <Text textAlign="center">LWF</Text>
+                <Text>({overallStatsData.LWF_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.LWF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.LWF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -256,7 +318,23 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RWF"
               >
-                RWF ({overallStatsData.RWF_p})
+                <Text textAlign="center">RWF</Text>
+                <Text>({overallStatsData.RWF_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.RWF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.RWF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -268,7 +346,23 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LMF"
               >
-                LMF ({overallStatsData.LMF_p})
+                <Text textAlign="center">LMF</Text>
+                <Text>({overallStatsData.LMF_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.LMF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.LMF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -280,7 +374,26 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="AMF"
               >
-                AMF ({overallStatsData.AMF_p})
+                
+                <Text textAlign="center">AMF</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.AMF_p})</Text>
+
+                <Text>
+                {`${
+                    isNaN(((
+                      overallStatsData.AMF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.AMF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
               <Box
                 style={{
@@ -292,7 +405,23 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RMF"
               >
-                RMF ({overallStatsData.RMF_p})
+                <Text textAlign="center">RMF</Text>
+                <Text>({overallStatsData.RMF_p})</Text>
+
+                <Text>
+                {`${
+                    isNaN(((
+                      overallStatsData.RMF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.RMF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -304,7 +433,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="CMF"
               >
-                CMF ({overallStatsData.CMF_p})
+                <Text textAlign="center">CMF</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.CMF_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.CMF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.CMF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
               <Box
                 style={{
@@ -316,7 +463,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="DMF"
               >
-                DMF ({overallStatsData.DMF_p})
+                <Text textAlign="center">DMF</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.DMF_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.DMF_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.DMF_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
               <Box
                 style={{
@@ -328,7 +493,23 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LB"
               >
-                LB ({overallStatsData.LB_p})
+                <Text textAlign="center">LB</Text>
+                <Text>({overallStatsData.LB_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.LB_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.LB_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -340,7 +521,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="CB"
               >
-                CB ({overallStatsData.CB_p})
+                <Text textAlign="center">CB</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.CB_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.CB_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.CB_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
               <Box
                 style={{
@@ -352,7 +551,23 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RB"
               >
-                RB ({overallStatsData.RB_p})
+                <Text textAlign="center">RB</Text>
+                <Text>({overallStatsData.RB_p})</Text>
+
+                <Text>
+                {`${
+                    isNaN(((
+                      overallStatsData.RB_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.RB_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
               </Box>
               <Box
                 style={{
@@ -364,7 +579,25 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="GK"
               >
-                GK ({overallStatsData.GK_p})
+                <Text textAlign="center">GK</Text>
+                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+                <Text>({overallStatsData.GK_p})</Text>
+
+                <Text >
+                {`${
+                    isNaN(((
+                      overallStatsData.GK_p /
+                        overallStatsData.matchesPlayed
+                    ))*100)
+                      ? 0
+                      : ((
+                        overallStatsData.GK_p /
+                          overallStatsData.matchesPlayed
+                      )*100).toFixed(0)
+                  } %`}
+
+                </Text>
+                </Box>
               </Box>
             </Grid>
             <Divider />

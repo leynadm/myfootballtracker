@@ -132,6 +132,7 @@ export default function Social() {
         user.id !== currentUser.uid &&
         !currentUserData.blocked.includes(user.id)
       ) {
+
         const userStats = await getStatsDoc(doc.id);
 
         if (userStats) {
@@ -223,7 +224,7 @@ export default function Social() {
                 <Avatar
                   size={"sm"}
                   src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    currentUserData.profileImage
                   }
                 />
               </MenuButton>
@@ -250,19 +251,10 @@ export default function Social() {
 
       <Box p={4}>
         <Routes>
-          <Route path="" index element={<Leaderboard />} />          
+          <Route path="" index element={<Leaderboard />} />
           <Route path="profile" index element={<Profile />} />
           <Route path="results/*" element={<SocialSearchResults />} />
           <Route path="results/u/:id/*" element={<SearchUserProfile />} />
-          {/*
- 
-          <Route path="" index element={<OverallMatchInfo />} />
- 
-          <Route path="profile" index element={<Profile />} />
-
-          <Route path="new-game" index element={<NewMatch />} />
-          <Route path="match-history" index element={<MatchHistory />} />
-         */}
         </Routes>
       </Box>
     </>

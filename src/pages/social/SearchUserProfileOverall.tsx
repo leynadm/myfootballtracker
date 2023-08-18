@@ -31,6 +31,7 @@ import {
     SkeletonCircle,
     SkeletonText,
     Avatar,
+    Text
   } from "@chakra-ui/react";
 
 interface Props{
@@ -58,66 +59,65 @@ function SearchUserProfileOverall({queriedUser}:Props){
 
 
   useEffect(()=>{
-    console.log('logging querieduser.stats:')
-    console.log(queriedUser.stats)
   },[])
 
     const boxStyle = {
     
-        weight: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        transition: "background-color 0.2s", // Add a smooth transition effect
-        backgroundColor: "green",
-        color: "white",
+      weight: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection:"column",
+      justifyContent: "center",
+      alignItems: "center",
+      transition: "background-color 0.2s", // Add a smooth transition effect
+      /*  */
+      backgroundColor: "green",
+      color: "white",
       };
     
       const calculateBackgroundColor = (value: number) => {
+
+        console.log('inside calcualteBackgroundColor:')
+        console.log(value)
+        
         const colorRange = [
-          "#008000", // Dark Blue
-          "#BFFF00",
-          "#0000C0",
-          "#0000E0",
-          "#0000FF", // Blue
-          "#00A000", // Light Green
-          "#00C000",
-          "#00E000",
-          "#00FF00",
-          "#40FF00",
-          "#80FF00",
-          "#BFFF00",
-          "#FFFF00", // Gold
-          "#FFD700",
-          "#FFAA00",
+          "#228B22", // Forestgreen
+          "#00A36C", // Olive
+          "#8FBC8F", // Mediumseagreen
+          "#9ACD32", // Yellowgreen
+          "#32CD32", // Lime Green
+          "#00FF00", // Lime
+          "#ADFF2F", // Greenyellow
         ];
     
-        const index = Math.min(
-          Math.max(Math.floor(((value - 1) / 100) * (colorRange.length - 1)), 0),
-          14
-        );
+        let backgroundColorToUse = "";
+        if (value === 0) {
+          backgroundColorToUse = "green";
+        } else if (value >= 1 && value <= 20) {
+          backgroundColorToUse = colorRange[0];
+        } else if (value >= 21 && value <= 40) {
+          backgroundColorToUse = colorRange[1];
+        } else if (value >= 41 && value <= 50) {
+          backgroundColorToUse = colorRange[2];
+        } else if (value >= 51 && value <= 60) {
+          backgroundColorToUse = colorRange[3];
+        } else if (value >= 61 && value <= 70) {
+          backgroundColorToUse = colorRange[4];
+        } else if (value >= 71 && value <= 80) {
+          backgroundColorToUse = colorRange[5];
+        } else if (value >= 81 && value <= 100) {
+          backgroundColorToUse = colorRange[6];
+        } else if (value >= 101) {
+          backgroundColorToUse = "#FFD700";
+        }
+        
     
-        return colorRange[index];
+        return backgroundColorToUse;
       };
     
       const calculateTextColor = (value: number) => {
         const colorRange = [
           "#000000", // Dark Blue
-          "#FFFFFF",
-          "#FFFFFF",
-          "#FFFFFF",
-          "#0000FF", // Blue
-          "#000000", // Light Green
-          "#000000",
-          "#000000",
-          "#000000",
-          "#000000",
-          "#000000",
-          "#000000",
-          "#000000", // Gold
-          "#000000",
-          "#000000",
         ];
     
         const index = Math.floor(((value - 1) / 100) * (colorRange.length - 1));
@@ -125,8 +125,8 @@ function SearchUserProfileOverall({queriedUser}:Props){
       };
     
 
-    return(
-        <>
+    return (
+      <>
         <Grid
           templateAreas={`"LWF CF RWF"
                           "LWF SS RWF"
@@ -153,7 +153,29 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="CF"
           >
-            CF ({queriedUser.stats.CF_p})
+            <Text textAlign="center">CF</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.CF_p})</Text>
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.CF_p / queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.CF_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
 
           <Box
@@ -164,7 +186,30 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="SS"
           >
-            SS ({queriedUser.stats.SS_p})
+            <Text textAlign="center">SS</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.SS_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.SS_p / queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.SS_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
 
           <Box
@@ -177,7 +222,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LWF"
           >
-            LWF ({queriedUser.stats.LWF_p})
+            <Text textAlign="center">LWF</Text>
+            <Text>({queriedUser.stats.LWF_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.LWF_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.LWF_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -189,7 +250,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RWF"
           >
-            RWF ({queriedUser.stats.RWF_p})
+            <Text textAlign="center">RWF</Text>
+            <Text>({queriedUser.stats.RWF_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.RWF_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.RWF_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -201,7 +278,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LMF"
           >
-            LMF ({queriedUser.stats.LMF_p})
+            <Text textAlign="center">LMF</Text>
+            <Text>({queriedUser.stats.LMF_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.LMF_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.LMF_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -213,7 +306,31 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="AMF"
           >
-            AMF ({queriedUser.stats.AMF_p})
+            <Text textAlign="center">AMF</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.AMF_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.AMF_p /
+                      queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.AMF_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
           <Box
             style={{
@@ -225,7 +342,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RMF"
           >
-            RMF ({queriedUser.stats.RMF_p})
+            <Text textAlign="center">RMF</Text>
+            <Text>({queriedUser.stats.RMF_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.RMF_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.RMF_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -237,7 +370,31 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="CMF"
           >
-            CMF ({queriedUser.stats.CMF_p})
+            <Text textAlign="center">CMF</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.CMF_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.CMF_p /
+                      queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.CMF_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
           <Box
             style={{
@@ -249,7 +406,31 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="DMF"
           >
-            DMF ({queriedUser.stats.DMF_p})
+            <Text textAlign="center">DMF</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.DMF_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.DMF_p /
+                      queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.DMF_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
           <Box
             style={{
@@ -259,7 +440,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LB"
           >
-            LB ({queriedUser.stats.LB_p})
+            <Text textAlign="center">LB</Text>
+            <Text>({queriedUser.stats.LB_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.LB_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.LB_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -269,7 +466,30 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="CB"
           >
-            CB ({queriedUser.stats.CB_p})
+            <Text textAlign="center">CB</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.CB_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.CB_p / queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.CB_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
           <Box
             style={{
@@ -279,7 +499,23 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RB"
           >
-            RB ({queriedUser.stats.RB_p})
+            <Text textAlign="center">RB</Text>
+            <Text>({queriedUser.stats.RB_p})</Text>
+
+            <Text>
+              {`${
+                isNaN(
+                  (queriedUser.stats.RB_p / queriedUser.stats.matchesPlayed) *
+                    100
+                )
+                  ? 0
+                  : (
+                      (queriedUser.stats.RB_p /
+                        queriedUser.stats.matchesPlayed) *
+                      100
+                    ).toFixed(0)
+              } %`}
+            </Text>
           </Box>
           <Box
             style={{
@@ -289,7 +525,30 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="GK"
           >
-            GK ({queriedUser.stats.GK_p})
+            <Text textAlign="center">GK</Text>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={1}
+            >
+              <Text>({queriedUser.stats.GK_p})</Text>
+
+              <Text>
+                {`${
+                  isNaN(
+                    (queriedUser.stats.GK_p / queriedUser.stats.matchesPlayed) *
+                      100
+                  )
+                    ? 0
+                    : (
+                        (queriedUser.stats.GK_p /
+                          queriedUser.stats.matchesPlayed) *
+                        100
+                      ).toFixed(0)
+                } %`}
+              </Text>
+            </Box>
           </Box>
         </Grid>
 
@@ -508,9 +767,17 @@ function SearchUserProfileOverall({queriedUser}:Props){
             <StatHelpText fontSize="small">
               Min/GC{" "}
               {`${
-                isNaN(queriedUser.stats.matchDuration /(queriedUser.stats.assistsProvided +queriedUser.stats.goalsScored))
+                isNaN(
+                  queriedUser.stats.matchDuration /
+                    (queriedUser.stats.assistsProvided +
+                      queriedUser.stats.goalsScored)
+                )
                   ? "0.0"
-                  : (queriedUser.stats.matchDuration /(queriedUser.stats.assistsProvided +queriedUser.stats.goalsScored)).toFixed(1)
+                  : (
+                      queriedUser.stats.matchDuration /
+                      (queriedUser.stats.assistsProvided +
+                        queriedUser.stats.goalsScored)
+                    ).toFixed(1)
               }`}{" "}
               min
             </StatHelpText>
@@ -583,16 +850,13 @@ function SearchUserProfileOverall({queriedUser}:Props){
             </WrapItem>
           </Stat>
         </Box>
-        <Divider mt={2}  />
+        <Divider mt={2} />
 
         <Box>
-
           <MatchHighlightsTable overallStatsData={queriedUser.stats} />
-          
-          </Box>
-        
-        </>
-    )
+        </Box>
+      </>
+    );
 
 }
 

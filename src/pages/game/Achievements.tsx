@@ -34,8 +34,19 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
   const [matchPerfSilver, setMatchPerfSilver] = useState(0)
   const [matchPerfGold, setMatchPerfGold] = useState(0)
   const [matchPerfDiamond, setMatchPerfDiamond] = useState(0)
+  const [keeperSavesPerformance, setKeperSavesPerformance] = useState(0)
 
+  function calculateKeeperSaves(){
 
+    const matchesWith2Saves = overallStatsData.youStopHere *2
+    const matchesWith5Saves = overallStatsData.imNotKidding*5
+    const matchesWith8Saves = overallStatsData.theKraken*8
+    const matchesWith12Saves = overallStatsData.guardianAngel*12
+    const matchesWith15Saves = overallStatsData.protectorOfTheGalaxy*17
+  
+    const totalSaves = matchesWith2Saves+matchesWith5Saves+matchesWith8Saves+matchesWith12Saves+matchesWith15Saves
+    setKeperSavesPerformance(totalSaves)
+  }
 
   function calculateBronzePerformance(){
 
@@ -670,8 +681,11 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
               />
             </Box>
             <Text textAlign="center">
-              Perform 250 saves and keep 5 clean sheets
+              Perform 250 saves
+              
             </Text>
+              <Progress max={250} value={keeperSavesPerformance} />
+            
           </Box>
 
           <Box>
@@ -685,7 +699,7 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
               className="image-wrapper"
             >
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fappearance_02_silver.jpeg?alt=media&token=c57de894-bf02-4ab2-af24-722a2708ca36"
+                src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fglove_02_silver.jpeg?alt=media&token=3f33fc44-d990-49d3-9d71-b82810e66bfc"
                 alt="goal"
                 style={{
                   filter:
@@ -694,8 +708,11 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
               />
             </Box>
             <Text textAlign="center">
-              Perform 500 saves and keep 10 clean sheets
+              Perform 500 saves
             </Text>
+            {keeperSavesPerformance >= 250 && (
+              <Progress max={500} value={keeperSavesPerformance} />
+            )}
           </Box>
 
           <Box>
@@ -717,8 +734,11 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
               />
             </Box>
             <Text textAlign="center">
-              Perform 750 saves and keep 15 clean sheets
+              Perform 750 saves
             </Text>
+            {keeperSavesPerformance >= 500 && (
+              <Progress max={750} value={keeperSavesPerformance} />
+            )}
           </Box>
 
           <Box>
@@ -740,8 +760,11 @@ function Achievements({overallStatsData,overallChartsData,queriedUser}:Props) {
               />
             </Box>
             <Text textAlign="center">
-              Perform 1000 saves and keep 20 clean sheets
+              Perform 1000 saves
             </Text>
+            {keeperSavesPerformance >= 750 && (
+              <Progress max={1000} value={keeperSavesPerformance} />
+            )}
           </Box>
         </Grid>
       </Container>

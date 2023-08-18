@@ -1,4 +1,4 @@
-import { useContext, useState, FormEvent, useEffect } from "react";
+import { useContext, useState, FormEvent, useEffect,useRef } from "react";
 import {
   Button,
   Text,
@@ -20,10 +20,13 @@ import {
   Radio,
   RadioGroup,
   Select,
-  useToast,
   Divider,
   Switch,
+  useToast
 } from "@chakra-ui/react";
+import { doc, updateDoc } from "firebase/firestore";
+import { db, storage } from "../../config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { AuthContext } from "../../context/Auth";
 import { LiaRulerVerticalSolid } from "react-icons/lia";
 import { GiFootprint } from "react-icons/gi";
@@ -33,18 +36,32 @@ import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { BsYoutube } from "react-icons/bs";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { MdVerified } from "react-icons/md";
+import { MdAddPhotoAlternate } from "react-icons/md";
+import { BsFillImageFill } from "react-icons/bs";
+
 import updateProfile from "../../utils/firebaseFunctions/updateProfile";
 import countriesList from "../../utils/countries";
 export default function Profile() {
-  const { currentUser, currentUserData } = useContext(AuthContext);
-
-  const [sex, setSex] = useState(currentUserData.sex);
+  const { currentUser, currentUserData,setCurrentUserData } = useContext(AuthContext);
+  
+  const toast = useToast()
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageKey,setImageKey] = useState(new Date().toLocaleString())
+  const [fileSource, setFileSource] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [profileImage, setProfileImage] = useState(
     currentUserData.profileImage
   );
+  const [saving, setSaving] = useState(false);
+  const [sex, setSex] = useState(currentUserData.sex);
+  
+  
   const [preferredFoot, setPreferredFoot] = useState(
     currentUserData.preferredFoot
   );
+
+  
   const [playingExperience, setPlayingExperience] = useState(
     currentUserData.playingExperience
   );
@@ -90,6 +107,10 @@ export default function Profile() {
     fontSize: "sm",
   };
 
+
+  useEffect(()=>{
+
+  },[profileImage,imageKey,selectedFile])
   const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedIndex = event.target.selectedIndex;
     setSelectedCountryCode(countriesList[selectedIndex - 1].code);
@@ -179,8 +200,6 @@ export default function Profile() {
     country: { country: selectedCountry, countryCode: selectedCountryCode },
   };
 
-  const toast = useToast();
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -194,9 +213,95 @@ export default function Profile() {
     });
   };
 
-  useEffect(()=>{
-    console.log(shirtNumber)
-  },[shirtNumber])
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const fileSource = e.target?.result as string;
+        setFileSource(fileSource);
+      };
+    }
+  }
+
+  function handleProfilePhotoChange() {
+    fileInputRef.current?.click();
+  }
+
+  async function updateProfilePicture() {
+
+    console.log('current IMAGE SRC:')
+    console.log(profileImage)
+    let imageRef = null;
+    let imageUrlResized: string | null = null;
+    console.log('checking select file;')
+    console.log(selectedFile)
+    if (selectedFile) {
+      setSaving(true);
+
+      imageRef = ref(
+        storage,
+        `profile-images/${currentUser.uid}/preview/${currentUser.uid}_profile_image`
+      );
+
+      await uploadBytes(imageRef, selectedFile);      
+
+      const imageRefResized = ref(
+        storage,
+        `profile-images/${currentUser.uid}/preview/${currentUser.uid}_profile_image_128x128`
+      );
+      try {
+        imageUrlResized = await getDownloadURL(imageRefResized);
+        setCurrentUserData((prevData: any) => ({
+          ...prevData,
+          profileImage: imageUrlResized,
+        }));
+      } catch (error) {
+        console.error("Error fetching resized image:", error);
+        // Retry logic
+        let retryAttempts = 9;
+        while (retryAttempts > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 3000)); // Wait for 3 seconds
+
+          try {
+            imageUrlResized = await getDownloadURL(imageRefResized);
+            break; // If successful, break out of the loop
+          } catch (error) {
+            console.error("Error fetching resized image after retry:", error);
+            retryAttempts--;
+          }
+        }
+
+        if (retryAttempts === 0) {
+          console.error("Retries exhausted. Unable to fetch resized image.");
+          // Handle the error and display an error message to the user
+        }
+      }
+       
+      const docRef = doc(db, "users", currentUser.uid);
+
+      if (selectedFile) {
+        await updateDoc(docRef, {
+          profileImage: imageUrlResized,
+        });
+
+        setImageKey(new Date().toLocaleString())
+        setProfileImage(imageUrlResized)
+        toast({
+          title: "Your profile image was updated!",
+          status: "success",
+          isClosable: true,
+          position: "top",
+        });
+      } 
+  
+    }
+
+  } 
 
   return (
     <>
@@ -209,7 +314,40 @@ export default function Profile() {
         <form onSubmit={handleSubmit}>
           <Stack spacing={3} mt={2}>
             <WrapItem display="flex" justifyContent="center">
-              <Avatar size="2xl" src="https://bit.ly/sage-adebayo" />{" "}
+              <Avatar
+                size="2xl"
+                key={imageKey}
+                src={fileSource || currentUserData.profileImage}
+              />{" "}
+            </WrapItem>
+            <WrapItem justifyContent="center" gap={2}>
+              <Button
+                size="xs"
+                rightIcon={<BsFillImageFill />}
+                colorScheme="blue"
+                variant="outline"
+                onClick={handleProfilePhotoChange}
+              >
+                Change Picture
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/png, image/jpeg"
+                hidden
+                onChange={handleFileChange}
+              />
+              {selectedFile !== null && (
+                <Button
+                  size="xs"
+                  rightIcon={<MdAddPhotoAlternate />}
+                  colorScheme="blue"
+                  variant="outline"
+                  onClick={updateProfilePicture}
+                >
+                  Upload Picture
+                </Button>
+              )}
             </WrapItem>
             <WrapItem
               display="flex"
@@ -281,14 +419,14 @@ export default function Profile() {
             </InputGroup>
 
             <FormControl>
-                <FormLabel>Your Club Name</FormLabel>
-                <Input
-                  variant="filled"
-                  placeholder="Your club name"
-                  value={clubName}
-                  onChange={(e) => setClubName(e.target.value)}
-                />
-              </FormControl>
+              <FormLabel>Your Club Name</FormLabel>
+              <Input
+                variant="filled"
+                placeholder="Your club name"
+                value={clubName}
+                onChange={(e) => setClubName(e.target.value)}
+              />
+            </FormControl>
 
             <InputGroup alignItems="center" gap={3}>
               {measurementSystem === "imperial" ? (

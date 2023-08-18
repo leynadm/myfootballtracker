@@ -44,6 +44,7 @@ import {
   Heading,
   Image,
   Grid,
+  Avatar
 } from "@chakra-ui/react";
 import { BsStarHalf } from "react-icons/bs";
 import { GiFootprint } from "react-icons/gi";
@@ -173,20 +174,10 @@ function UsersSearchResults({ usersFound }: ParentProps) {
                       )}
                     </Box>
                   </GridItem>
-                  <GridItem rowSpan={2} colSpan={1}>
-                    <div
-                      style={{
-                        backgroundImage:
-                          "url('https://i.guim.co.uk/img/static/sys-images/Sport/Pix/pictures/2010/1/28/1264690141831/Adrian-Mutu-001.jpg?width=620&dpr=1&s=none')",
-
-                        backgroundSize: "cover", // Adjust this property according to your needs
-                        backgroundRepeat: "no-repeat", // Adjust this property according to your needs
-                        backgroundPosition: "center", // Adjust this property according to your needs
-                        width: "100%",
-                        height: "100%",
-                        boxShadow: "inset #009688 0 0 0 5px",
-                      }}
-                    ></div>
+                  <GridItem rowSpan={2} colSpan={1} justifyContent="center" alignContent="center" display="flex">
+                  
+    <Avatar size='2xl' name={`${user.firstName} ${user.lastName}`} src={user.profileImage} />{' '}
+  
                   </GridItem>
                 </Grid>
               </CardHeader>

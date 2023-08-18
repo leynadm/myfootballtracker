@@ -154,9 +154,9 @@ export default function Overview() {
 
         <Routes>
           <Route path="" index element={<OverallMatchInfo />} />
-          <Route path="new-game" index element={<NewMatch />} />
-          <Route path="match-history" index element={<MatchHistory />} />
-          <Route path="achievements" index element={<Achievements overallStatsData={overallStatsData} overallChartsData={overallChartsData}/>} />
+          <Route path="new-game" element={<NewMatch />} />
+          <Route path="match-history" element={<MatchHistory />} />
+          <Route path="achievements" element={<Achievements overallStatsData={overallStatsData} overallChartsData={overallChartsData}/>} />
         </Routes>
       </Box>
     </>

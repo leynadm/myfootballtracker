@@ -173,9 +173,10 @@ async function addNewMatchData(
           matchType: arrayUnion(newMatchTypeStat),
           combinedStats:arrayUnion(chartCombinedData)
         });
-
+ 
 
         transaction.set(newMatchRef, {
+          matchImage:dataToSubmit.matchImage,
           matchRecordingLink:dataToSubmit.matchRecordingLink,
           matchComments: dataToSubmit.matchComments,
           winValue: dataToSubmit.winValue,

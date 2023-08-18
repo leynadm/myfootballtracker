@@ -1,4 +1,5 @@
 import "../../styles/LandingPage.css"
+import Logo from "../../assets/android-chrome-512x512.png"
 import {
   Button,
   Text,
@@ -48,6 +49,19 @@ import {
   Progress
 
 } from "@chakra-ui/react";
+
+interface BeforeInstallPromptEventChoiceResult {
+  outcome: 'accepted' | 'dismissed';
+  platform: string;
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<BeforeInstallPromptEventChoiceResult>;
+  prompt(): void;
+}
+
+
 import { useEffect } from "react";
 import FootBallNoBackground from "../../assets/football-no-background.png"
 import ReSampleChart from "../statistics/ReSampleChart";
@@ -56,11 +70,45 @@ import {FiLogIn} from "react-icons/fi"
 import {MdInstallMobile} from "react-icons/md"
 import { GoGoal } from "react-icons/go";
 import { GoTelescope } from "react-icons/go";
-
+import { useState } from "react";
 import { GiGoalKeeper } from "react-icons/gi";
 
 export default function LandingPage() {
   
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [openInstallInstructionsModal, setOpenInstallInstructionsModal] =
+    useState(false);
+
+  function handleBeforeInstallPrompt(event: BeforeInstallPromptEvent) {
+    event.preventDefault();
+    setDeferredPrompt(event);
+  }
+  
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+    };
+  }, []);
+
+  function handleInstallClick() {
+    if (deferredPrompt === null) {
+      setOpenInstallInstructionsModal(!openInstallInstructionsModal);
+    }
+
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult: any) => {
+        /* 
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the installation prompt");
+        } else {
+          console.log("User dismissed the installation prompt");
+        } */
+      });
+    }
+  }
+
   const boxStyle = {
     
     weight: "100%",
@@ -86,6 +134,7 @@ export default function LandingPage() {
               rightIcon={<MdInstallMobile />}
               colorScheme="blue"
               variant="outline"
+            onClick={handleInstallClick}
             >
               Install
             </Button>
@@ -124,8 +173,17 @@ export default function LandingPage() {
               borderTopRightRadius="100px 100px"
               borderBottomLeftRadius="150px 220px"
               borderBottomRightRadius="220"
-            ></Box>
+            >          
+            <Box w='12rem'>
+            <img src={Logo} alt="logo"
+
+            /></Box>
+
+
+            </Box>
           </Box>
+
+
 
           <Box>
             <Text fontSize="1.35em" textAlign="center">

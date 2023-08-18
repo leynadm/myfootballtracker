@@ -96,7 +96,8 @@ interface MatchDataToSubmit {
     theMonument:boolean;
     thePathBreaker:boolean;
     theMountain:boolean;
-    matchRecordingLink:string
+    matchRecordingLink:string;
+    matchImage:string;
   }
 
   export default MatchDataToSubmit

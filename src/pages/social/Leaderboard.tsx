@@ -35,6 +35,7 @@ import {
   GridItem,
   Avatar,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { OverallStatsContext } from "../../context/OverallStats";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/Auth";
@@ -54,6 +55,8 @@ function Leaderboard() {
     useState<LeaderboardUserData[]>([]);
   const [userIndividualFollowers, setUserIndividualFollowers] = useState([]);
  */
+
+  const navigate = useNavigate()
   useEffect(() => {
     console.log(userIndividualFollowers.length)
     console.log(userIndividualFollowingData.length)
@@ -87,8 +90,6 @@ function Leaderboard() {
       if (currentUserSocialDocSnapshot.exists()) {
         const data = currentUserSocialDocSnapshot.data();
         const following = data.following || [];
-        console.log("users that Im following are:");
-        console.log({ following });
         setUserIndividualFollowers(following);
       }
     } catch (error) {
@@ -124,7 +125,8 @@ function Leaderboard() {
           // or handle it in a way that fits your specific use case.
         }
       }
-      tempData.sort((a, b) => b.matchesPlayed - a.matchesPlayed);
+
+      tempData.sort((a, b) => b.stats.matchesPlayed - a.stats.matchesPlayed);
 
       setUserIndividualFollowingData(tempData);
       setLoading(false);
@@ -155,7 +157,8 @@ function Leaderboard() {
         // Combine user document data, current user stat data, and ID
         return {
           ...userDocumentData,
-          ...currentUserStatData,
+          
+          stats:currentUserStatData,
           id: userDocRefSnapshot.id,
         };
       }
@@ -174,17 +177,17 @@ function Leaderboard() {
     <>
       <Container gap={1}>
         <TableContainer p={0} m={0}>
-          <Table variant="striped" colorScheme="blackAlpha" width="100%">
+          <Table variant="striped" colorScheme="blue" width="100%">
             <TableCaption>Leaderboard for followed users</TableCaption>
             <Thead>
               <Tr>
                 <Th m={1} p={2} width="5%" textAlign="center">
                   #
                 </Th>
-                <Th m={1} p={2} width="20%" textAlign="center">
+                <Th m={1} p={2} width="25%" textAlign="center">
                   User
                 </Th>
-                <Th m={1} p={2} width="15%" textAlign="center">
+                <Th m={1} p={2} width="10%" textAlign="center">
                   Pos.
                 </Th>
                 <Th m={1} p={2} width="15%" textAlign="center">
@@ -201,7 +204,12 @@ function Leaderboard() {
 
             <Tbody>
               {userIndividualFollowingData.map((user, index) => (
-                <Tr textAlign="center">
+                <Tr textAlign="center"
+                onClick={() =>
+                  navigate(`results/u/${user.id}`, { state: { queriedUser: user } })
+                }
+                key={index}
+                >
                   <Td m={0} p={1} textAlign="center" whiteSpace="normal">
                     #{index+1}
                   </Td>
@@ -211,11 +219,12 @@ function Leaderboard() {
                         <Avatar
                           size={"sm"}
                           src={
-                            "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                            user.profileImage
                           }
                         />
                       }
-                      <Text></Text>
+                      <Text fontSize="smaller">{user.firstName}</Text>
+                      <Text fontSize="smaller">{user.lastName}</Text>
                     </Box>
                   </Td>
                   <Td m={0} p={1} textAlign="center">
@@ -254,7 +263,7 @@ function Leaderboard() {
                       justifyContent="center"
                     >
                       <GiSoccerField />
-                      {user.matchesPlayed}
+                      {user.stats.matchesPlayed}
                     </Box>
                   </Td>
 
@@ -266,7 +275,7 @@ function Leaderboard() {
                       justifyContent="center"
                     >
                       <FaHandPeace />
-                      {user.wins}
+                      {user.stats.wins}
                     </Box>
                   </Td>
 
@@ -279,10 +288,10 @@ function Leaderboard() {
                     >
                       <BsStarHalf />
                       {`${
-                        isNaN(user.matchPerformance / user.matchesPlayed)
+                        isNaN(user.stats.matchPerformance / user.stats.matchesPlayed)
                           ? "0.0"
                           : (
-                              user.matchPerformance / user.matchesPlayed
+                              user.stats.matchPerformance / user.stats.matchesPlayed
                             ).toFixed(1)
                       }`}
                     </Box>

@@ -24,15 +24,6 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
   IconButton,
   Textarea,
   Tabs, TabList, TabPanels, Tab, TabPanel 
@@ -42,10 +33,6 @@ import { GiBarefoot } from "react-icons/gi";
 import { TbRectangleVerticalFilled } from "react-icons/tb";
 import { GiWhistle } from "react-icons/gi";
 import { BiPlusMedical } from "react-icons/bi";
-import { FaRegHandshake } from "react-icons/fa";
-import { FaHandPeace } from "react-icons/fa";
-import { AiOutlineDislike } from "react-icons/ai";
-
 import { GoGoal } from "react-icons/go";
 import { BsBraces } from "react-icons/bs";
 import { BiBullseye } from "react-icons/bi";
@@ -98,6 +85,56 @@ function MatchHistoryCard({ match }: { match: any }) {
     transition: "background-color 0.2s", // Add a smooth transition effect
     backgroundColor: "green",
     color: "white",
+    fontWeight:"bold"
+  };
+
+  const calculateBackgroundColor = (value: boolean) => {
+
+    console.log('inside calcualteBackgroundColor:')
+    console.log(value)
+    
+    const colorRange = [
+      "#228B22", // Forestgreen
+      "#00A36C", // Olive
+      "#8FBC8F", // Mediumseagreen
+      "#9ACD32", // Yellowgreen
+      "#32CD32", // Lime Green
+      "#00FF00", // Lime
+      "#ADFF2F", // Greenyellow
+    ];
+
+    let backgroundColorToUse = "";
+    if (!value) {
+      backgroundColorToUse = "green";
+    } else {
+      backgroundColorToUse = "#00FF00"
+    }
+    
+
+    return backgroundColorToUse;
+  };
+
+  const calculateTextColor = (value: boolean) => {
+    
+    const colorRange = [
+      "#228B22", // Forestgreen
+      "#00A36C", // Olive
+      "#8FBC8F", // Mediumseagreen
+      "#9ACD32", // Yellowgreen
+      "#32CD32", // Lime Green
+      "#00FF00", // Lime
+      "#ADFF2F", // Greenyellow
+    ];
+
+    let textColorToUse = "";
+    if (!value) {
+      textColorToUse = "white";
+    } else {
+      textColorToUse = "black"
+    }
+    
+
+    return textColorToUse;
   };
 
   return (
@@ -132,11 +169,14 @@ function MatchHistoryCard({ match }: { match: any }) {
           <Tabs variant="solid-rounded" colorScheme="green" pt={2}>
             <TabList>
               <Tab _selected={{ color: "white", bg: "blue.500" }}>Match</Tab>
-              <Tab _selected={{ color: "white", bg: "red.400" }}>Photo</Tab>
 
-              {
-                match.matchRecordingLink!==""&&
-                <Tab _selected={{ color: "white", bg: "gray.400" }}>Video</Tab>}
+              {match.matchImage !== "" && (
+                <Tab _selected={{ color: "white", bg: "red.400" }}>Photo</Tab>
+              )}
+
+              {match.matchRecordingLink !== "" && (
+                <Tab _selected={{ color: "white", bg: "gray.400" }}>Video</Tab>
+              )}
             </TabList>
             <TabPanels>
               <TabPanel>
@@ -163,41 +203,133 @@ function MatchHistoryCard({ match }: { match: any }) {
                     marginTop="0.5rem"
                     fontSize="small"
                   >
-                    <Box style={boxStyle} gridArea="CF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.CF_p),
+                        color: calculateTextColor(match.CF_p),
+                      }}
+                      gridArea="CF"
+                    >
                       CF
                     </Box>
-                    <Box style={boxStyle}>SS</Box>
-                    <Box style={boxStyle} gridArea="LWF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.SS_p),
+                        color: calculateTextColor(match.SS_p),
+                      }}
+                    >
+                      SS
+                    </Box>
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.LWF_p),
+                        color: calculateTextColor(match.LWF_p),
+                      }}
+                      gridArea="LWF"
+                    >
                       LWF
                     </Box>
-                    <Box style={boxStyle} gridArea="RWF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.RWF_p),
+                        color: calculateTextColor(match.RWF_p),
+                      }}
+                      gridArea="RWF"
+                    >
                       RWF
                     </Box>
-                    <Box style={boxStyle} gridArea="LMF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.LMF_p),
+                        color: calculateTextColor(match.LMF_p),
+                      }}
+                      gridArea="LMF"
+                    >
                       LMF
                     </Box>
-                    <Box style={boxStyle} gridArea="AMF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.AMF_p),
+                        color: calculateTextColor(match.AMF_p),
+                      }}
+                      gridArea="AMF"
+                    >
                       AMF
                     </Box>
-                    <Box style={boxStyle} gridArea="RMF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.RMF_p),
+                        color: calculateTextColor(match.RMF_p),
+                      }}
+                      gridArea="RMF"
+                    >
                       RMF
                     </Box>
-                    <Box style={boxStyle} gridArea="CMF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.CMF_p),
+                        color: calculateTextColor(match.CMF_p),
+                      }}
+                      gridArea="CMF"
+                    >
                       CMF
                     </Box>
-                    <Box style={boxStyle} gridArea="DMF">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.DMF_p),
+                        color: calculateTextColor(match.DMF_p),
+                      }}
+                      gridArea="DMF"
+                    >
                       DMF
                     </Box>
-                    <Box style={boxStyle} gridArea="LB">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.LB_p),
+                        color: calculateTextColor(match.LB_p),
+                      }}
+                      gridArea="LB"
+                    >
                       LB
                     </Box>
-                    <Box style={boxStyle} gridArea="CB">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.CB_p),
+                        color: calculateTextColor(match.CB_p),
+                      }}
+                      gridArea="CB"
+                    >
                       CB
                     </Box>
-                    <Box style={boxStyle} gridArea="RB">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.RB_p),
+                        color: calculateTextColor(match.RB_p),
+                      }}
+                      gridArea="RB"
+                    >
                       RB
                     </Box>
-                    <Box style={boxStyle} gridArea="GK">
+                    <Box
+                      style={{
+                        ...boxStyle,
+                        backgroundColor: calculateBackgroundColor(match.GK_p),
+                        color: calculateTextColor(match.GK_p),
+                      }}
+                      gridArea="GK"
+                    >
                       GK
                     </Box>
                   </Grid>
@@ -228,42 +360,36 @@ function MatchHistoryCard({ match }: { match: any }) {
                   </Stat>
                 </Box>
               </TabPanel>
-              <TabPanel>
-                <Image
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt="Green double couch with wooden legs"
-                  width="100%"
-                  height="100%"
-                  padding={0}
-                  margin={0}
-                  borderRadius="5px"
-                />
-              </TabPanel>
-              <TabPanel>
 
-              <a href={match.matchRecordingLink}> 
-              <Image
-                  src="https://images.unsplash.com/photo-1641135698530-8d919344c0e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                  alt="Green double couch with wooden legs"
-                  width="100%"
-                  height="100%"
-                  padding={0}
-                  margin={0}
-                  borderRadius="5px"
-                /> 
-</a> 
-                {/* 
-                <Image
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt="Green double couch with wooden legs"
-                  width="100%"
-                  height="100%"
-                  padding={0}
-                  margin={0}
-                  borderRadius="5px"
-                /> */}
+              {match.matchImage !== "" && (
+                <TabPanel>
+                  <Image
+                    src={match.matchImage}
+                    alt="match snapshot"
+                    width="100%"
+                    height="100%"
+                    padding={0}
+                    margin={0}
+                    borderRadius="5px"
+                  />
+                </TabPanel>
+              )}
 
-              </TabPanel>
+              {match.matchRecordingLink !== "" && (
+                <TabPanel>
+                  <a href={match.matchRecordingLink} target="_blank">
+                    <Image
+                      src="https://images.unsplash.com/photo-1641135698530-8d919344c0e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                      alt="Green double couch with wooden legs"
+                      width="100%"
+                      height="100%"
+                      padding={0}
+                      margin={0}
+                      borderRadius="5px"
+                    />
+                  </a>
+                </TabPanel>
+              )}
             </TabPanels>
           </Tabs>
 

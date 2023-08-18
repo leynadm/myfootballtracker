@@ -1,8 +1,8 @@
-import football_field from "../../assets/football_field.svg";
-import { useNavigate } from "react-router-dom";
 import MatchHighlight from "../../components/MatchHighlight";
 import addNewMatchData from "../../utils/firebaseFunctions/addNewMatchData";
 import checkMatchesPlayed from "../../utils/firebaseFunctions/checkMatchesPlayed";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import uuid from "react-uuid";
 import {
   Button,
   Text,
@@ -34,14 +34,13 @@ import {
   Divider,
   FormErrorMessage,
   useToast,
-  Heading,
   Radio,
   RadioGroup,
   Textarea,
+  Image,
 } from "@chakra-ui/react";
-
+import { getApp } from "firebase/app";
 import { BsFillCameraReelsFill } from "react-icons/bs";
-
 import { GiMoonOrbit } from "react-icons/gi";
 import { GiGiant } from "react-icons/gi";
 import { FaMonument } from "react-icons/fa";
@@ -105,9 +104,12 @@ import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
+import { BsFillImageFill } from "react-icons/bs";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+
 import MatchDataToSubmit from "../../utils/interfaces/matchDataToSubmit";
 
-import { useContext, useState, FormEvent, useEffect } from "react";
+import { useContext, useState, FormEvent, useRef } from "react";
 import { AuthContext } from "../../context/Auth";
 
 interface PositionsPlayed {
@@ -127,10 +129,95 @@ export default function NewMatch() {
   };
 
   const toast = useToast();
+  const firebaseApp = getApp();
+  const matchesStorage = getStorage(
+    firebaseApp,
+    "gs://myfootballtracker-matches"
+  );
+
   const { currentUser } = useContext(AuthContext);
   const [winValue, setWinValue] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileSource, setFileSource] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [matchImage, setMatchImage] = useState<string>("");
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
 
-  const [sliderValue, setSliderValue] = useState(5);
+    if (file) {
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const fileSource = e.target?.result as string;
+        setFileSource(fileSource);
+      };
+    }
+  }
+
+  function handleProfilePhotoChange() {
+    fileInputRef.current?.click();
+  }
+
+  async function updateProfilePicture() {
+    console.log("inside updateprofilePicture");
+
+    let imageRef = null;
+    let imageUrlResized: string | null = null;
+    const uniqueImageId = uuid();
+
+    if (selectedFile) {
+      setSaving(true);
+
+      imageRef = ref(
+        matchesStorage,
+        `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}`
+      );
+
+      await uploadBytes(imageRef, selectedFile);
+
+      const imageRefResized = ref(
+        matchesStorage,
+        `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}_1024x1024`
+      );
+      try {
+        imageUrlResized = await getDownloadURL(imageRefResized);
+        console.log("getting imgUrlResized:");
+        console.log(imageUrlResized);
+      } catch (error) {
+        console.error("Error fetching resized image:", error);
+        // Retry logic
+
+        let retryAttempts = 9;
+        while (retryAttempts > 0) {
+          await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 3 seconds
+
+          try {
+            imageUrlResized = await getDownloadURL(imageRefResized);
+            break; // If successful, break out of the loop
+          } catch (error) {
+            console.error("Error fetching resized image after retry:", error);
+            retryAttempts--;
+          }
+        }
+
+        if (retryAttempts === 0) {
+          console.error("Retries exhausted. Unable to fetch resized image.");
+          // Handle the error and display an error message to the user
+        }
+      }
+
+      setMatchImage(imageUrlResized);
+    }
+  }
+
+  function handleRemoveMatchPicture() {
+    setSelectedFile(null);
+    setFileSource(null);
+  }
+
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
@@ -305,9 +392,9 @@ export default function NewMatch() {
     }
 
     if (defenceRadioValue === "theMountain") {
-      setTheMonument(true);
+      setTheMountain(true);
     } else {
-      setTheMonument(false);
+      setTheMountain(false);
     }
   }
 
@@ -420,6 +507,7 @@ export default function NewMatch() {
     thePathBreaker: thePathBreaker,
     theMountain: theMountain,
     matchRecordingLink: matchRecordingLink,
+    matchImage: matchImage,
   };
 
   const handleClick = (boxName: string) => {
@@ -439,70 +527,78 @@ export default function NewMatch() {
     console.log(dateObject); // This will be a valid Date object
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    checkGoalsRadioValue();
-    checkAssistsRadioValue();
-    checkSavesRadioValue();
-    checkDefenceRadioValue();
-    let positionSelected = true;
-    for (const key in positionsPlayed) {
-      if (positionsPlayed[key] === true) {
-        positionSelected = false;
-      }
-    }
+    try {
+      await updateProfilePicture();
 
-    if (positionSelected) {
-      toast({
-        title: "Please select the position you played.",
-        status: "error",
-        isClosable: true,
-      });
-      return;
-    }
-
-    const validityCheckPromise = checkMatchesPlayed(
-      dataToSubmit,
-      currentUser.uid
-    );
-
-    validityCheckPromise
-      .then((result) => {
-        if (result === "duplicate match") {
-          toast({
-            title: "Duplicate match detected!",
-            description: "Match with same date/time already registered.",
-            status: "warning",
-            isClosable: true,
-            position: "top",
-          });
-        } else {
-          addNewMatchData(dataToSubmit, currentUser.uid)
-            .then(() => {
-              toast({
-                title: "Your match was registered successfully!",
-                status: "success",
-                isClosable: true,
-                position: "top",
-              });
-            })
-            .catch((error) => {
-              console.error("Error registering match:", error);
-              console.log(error);
-              toast({
-                title: "Error registering match",
-                status: "error",
-                description: "An error occurred while registering the match.",
-                isClosable: true,
-                position: "top",
-              });
-            });
+      checkGoalsRadioValue();
+      checkAssistsRadioValue();
+      checkSavesRadioValue();
+      checkDefenceRadioValue();
+      let positionSelected = true;
+      for (const key in positionsPlayed) {
+        if (positionsPlayed[key] === true) {
+          positionSelected = false;
         }
-      })
-      .catch((error) => {
-        console.error("Error during validity check:", error);
-      });
+      }
+
+      if (positionSelected) {
+        toast({
+          title: "Please select the position you played.",
+          status: "error",
+          isClosable: true,
+        });
+        return;
+      }
+
+      const validityCheckPromise = checkMatchesPlayed(
+        dataToSubmit,
+        currentUser.uid
+      );
+
+      validityCheckPromise
+        .then((result) => {
+          if (result === "duplicate match") {
+            toast({
+              title: "Duplicate match detected!",
+              description: "Match with same date/time already registered.",
+              status: "warning",
+              isClosable: true,
+              position: "top",
+            });
+          } else {
+            addNewMatchData(dataToSubmit, currentUser.uid)
+              .then(() => {
+                toast({
+                  title: "Your match was registered successfully!",
+                  status: "success",
+                  isClosable: true,
+                  position: "top",
+                });
+              })
+              .catch((error) => {
+                console.error("Error registering match:", error);
+                console.log(error);
+                toast({
+                  title: "Error registering match",
+                  status: "error",
+                  description: "An error occurred while registering the match.",
+                  isClosable: true,
+                  position: "top",
+                });
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("Error during validity check:", error);
+        });
+    } catch (error) {
+      console.error(error);
+    }
+
+    
   };
 
   const colors = useColorModeValue(
@@ -789,6 +885,7 @@ export default function NewMatch() {
                   <Input
                     placeholder="Match Duration (minutes)"
                     type="number"
+                    min={0}
                     onChange={(e) => setMatchDuration(parseInt(e.target.value))}
                   />
                 </InputGroup>
@@ -1667,7 +1764,7 @@ export default function NewMatch() {
                                     I'm Not Kidding
                                   </Text>
                                   <Text fontSize="small">
-                                    Make between 4-7 saves during the match.
+                                    Make between 4-6 saves during the match.
                                   </Text>
                                 </Box>
 
@@ -1691,7 +1788,7 @@ export default function NewMatch() {
                                     The Kraken
                                   </Text>
                                   <Text fontSize="small">
-                                    Make between 8-12 saves during the match.
+                                    Make between 7-9 saves during the match.
                                   </Text>
                                 </Box>
 
@@ -1715,7 +1812,7 @@ export default function NewMatch() {
                                     Guardian Angel
                                   </Text>
                                   <Text fontSize="small">
-                                    Make between 13-16 saves during the match.
+                                    Make between 10-14 saves during the match.
                                   </Text>
                                 </Box>
 
@@ -1739,7 +1836,7 @@ export default function NewMatch() {
                                     Protector Of The Galaxy
                                   </Text>
                                   <Text fontSize="small">
-                                    Make 17+ saves during the match.
+                                    Make 15+ saves during the match.
                                   </Text>
                                 </Box>
 
@@ -1836,6 +1933,49 @@ export default function NewMatch() {
                         />
                       </InputGroup>
                     </FormControl>
+
+                    <FormControl
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      p={2}
+                      gap={2}
+                    >
+                      <Button
+                        size="xs"
+                        rightIcon={<BsFillImageFill />}
+                        colorScheme="blue"
+                        variant="outline"
+                        onClick={handleProfilePhotoChange}
+                      >
+                        Select Picture
+                      </Button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        hidden
+                        onChange={handleFileChange}
+                      />
+                      {fileSource && (
+                        <Button
+                          size="xs"
+                          rightIcon={<RiDeleteBin6Fill />}
+                          colorScheme="blue"
+                          variant="outline"
+                          onClick={handleRemoveMatchPicture}
+                        >
+                          Remove Picture
+                        </Button>
+                      )}
+                    </FormControl>
+                    {fileSource && (
+                      <Image
+                        src={fileSource || matchImage}
+                        alt="upload"
+                        borderRadius="5px"
+                      />
+                    )}
                   </AccordionPanel>
                 </AccordionItem>
               </Accordion>

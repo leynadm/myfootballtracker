@@ -4,7 +4,6 @@ import { PiSoccerBallFill } from "react-icons/pi";
 import { IconButton } from "@chakra-ui/react";
 import { ImStatsDots } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
-import { Text } from "@chakra-ui/react";
 export default function Navbar() {
   
     const buttonStyle = {
@@ -39,7 +38,7 @@ export default function Navbar() {
         right="0"
         display="flex"
         justifyContent={{ base: "space-around", md: "center" }}
-        margin="0.5rem"
+
       >
         <Box textAlign="center">
           <IconButton

@@ -30,7 +30,7 @@ import { BsFillHeartbreakFill, BsYoutube } from "react-icons/bs";
 import { BsFillHeartFill } from "react-icons/bs";
 import { SlUserFollow,SlUserFollowing,SlUserUnfollow } from "react-icons/sl";
 import { RiUserFollowFill,RiUserUnfollowFill} from "react-icons/ri";
-
+import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
 import { AuthContext } from "../../context/Auth";
 import { PiTelevisionSimpleBold } from "react-icons/pi";
 import { BsClipboard2Data } from "react-icons/bs";
@@ -47,6 +47,7 @@ function SearchUserProfile() {
   const [follow, setFollow] = useState<string>("");
   const [userFollowers, setUserFollowers] = useState<number>(0);
   const navigate = useNavigate()
+  const [queriedUserChartsData, setQueriedUserChartsData] = useState<ChartDataInterface>({})
   // Access the queriedUser state from location.state
 
   const queriedUser = location.state.queriedUser;
@@ -54,6 +55,7 @@ function SearchUserProfile() {
 
   useEffect(()=>{
     getRelationshipStatus()
+    getChartsDoc(queriedUser.id)
   },[])
 
   function handleFollowButtonClick() {
@@ -65,6 +67,18 @@ function SearchUserProfile() {
       followUser();
     } else {
       unfollowUser();
+    }
+  }
+
+  async function getChartsDoc(docId: string) {
+    console.log("inside getStatsDoc function");
+    const overallChartsDocRef = doc(db, "users", docId, "stats/chart-stats");
+    const overallChartsDocSnap = await getDoc(overallChartsDocRef);
+
+    console.log(overallChartsDocSnap);
+    if (overallChartsDocSnap.exists()) {
+      const userOverallChartsData = overallChartsDocSnap.data() as ChartDataInterface;
+      setQueriedUserChartsData(userOverallChartsData)
     }
   }
 
@@ -313,7 +327,7 @@ function SearchUserProfile() {
 
           <Box display='grid' gap={2}>
             <WrapItem display="flex" justifyContent="center">
-              <Avatar size="2xl" src="https://bit.ly/sage-adebayo" />{" "}
+              <Avatar size="2xl" name={`${queriedUser.firstName} ${queriedUser.lastName}`} src={queriedUser.profileImage} />{" "}
             </WrapItem>
             <Button
               rightIcon={follow ==="Follow"? (<RiUserFollowFill />) : (<RiUserUnfollowFill />)}
@@ -399,7 +413,7 @@ function SearchUserProfile() {
 
           <Route
             path="player-achievements"
-            element={<Achievements overallStatsData={queriedUser.stats} queriedUser={queriedUser} />}
+            element={<Achievements overallStatsData={queriedUser.stats} queriedUser={queriedUser} overallChartsData={queriedUserChartsData}  />}
           />
 
         </Routes>
