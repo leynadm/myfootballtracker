@@ -38,7 +38,9 @@ import {
   RadioGroup,
   Textarea,
   Image,
+  Spinner
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { getApp } from "firebase/app";
 import { BsFillCameraReelsFill } from "react-icons/bs";
 import { GiMoonOrbit } from "react-icons/gi";
@@ -140,8 +142,11 @@ export default function NewMatch() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileSource, setFileSource] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [saving, setSaving] = useState(false);
+  const [savingMatch, setSavingMatch] = useState(false);
   const [matchImage, setMatchImage] = useState<string>("");
+  const [buttonDisabledCheck, setButtonDisabledCheck] = useState(false)
+  const navigate = useNavigate()
+  
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -161,15 +166,13 @@ export default function NewMatch() {
     fileInputRef.current?.click();
   }
 
-  async function updateProfilePicture() {
-    console.log("inside updateprofilePicture");
+  async function uploadMatchImage() {
 
     let imageRef = null;
     let imageUrlResized: string | null = null;
     const uniqueImageId = uuid();
 
     if (selectedFile) {
-      setSaving(true);
 
       imageRef = ref(
         matchesStorage,
@@ -528,30 +531,33 @@ export default function NewMatch() {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    setSavingMatch(true)
+    setButtonDisabledCheck(true)
     event.preventDefault();
 
-    try {
-      await updateProfilePicture();
+    let positionSelected = true;
+    for (const key in positionsPlayed) {
+      if (positionsPlayed[key] === true) {
+        positionSelected = false;
+      }
+    }
 
+    if (positionSelected) {
+      toast({
+        title: "Please select the position you played.",
+        status: "error",
+        isClosable: true,
+      });
+      return;
+    }
+
+
+    try {
+      await uploadMatchImage();
       checkGoalsRadioValue();
       checkAssistsRadioValue();
       checkSavesRadioValue();
       checkDefenceRadioValue();
-      let positionSelected = true;
-      for (const key in positionsPlayed) {
-        if (positionsPlayed[key] === true) {
-          positionSelected = false;
-        }
-      }
-
-      if (positionSelected) {
-        toast({
-          title: "Please select the position you played.",
-          status: "error",
-          isClosable: true,
-        });
-        return;
-      }
 
       const validityCheckPromise = checkMatchesPlayed(
         dataToSubmit,
@@ -577,6 +583,9 @@ export default function NewMatch() {
                   isClosable: true,
                   position: "top",
                 });
+                setButtonDisabledCheck(false);
+                setSavingMatch(false);
+                navigate("/home/game/match-history")
               })
               .catch((error) => {
                 console.error("Error registering match:", error);
@@ -597,8 +606,7 @@ export default function NewMatch() {
     } catch (error) {
       console.error(error);
     }
-
-    
+        
   };
 
   const colors = useColorModeValue(
@@ -2030,11 +2038,30 @@ export default function NewMatch() {
                 m={3}
                 type="submit"
                 onClick={() => handleSubmit}
+                isDisabled={buttonDisabledCheck}
               >
-                Add New Match
+                {buttonDisabledCheck ? "Please wait" : "Add New Match"}
               </Button>
             </Stack>
           </form>
+
+          {savingMatch && (
+            <Box
+              width="100%"
+              justifyContent="center"
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
+            </Box>
+          )}
         </Container>
       </Box>
     </>

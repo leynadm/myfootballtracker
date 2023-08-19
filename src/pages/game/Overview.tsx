@@ -1,5 +1,6 @@
 'use client'
 import { useNavigate } from 'react-router-dom'
+import Logo from "../../../public/icons/android-chrome-192x192.png"
 import {
   Box,
   Flex,
@@ -14,6 +15,7 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Image
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { HamburgerIcon, AddIcon } from '@chakra-ui/icons'
@@ -88,7 +90,14 @@ export default function Overview() {
             </MenuList>
           </Menu>
           <HStack spacing={8} alignItems={"center"}>
-            <Box>Logo</Box>
+            <Box>
+            <Image
+            w="4rem"
+            src={Logo}
+            alt="app logo"
+            />
+
+            </Box>
             <HStack
               as={"nav"}
               spacing={4}
