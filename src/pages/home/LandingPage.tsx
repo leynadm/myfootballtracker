@@ -1,5 +1,5 @@
-import "../../styles/LandingPage.css"
-import Logo from "../../assets/android-chrome-512x512.png"
+import "../../styles/LandingPage.css";
+import Logo from "../../assets/logo.png";
 import {
   Button,
   Text,
@@ -8,50 +8,14 @@ import {
   Container,
   Grid,
   IconButton,
-  Divider,
-  Badge,
-  WrapItem,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
   Flex,
   Image,
-  Avatar,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
   Heading,
-  Progress
-
+  Progress,
 } from "@chakra-ui/react";
 
 interface BeforeInstallPromptEventChoiceResult {
-  outcome: 'accepted' | 'dismissed';
+  outcome: "accepted" | "dismissed";
   platform: string;
 }
 
@@ -61,21 +25,19 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): void;
 }
 
-
 import { useEffect } from "react";
-import FootBallNoBackground from "../../assets/football-no-background.png"
 import ReSampleChart from "../statistics/ReSampleChart";
 import { useNavigate } from "react-router-dom";
-import {FiLogIn} from "react-icons/fi"
-import {MdInstallMobile} from "react-icons/md"
+import { FiLogIn } from "react-icons/fi";
+import { MdInstallMobile } from "react-icons/md";
 import { GoGoal } from "react-icons/go";
 import { GoTelescope } from "react-icons/go";
 import { useState } from "react";
 import { GiGoalKeeper } from "react-icons/gi";
 
 export default function LandingPage() {
-  
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [openInstallInstructionsModal, setOpenInstallInstructionsModal] =
     useState(false);
 
@@ -83,11 +45,17 @@ export default function LandingPage() {
     event.preventDefault();
     setDeferredPrompt(event);
   }
-  
+
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+    window.addEventListener(
+      "beforeinstallprompt",
+      handleBeforeInstallPrompt as EventListener
+    );
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as EventListener);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt as EventListener
+      );
     };
   }, []);
 
@@ -110,7 +78,6 @@ export default function LandingPage() {
   }
 
   const boxStyle = {
-    
     weight: "100%",
     height: "100%",
     display: "flex",
@@ -121,10 +88,10 @@ export default function LandingPage() {
     color: "white",
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
-      <Container maxW="6xl">
+      <Container maxW="6xl" >
         <Stack spacing={5} minH="100vh">
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <Text fontWeight="bold" fontSize="1.5em">
@@ -134,7 +101,7 @@ export default function LandingPage() {
               rightIcon={<MdInstallMobile />}
               colorScheme="blue"
               variant="outline"
-            onClick={handleInstallClick}
+              onClick={handleInstallClick}
             >
               Install
             </Button>
@@ -146,56 +113,19 @@ export default function LandingPage() {
                 documented with data.
               </Text>
             </Heading>
-            
           </Box>
-          <Box
-          m={4}
-          alignSelf="center"
-            position="relative"
-            width="20rem"
-            height="12rem"
-            zIndex="1" // Set the z-index of the first div
-            bg="radial-gradient(circle, rgba(55,47,47,1) 0%, rgba(0,50,245,1) 100%)"
-            borderTopLeftRadius="200px 50px"
-            borderTopRightRadius="100px 100px"
-            borderBottomLeftRadius="150px 220px"
-            borderBottomRightRadius="220"
-          >
-            <Box
-              position="absolute"
-              top="2rem" // Adjust the top value to control how far the second div is from the top
-              left="2rem" // Adjust the left value to control how far the second div is from the left
-              width="14rem"
-              height="12rem"
-              zIndex="0" // Set a lower z-index for the second div
-              bg="lightblue"
-              borderTopLeftRadius="200px 50px"
-              borderTopRightRadius="100px 100px"
-              borderBottomLeftRadius="150px 220px"
-              borderBottomRightRadius="220"
-            >          
-            <Box w='12rem'>
-            <img src={Logo} alt="logo"
-
-            /></Box>
-
-
-            </Box>
-          </Box>
-
-
+          
+          <Box  display="flex" justifyContent="center" alignItems="center">
+                <img src={Logo} alt="logo" />
+              </Box>
 
           <Box>
             <Text fontSize="1.35em" textAlign="center">
               Our app helps you track matches, goals, assists, and more, all in
               one place.
             </Text>
-
           </Box>
 
-          {/* 
-
- */}
           <Box
             p={10}
             display="flex"
@@ -211,9 +141,8 @@ export default function LandingPage() {
               Get Started
             </Button>
           </Box>
-
         </Stack>
-        <Stack spacing={5}>
+        <Stack spacing={10}>
           <Box gap={4} display="flex" flexDirection="column">
             <Text textAlign="center" fontSize="1.25em">
               Gain insights into a range of data analytics that spotlight your
@@ -226,7 +155,7 @@ export default function LandingPage() {
             display="flex"
             flexDirection="column"
             justifyContent="center"
-            gap={3}
+            gap={1}
           >
             <Text textAlign="center" fontSize="1.25em">
               See comprehensive breakdowns of your performance, like your
@@ -294,11 +223,12 @@ export default function LandingPage() {
             </Grid>
           </Box>
 
+          <Box>
           <Text textAlign="center" fontSize="1.25em">
             Reach significant milestones and unlock personalized achievements
             and trophies, depending on your playstyle!
           </Text>
-          <Grid templateColumns="repeat(2,1fr)" gap={2}>
+          <Grid templateColumns="repeat(2,1fr)" gap={5}>
             <Box>
               <Box
                 display="flex"
@@ -337,7 +267,8 @@ export default function LandingPage() {
               <Progress value={31} max={50} />
             </Box>
           </Grid>
-          <Box gap={4} display="flex" flexDirection="column">
+          </Box>
+          <Box gap={1} display="flex" flexDirection="column">
             <Text textAlign="center" fontSize="1.25em">
               Reveal match highlights linked to your outstanding performances,
               whether it's a hat-trick, an amazing assist, or a saved penalty.
@@ -416,44 +347,7 @@ export default function LandingPage() {
         </Stack>
       </Container>
 
-      {/* 
-      <Box
-        backgroundImage="radial-gradient(circle, rgba(55,47,47,1) 0%, rgba(0,50,245,1) 100%)"
-        transform="skewY(-11deg)"
-        height="30vh"
-        display="flex"
-        flexDirection='column'
-        justifyContent="center"
-        alignItems="center"
-        _before={{
-          height:"24vh",
-          content: '""',
-          position: "absolute",
-          top: 8,
-          right: 0,
-          left: 0,
-          bottom: 0,
-          backgroundImage: "linear-gradient(45deg, #654ea3, #eaafc8)",
-          transform: "skewY(-2deg)",
-        }}
-      >
-        <Container 
-        display="flex"
-        flexDirection='column'
-        justifyContent="center"
-        alignItems="center"
-        >
-          <Box
-            color="white"
-            fontWeight="bold"
-            transform="skewY(11deg)"
-          fontSize="1.5rem"
-          >
-            Your Personal Football Diary: Embrace the power of data-driven
-            improvement.
-          </Box>
-        </Container>
-      </Box> */}
+
     </>
   );
 }

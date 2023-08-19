@@ -9,7 +9,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Button,
   Heading,
@@ -22,20 +21,52 @@ import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   getAdditionalUserInfo, signInWithEmailAndPassword
 } from "firebase/auth";
 import { ChangeEvent, useState } from "react";
 import {auth} from "../../config/firebase";
-
+import { FaFacebook } from 'react-icons/fa'
 function Login() {
   
   const authentication = getAuth();
   const provider = new GoogleAuthProvider();  
   authentication.useDeviceLanguage();
 
+  const facebookProvider = new FacebookAuthProvider();
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   function SignInWithGoogle() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        const newUserCheck = getAdditionalUserInfo(result);
+        if (newUserCheck?.isNewUser) {
+          createUserDoc(user.uid, user.displayName);
+          createOverallStatsDoc(user.uid)
+          createChartStatsDoc(user.uid)
+        }
+        
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  }
+
+  function SignInWithFacebook() {
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -101,61 +132,77 @@ function Login() {
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Sign in to your account</Heading>
         </Stack>
-        <form onSubmit={()=>handleLogIn}>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
-          p={8}
-        >
-          <Stack spacing={4}>
-            
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" onChange={(e)=>setEmail(e.target.value)} />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" onChange={(e)=>setPassword(e.target.value)} />
-            </FormControl>
-            
-            
-            <Stack spacing={10}>
-            
-              <Stack
-                direction={{ base: "row" }}
-                align={"start"}
-                justify={"space-between"}
-              >
-                
-                <Link to="forgot-password">
-                <Text color={"blue.400"}>Forgot password?</Text>
-                </Link>
-                <Link to="/signup">
-                <Text color={"blue.400"}>Do you need account?</Text>
-                </Link>
-              </Stack>
-              <Button
-                leftIcon={<MdOutlineLogin />}
-                colorScheme="messenger"
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-                onClick={handleLogIn}
+        <form onSubmit={() => handleLogIn}>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "gray.700")}
+            boxShadow={"lg"}
+            p={8}
+          >
+            <Stack spacing={3}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormControl>
+
+              <Stack spacing={4}>
+                <Stack
+                  direction={{ base: "row" }}
+                  align={"start"}
+                  justify={"space-between"}
                 >
-                Sign in
-              </Button>
-              <Button w={"full"} variant={"outline"} leftIcon={<FcGoogle />}
-                onClick={SignInWithGoogle}
-              >
-                <Center>
-                  <Text>Sign in with Google</Text>
-                </Center>
-              </Button>
+                  <Link to="forgot-password">
+                    <Text color={"blue.400"}>Forgot password?</Text>
+                  </Link>
+                  <Link to="/signup">
+                    <Text color={"blue.400"}>Do you need account?</Text>
+                  </Link>
+                </Stack>
+                <Button
+                  leftIcon={<MdOutlineLogin />}
+                  colorScheme="messenger"
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  onClick={handleLogIn}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  w={"full"}
+                  variant={"outline"}
+                  leftIcon={<FcGoogle />}
+                  onClick={SignInWithGoogle}
+                >
+                  <Center>
+                    <Text>Sign in with Google</Text>
+                  </Center>
+                </Button>
+
+                <Button
+                  w={"full"}
+                  colorScheme={"facebook"}
+                  leftIcon={<FaFacebook />}
+                  onClick={SignInWithFacebook}
+                >
+                  <Center>
+                    <Text>Continue with Facebook</Text>
+                  </Center>
+                </Button>
+              </Stack>
             </Stack>
-          </Stack>
-        </Box>
+          </Box>
         </form>
       </Stack>
     </Flex>
