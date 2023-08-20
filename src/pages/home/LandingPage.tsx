@@ -91,11 +91,11 @@ export default function LandingPage() {
   const navigate = useNavigate();
   return (
     <>
-      <Container maxW="6xl" >
+      <Container maxW="4xl" >
         <Stack spacing={5} minH="100vh">
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <Text fontWeight="bold" fontSize="1.5em">
-              myFootball Tracker
+              My Football Tracker
             </Text>
             <Button
               rightIcon={<MdInstallMobile />}
@@ -163,7 +163,7 @@ export default function LandingPage() {
             </Text>
 
             <Grid
-              w="75vw"
+              w="50%"
               templateAreas={`"LWF CF RWF"
                           "LWF SS RWF"
                           "LMF AMF RMF"

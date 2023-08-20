@@ -127,7 +127,7 @@ export default function NewMatch() {
     alignItems: "center",
     transition: "background-color 0.2s", // Add a smooth transition effect
     bg: "green",
-    color: "black",
+    color: "white",
   };
 
   const toast = useToast();
@@ -299,145 +299,156 @@ export default function NewMatch() {
   const [thePathBreaker, setThePathBreaker] = useState(false);
   const [theMountain, setTheMountain] = useState(false);
 
-  function checkGoalsRadioValue() {
-    if (goalsRadioValue === "getOnTheScoresheet") {
+  function checkGoalsRadioValue(e:string) {
+
+    if (e === "getOnTheScoresheet") {
       setGetOnTheScoresheet(true);
     } else {
       setGetOnTheScoresheet(false);
     }
 
-    if (goalsRadioValue === "bagABrace") {
+    if (e === "bagABrace") {
       setBagABrace(true);
     } else {
       setBagABrace(false);
     }
 
-    if (goalsRadioValue === "scoreAHattrick") {
+    if (e === "scoreAHattrick") {
       setScoreAHattrick(true);
     } else {
       setScoreAHattrick(false);
     }
 
-    if (goalsRadioValue === "fantasticFour") {
+    if (e === "fantasticFour") {
       setFantasticFour(true);
     } else {
       setFantasticFour(false);
     }
 
-    if (goalsRadioValue === "pokerMaster") {
+    if (e === "pokerMaster") {
       setPokerMaster(true);
     } else {
       setPokerMaster(false);
     }
 
-    if (goalsRadioValue === "historyMaker") {
+    if (e === "historyMaker") {
       setHistoryMaker(true);
     } else {
       setHistoryMaker(false);
     }
+
+    setGoalsRadioValue(e)
   }
 
-  function checkSavesRadioValue() {
-    if (savesRadioValue === "youStopHere") {
+  function checkSavesRadioValue(e:string) {
+   
+    if (e === "youStopHere") {
       setYouStopHere(true);
     } else {
       setYouStopHere(false);
     }
 
-    if (savesRadioValue === "imNotKidding") {
+    if (e === "imNotKidding") {
       setImNotKidding(true);
     } else {
       setImNotKidding(false);
     }
 
-    if (savesRadioValue === "theKraken") {
+    if (e === "theKraken") {
       setTheKraken(true);
     } else {
       setTheKraken(false);
     }
 
-    if (savesRadioValue === "guardianAngel") {
+    if (e === "guardianAngel") {
       setGuardianAngel(true);
     } else {
       setGuardianAngel(false);
     }
 
-    if (savesRadioValue === "protectorOfTheGalaxy") {
+    if (e === "protectorOfTheGalaxy") {
       setProtectorOfTheGalaxy(true);
     } else {
       setProtectorOfTheGalaxy(false);
     }
+
+    setSavesRadioValue(e)
   }
 
-  function checkDefenceRadioValue() {
-    if (defenceRadioValue === "theGiant") {
+  function checkDefenceRadioValue(e:string) {
+
+    setDefenceRadioValue(e)
+    if (e === "theGiant") {
       setTheGiant(true);
     } else {
       setTheGiant(false);
     }
 
-    if (defenceRadioValue === "oneManArmy") {
+    if (e === "oneManArmy") {
       setOneManArmy(true);
     } else {
       setOneManArmy(false);
     }
 
-    if (defenceRadioValue === "theMonument") {
+    if (e === "theMonument") {
       setTheMonument(true);
     } else {
       setTheMonument(false);
     }
 
-    if (defenceRadioValue === "thePathBreaker") {
+    if (e === "thePathBreaker") {
       setThePathBreaker(true);
     } else {
       setThePathBreaker(false);
     }
 
-    if (defenceRadioValue === "theMountain") {
+    if (e === "theMountain") {
       setTheMountain(true);
     } else {
       setTheMountain(false);
     }
   }
 
-  function checkAssistsRadioValue() {
-    if (assistsRadioValue === "aPleasureDoingBusiness") {
+  function checkAssistsRadioValue(e: string) {
+    if (e === "aPleasureDoingBusiness") {
       setAPleasureDoingBusiness(true);
     } else {
       setAPleasureDoingBusiness(false);
     }
 
-    if (assistsRadioValue === "foodOnTheTable") {
+    if (e === "foodOnTheTable") {
       setFoodOnTheTable(true);
     } else {
       setFoodOnTheTable(false);
     }
 
-    if (assistsRadioValue === "assistsMaestro") {
+    if (e === "assistsMaestro") {
       setAssistsMaestro(true);
     } else {
       setAssistsMaestro(false);
     }
 
-    if (assistsRadioValue === "industrialProvider") {
+    if (e === "industrialProvider") {
       setIndustrialProvider(true);
     } else {
       setIndustrialProvider(false);
     }
 
-    if (assistsRadioValue === "puppetMaster") {
+    if (e === "puppetMaster") {
       setPuppetMaster(true);
     } else {
       setPuppetMaster(false);
     }
 
-    if (goalsRadioValue === "omniscient") {
+    if (e === "omniscient") {
       setOmniscient(true);
     } else {
       setOmniscient(false);
     }
+
+    setAssistsRadioValue(e);
   }
+
   const dataToSubmit: MatchDataToSubmit = {
     winValue: winValue,
     positionsPlayed: positionsPlayed,
@@ -531,11 +542,14 @@ export default function NewMatch() {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    
+    
+    event.preventDefault();
     setSavingMatch(true)
     setButtonDisabledCheck(true)
-    event.preventDefault();
 
     let positionSelected = true;
+    
     for (const key in positionsPlayed) {
       if (positionsPlayed[key] === true) {
         positionSelected = false;
@@ -551,14 +565,10 @@ export default function NewMatch() {
       return;
     }
 
+    await uploadMatchImage();
 
     try {
-      await uploadMatchImage();
-      checkGoalsRadioValue();
-      checkAssistsRadioValue();
-      checkSavesRadioValue();
-      checkDefenceRadioValue();
-
+    
       const validityCheckPromise = checkMatchesPlayed(
         dataToSubmit,
         currentUser.uid
@@ -620,22 +630,16 @@ export default function NewMatch() {
   const [goalsRadioValue, setGoalsRadioValue] = useState("");
   const [assistsRadioValue, setAssistsRadioValue] = useState("");
   const [savesRadioValue, setSavesRadioValue] = useState("");
-  const [defenceRadioValue, setDefenceSavesRadioValue] = useState("");
-
+  const [defenceRadioValue, setDefenceRadioValue] = useState("");
   const [requiredField, setRequiredField] = useState(false);
 
   return (
     <>
       <Box paddingBottom="75px">
-        {/* 
-        <Box display="flex" justifyContent="center" gap={2} alignItems="center">
-        <AddIcon/>
-        <Heading size="md" textAlign="center">Add a new match</Heading>
-        </Box>
- */}
+
         <Container>
           <Text textAlign="center" mt={2}>
-            Position Played
+            Choose the position played in the match:
           </Text>
 
           <Grid
@@ -657,7 +661,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["CF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["CF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["CF"] ? "black" : boxStyle.color,
               }}
               gridArea="CF"
               onClick={() => handleClick("CF")}
@@ -674,7 +678,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["SS"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["SS"] ? "white" : boxStyle.color,
+                color: positionsPlayed["SS"] ? "black" : boxStyle.color,
               }}
               gridArea="SS"
               _hover={{
@@ -691,7 +695,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["LWF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["LWF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["LWF"] ? "black" : boxStyle.color,
               }}
               gridArea="LWF"
               onClick={() => handleClick("LWF")}
@@ -707,7 +711,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["RWF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["RWF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["RWF"] ? "black" : boxStyle.color,
               }}
               gridArea="RWF"
               _hover={{
@@ -723,7 +727,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["LMF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["LMF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["LMF"] ? "black" : boxStyle.color,
               }}
               gridArea="LMF"
               _hover={{
@@ -739,7 +743,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["AMF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["AMF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["AMF"] ? "black" : boxStyle.color,
               }}
               gridArea="AMF"
               _hover={{
@@ -755,7 +759,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["RMF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["RMF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["RMF"] ? "black" : boxStyle.color,
               }}
               gridArea="RMF"
               _hover={{
@@ -771,7 +775,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["CMF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["CMF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["CMF"] ? "black" : boxStyle.color,
               }}
               gridArea="CMF"
               _hover={{
@@ -787,7 +791,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["DMF"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["DMF"] ? "white" : boxStyle.color,
+                color: positionsPlayed["DMF"] ? "black" : boxStyle.color,
               }}
               gridArea="DMF"
               _hover={{
@@ -803,7 +807,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["LB"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["LB"] ? "white" : boxStyle.color,
+                color: positionsPlayed["LB"] ? "black" : boxStyle.color,
               }}
               gridArea="LB"
               _hover={{
@@ -819,7 +823,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["CB"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["CB"] ? "white" : boxStyle.color,
+                color: positionsPlayed["CB"] ? "black" : boxStyle.color,
               }}
               gridArea="CB"
               _hover={{
@@ -835,7 +839,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["RB"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["RB"] ? "white" : boxStyle.color,
+                color: positionsPlayed["RB"] ? "black" : boxStyle.color,
               }}
               gridArea="RB"
               _hover={{
@@ -851,7 +855,7 @@ export default function NewMatch() {
               style={{
                 ...boxStyle,
                 backgroundColor: positionsPlayed["GK"] ? "gold" : boxStyle.bg,
-                color: positionsPlayed["GK"] ? "white" : boxStyle.color,
+                color: positionsPlayed["GK"] ? "black" : boxStyle.color,
               }}
               gridArea="GK"
               _hover={{
@@ -1102,7 +1106,7 @@ export default function NewMatch() {
                       <TabPanels>
                         <TabPanel p={3}>
                           <RadioGroup
-                            onChange={(e) => setGoalsRadioValue(e)}
+                            onChange={(e) => checkGoalsRadioValue(e)}
                             value={goalsRadioValue}
                           >
                             <Stack direction="column">
@@ -1377,7 +1381,7 @@ export default function NewMatch() {
                         </TabPanel>
                         <TabPanel p={3}>
                           <RadioGroup
-                            onChange={(e) => setAssistsRadioValue(e)}
+                            onChange={(e) => checkAssistsRadioValue(e)}
                             value={assistsRadioValue}
                           >
                             <Stack direction="column">
@@ -1554,7 +1558,7 @@ export default function NewMatch() {
 
                         <TabPanel>
                           <RadioGroup
-                            onChange={(e) => setDefenceSavesRadioValue(e)}
+                            onChange={(e) => checkDefenceRadioValue(e)}
                             value={defenceRadioValue}
                           >
                             <Stack direction="column">
@@ -1576,7 +1580,7 @@ export default function NewMatch() {
                                   </Text>
                                   <Text fontSize="small">
                                     Stop between 1-3 opponent attacks during the
-                                    game.
+                                    game via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 
@@ -1600,8 +1604,8 @@ export default function NewMatch() {
                                     One Man Army
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop between 4-7 opponent attacks during the
-                                    game.
+                                    Stop between 4-6 opponent attacks during the
+                                    game via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 
@@ -1625,8 +1629,8 @@ export default function NewMatch() {
                                     The Monument
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop between 8-12 opponent attacks during
-                                    the game.
+                                    Stop between 7-9 opponent attacks during
+                                    the game via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 
@@ -1650,8 +1654,8 @@ export default function NewMatch() {
                                     The Path Breaker
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop between 13-16 opponent attacks during
-                                    the game.
+                                    Stop between 10-14 opponent attacks during
+                                    the game via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 
@@ -1675,7 +1679,7 @@ export default function NewMatch() {
                                     The Mountain
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop 17+ opponent attacks during the game.
+                                    Stop 15+ opponent attacks during the game via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 
@@ -1727,7 +1731,7 @@ export default function NewMatch() {
 
                         <TabPanel>
                           <RadioGroup
-                            onChange={(e) => setSavesRadioValue(e)}
+                            onChange={(e) => checkSavesRadioValue(e)}
                             value={savesRadioValue}
                           >
                             <Stack direction="column">

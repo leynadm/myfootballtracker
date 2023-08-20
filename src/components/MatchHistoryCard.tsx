@@ -61,6 +61,18 @@ import { GiCaptainHatProfile } from "react-icons/gi";
 import { GiColombianStatue } from "react-icons/gi";
 import { LiaCrossSolid } from "react-icons/lia";
 import { PiArrowsCounterClockwiseDuotone } from "react-icons/pi";
+import { GiMoonOrbit } from "react-icons/gi";
+import { GiGiant } from "react-icons/gi";
+import { FaMonument } from "react-icons/fa";
+import { GiHumanPyramid } from "react-icons/gi";
+import { GiMaze } from "react-icons/gi";
+import { GiMountaintop } from "react-icons/gi";
+import { GoTelescope } from "react-icons/go";
+import { BsFillSignStopFill } from "react-icons/bs";
+import { GiAngryEyes } from "react-icons/gi";
+import { FaGitkraken } from "react-icons/fa";
+import { GiAngelWings } from "react-icons/gi";
+import { GiGalaxy } from "react-icons/gi";
 import { GiLockedFortress } from "react-icons/gi";
 import { GiGoalKeeper } from "react-icons/gi";
 import { GiFeline } from "react-icons/gi";
@@ -69,6 +81,7 @@ import { GiPathDistance } from "react-icons/gi";
 import { MdOutlineScoreboard } from "react-icons/md";
 import { BiSolidEditAlt } from "react-icons/bi";
 import { BsCalendarDate } from "react-icons/bs";
+import { GiSlingshot } from "react-icons/gi";
 import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
@@ -627,7 +640,31 @@ function MatchHistoryCard({ match }: { match: any }) {
                     </Box>
                   )}
 
-                  {match.Hawkeye && (
+                  {match.slingshot && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiSlingshot />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Slingshot</Text>
+                    </Box>
+                  )}
+
+                  {match.aroundThePlanet && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiMoonOrbit />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Around The Planet</Text>
+                    </Box>
+                  )}
+
+                  {match.hawkeye && (
                     <Box textAlign="center">
                       <IconButton
                         aria-label="highlight icon"
@@ -887,6 +924,18 @@ function MatchHistoryCard({ match }: { match: any }) {
                       <Text>Marksman</Text>
                     </Box>
                   )}
+
+                  {match.telescopeVision && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GoTelescope />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Telescope Vision</Text>
+                    </Box>
+                  )}
                 </Grid>
 
                 <Grid
@@ -897,6 +946,66 @@ function MatchHistoryCard({ match }: { match: any }) {
                   fontSize="smaller"
                   mt={2}
                 >
+                  {match.theGiant && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiGiant />}
+                        fontSize="1rem"
+                        bg="blue.200"
+                      />
+                      <Text>The Giant</Text>
+                    </Box>
+                  )}
+
+                  {match.oneManArmy && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiHumanPyramid />}
+                        fontSize="1rem"
+                        bg="blue.200"
+                      />
+                      <Text>One Man Army</Text>
+                    </Box>
+                  )}
+
+                  {match.theMonument && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<FaMonument />}
+                        fontSize="1rem"
+                        bg="blue.200"
+                      />
+                      <Text>The Monument</Text>
+                    </Box>
+                  )}
+
+                  {match.thePathBreaker && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiMaze />}
+                        fontSize="1rem"
+                        bg="blue.200"
+                      />
+                      <Text>The Path Breaker</Text>
+                    </Box>
+                  )}
+
+                  {match.theMountain && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiMountaintop />}
+                        fontSize="1rem"
+                        bg="blue.200"
+                      />
+                      <Text>The Mountain</Text>
+                    </Box>
+                  )}
+
                   {match.youShallNotPass && (
                     <Box textAlign="center">
                       <IconButton
@@ -966,6 +1075,66 @@ function MatchHistoryCard({ match }: { match: any }) {
                   fontSize="smaller"
                   mt={2}
                 >
+                  {match.youStopHere && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<BsFillSignStopFill />}
+                        fontSize="1rem"
+                        bg="orange.200"
+                      />
+                      <Text>You Stop Here!</Text>
+                    </Box>
+                  )}
+
+                  {match.imNotKidding && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiAngryEyes />}
+                        fontSize="1rem"
+                        bg="orange.200"
+                      />
+                      <Text>I'm Not Kidding</Text>
+                    </Box>
+                  )}
+
+                  {match.theKraken && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<FaGitkraken />}
+                        fontSize="1rem"
+                        bg="orange.200"
+                      />
+                      <Text>The Kraken</Text>
+                    </Box>
+                  )}
+
+                  {match.guardianAngel && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiAngelWings />}
+                        fontSize="1rem"
+                        bg="orange.200"
+                      />
+                      <Text>Guardian Angel</Text>
+                    </Box>
+                  )}
+
+                  {match.protectorOfTheGalaxy && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiGalaxy />}
+                        fontSize="1rem"
+                        bg="orange.200"
+                      />
+                      <Text>Protector Of The Galaxy</Text>
+                    </Box>
+                  )}
+
                   {match.livingInAFortress && (
                     <Box textAlign="center">
                       <IconButton

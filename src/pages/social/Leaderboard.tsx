@@ -58,8 +58,6 @@ function Leaderboard() {
 
   const navigate = useNavigate()
   useEffect(() => {
-    console.log(userIndividualFollowers.length)
-    console.log(userIndividualFollowingData.length)
     if (userIndividualFollowers.length === 0) {
       getFollowing();
     }    

@@ -127,7 +127,7 @@ function MatchHighlightsTable({overallStatsData}:Props) {
                           />
                         </Td>
                         <Td pl={0} pr={0} textAlign="start">
-                          Bag a brace
+                          Bag a Brace
                         </Td>
                         <Td pl={0} pr={0} textAlign="center">
                           x {overallStatsData.bagABrace}
