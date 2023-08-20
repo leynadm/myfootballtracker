@@ -12,7 +12,7 @@ function LoadingSkeleton() {
   return (
     <>
       <Container pb="50px">
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gap={2}>
             <Skeleton height="2rem" />
             <Skeleton height="2rem" />

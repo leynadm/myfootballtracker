@@ -1,17 +1,18 @@
 import {
-    query,
-    collection,
-    getDocs,
-    orderBy,
-    startAfter,
-    limit
-  } from "firebase/firestore";
+  query,
+  collection,
+  getDocs,
+  orderBy,
+  startAfter,
+  limit,
+} from "firebase/firestore";
 import { db } from "../../config/firebase";
 import MatchHistoryCard from "../../components/MatchHistoryCard";
 import { useContext, useEffect, useState } from "react";
-import { Container,Stack } from "@chakra-ui/react";
+import { Container, Stack, Button } from "@chakra-ui/react";
 import { AuthContext } from "../../context/Auth";
-
+import { HiUpload } from "react-icons/hi";
+import MatchHistorySkeleton from "../../components/MatchHistorySkeleton";
 function MatchHistory() {
   const { currentUser } = useContext(AuthContext);
 
@@ -19,9 +20,9 @@ function MatchHistory() {
   const [userMatches, setUserMatches] = useState<any[]>([]);
   const [loadButtonStatus, setLoadButtonStatus] = useState(false);
   const [hasMatches, setHasMatches] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   async function getUserMatches() {
-    setLoading(true);
     try {
       let q;
       if (latestDoc) {
@@ -60,36 +61,49 @@ function MatchHistory() {
       if (querySnapshot.empty) {
         setLoadButtonStatus(true);
       }
-
-      console.log(userData);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       // Handle the error here
       console.error("Error fetching user posts:", error);
       // You can also show a user-friendly error message to the user
       // For example: setErrorState("Failed to fetch user posts. Please try again later.");
     }
+    setLoading(false)
   }
 
   useEffect(() => {
     getUserMatches();
   }, []);
+
+  useEffect(() => {}, [loading]);
+  
   return (
     <>
-      <Container display="flex" justifyContent="center" pb="80px">
-        <Stack spacing={1}>
+      {!loading ? (
+        <Container
+          display="flex"
+          justifyContent="center"
+          pb="80px"
+          flexDirection="column"
+        >
+          <Stack spacing={1}>
+            {userMatches.map((match: any, index: number) => (
+              <MatchHistoryCard key={index} match={match} />
+            ))}
+          </Stack>
 
-        {userMatches.map((match: any, index: number) => (
-
-          <MatchHistoryCard 
-          key={index}
-          match={match}
-          />
-
-          ))} 
-        </Stack>
-      </Container>
+          <Button
+            rightIcon={<HiUpload />}
+            colorScheme="blue"
+            variant="solid"
+            m={3}
+            type="submit"
+          >
+            Load More Matches
+          </Button>
+        </Container>
+      ) : (
+        <MatchHistorySkeleton />
+      )}
     </>
   );
 }

@@ -1,13 +1,11 @@
 import playerTshirt from "../../assets/player_tshirt.png";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
 import {
-  Button,
   Text,
   Stack,
   Box,
   Container,
   Grid,
-  IconButton,
   Divider,
   Badge,
   WrapItem,
@@ -15,25 +13,6 @@ import {
   StatLabel,
   StatNumber,
   StatHelpText,
-  StatArrow,
-  StatGroup,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
 } from "@chakra-ui/react";
 
 import { PiSoccerBallFill } from "react-icons/pi";
@@ -59,7 +38,7 @@ export default function OverallMatchInfo() {
     weight: "100%",
     height: "100%",
     display: "flex",
-    flexDirection:"column",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     transition: "background-color 0.2s", // Add a smooth transition effect
@@ -69,30 +48,26 @@ export default function OverallMatchInfo() {
   };
 
   const { currentUserData } = useContext(AuthContext);
-  
+
   const { overallStatsData, dataLoadedTrigger } =
     useContext(OverallStatsContext);
 
-  const [totalPositions, setTotalPositions] = useState(0)
+  const [totalPositions, setTotalPositions] = useState(0);
 
+  function calculatePositionsPlayed() {
+    console.log(overallStatsData.positionsPlayed);
+    let positionsPlayed = 0;
+    for (const value of Object.values(overallStatsData.positionsPlayed)) {
+      positionsPlayed += value;
+    }
 
-   
-function calculatePositionsPlayed(){
-  
-  console.log(overallStatsData.positionsPlayed)
-  let positionsPlayed = 0
-  for (const value of Object.values(overallStatsData.positionsPlayed)) {
-    positionsPlayed += value;
+    setTotalPositions(positionsPlayed);
   }
 
-  setTotalPositions(positionsPlayed)
-} 
-
   const calculateBackgroundColor = (value: number) => {
+    console.log("inside calcualteBackgroundColor:");
+    console.log(value);
 
-    console.log('inside calcualteBackgroundColor:')
-    console.log(value)
-    
     const colorRange = [
       "#228B22", // Forestgreen
       "#00A36C", // Olive
@@ -123,7 +98,6 @@ function calculatePositionsPlayed(){
     } else if (value >= 101) {
       backgroundColorToUse = "#FFD700";
     }
-    
 
     return backgroundColorToUse;
   };
@@ -137,10 +111,7 @@ function calculatePositionsPlayed(){
     return colorRange[index];
   };
 
-  useEffect(() => {
-
-  }, [dataLoadedTrigger]);
-
+  useEffect(() => {}, [dataLoadedTrigger]);
 
   return (
     <>
@@ -215,7 +186,6 @@ function calculatePositionsPlayed(){
               color="blackAlpha.700"
               fontWeight="bold"
               marginTop="0.5rem"
-              height="50vh"
             >
               <Box
                 style={{
@@ -228,23 +198,28 @@ function calculatePositionsPlayed(){
                 gridArea="CF"
               >
                 <Text textAlign="center">CF</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.CF_p})</Text>
-                <Text>
-
-                {`${
-                    isNaN(((
-                      overallStatsData.CF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.CF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.CF_p})</Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.CF_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.CF_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
 
@@ -259,23 +234,29 @@ function calculatePositionsPlayed(){
                 gridArea="SS"
               >
                 <Text textAlign="center">SS</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.SS_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.SS_p})</Text>
 
-                <Text>
-                {`${
-                    isNaN(((
-                      overallStatsData.SS_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.SS_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.SS_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.SS_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
 
@@ -289,23 +270,23 @@ function calculatePositionsPlayed(){
                 }}
                 gridArea="LWF"
               >
-                
                 <Text textAlign="center">LWF</Text>
                 <Text>({overallStatsData.LWF_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.LWF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                <Text>
+                  {`${
+                    isNaN(
+                      (overallStatsData.LWF_p /
+                        overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.LWF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.LWF_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -321,19 +302,20 @@ function calculatePositionsPlayed(){
                 <Text textAlign="center">RWF</Text>
                 <Text>({overallStatsData.RWF_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.RWF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                <Text>
+                  {`${
+                    isNaN(
+                      (overallStatsData.RWF_p /
+                        overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.RWF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.RWF_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -349,19 +331,20 @@ function calculatePositionsPlayed(){
                 <Text textAlign="center">LMF</Text>
                 <Text>({overallStatsData.LMF_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.LMF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                <Text>
+                  {`${
+                    isNaN(
+                      (overallStatsData.LMF_p /
+                        overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.LMF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.LMF_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -374,25 +357,30 @@ function calculatePositionsPlayed(){
                 }}
                 gridArea="AMF"
               >
-                
                 <Text textAlign="center">AMF</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.AMF_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.AMF_p})</Text>
 
-                <Text>
-                {`${
-                    isNaN(((
-                      overallStatsData.AMF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.AMF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.AMF_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.AMF_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
               <Box
@@ -409,18 +397,19 @@ function calculatePositionsPlayed(){
                 <Text>({overallStatsData.RMF_p})</Text>
 
                 <Text>
-                {`${
-                    isNaN(((
-                      overallStatsData.RMF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                  {`${
+                    isNaN(
+                      (overallStatsData.RMF_p /
+                        overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.RMF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.RMF_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -434,23 +423,29 @@ function calculatePositionsPlayed(){
                 gridArea="CMF"
               >
                 <Text textAlign="center">CMF</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.CMF_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.CMF_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.CMF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.CMF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.CMF_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.CMF_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
               <Box
@@ -464,23 +459,29 @@ function calculatePositionsPlayed(){
                 gridArea="DMF"
               >
                 <Text textAlign="center">DMF</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.DMF_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.DMF_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.DMF_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.DMF_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.DMF_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.DMF_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
               <Box
@@ -496,19 +497,19 @@ function calculatePositionsPlayed(){
                 <Text textAlign="center">LB</Text>
                 <Text>({overallStatsData.LB_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.LB_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                <Text>
+                  {`${
+                    isNaN(
+                      (overallStatsData.LB_p / overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.LB_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.LB_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -522,23 +523,29 @@ function calculatePositionsPlayed(){
                 gridArea="CB"
               >
                 <Text textAlign="center">CB</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.CB_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.CB_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.CB_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.CB_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.CB_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.CB_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
               <Box
@@ -555,18 +562,18 @@ function calculatePositionsPlayed(){
                 <Text>({overallStatsData.RB_p})</Text>
 
                 <Text>
-                {`${
-                    isNaN(((
-                      overallStatsData.RB_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
+                  {`${
+                    isNaN(
+                      (overallStatsData.RB_p / overallStatsData.matchesPlayed) *
+                        100
+                    )
                       ? 0
-                      : ((
-                        overallStatsData.RB_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
+                      : (
+                          (overallStatsData.RB_p /
+                            overallStatsData.matchesPlayed) *
+                          100
+                        ).toFixed(0)
                   } %`}
-
                 </Text>
               </Box>
               <Box
@@ -580,23 +587,29 @@ function calculatePositionsPlayed(){
                 gridArea="GK"
               >
                 <Text textAlign="center">GK</Text>
-                <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
-                <Text>({overallStatsData.GK_p})</Text>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={1}
+                >
+                  <Text>({overallStatsData.GK_p})</Text>
 
-                <Text >
-                {`${
-                    isNaN(((
-                      overallStatsData.GK_p /
-                        overallStatsData.matchesPlayed
-                    ))*100)
-                      ? 0
-                      : ((
-                        overallStatsData.GK_p /
-                          overallStatsData.matchesPlayed
-                      )*100).toFixed(0)
-                  } %`}
-
-                </Text>
+                  <Text>
+                    {`${
+                      isNaN(
+                        (overallStatsData.GK_p /
+                          overallStatsData.matchesPlayed) *
+                          100
+                      )
+                        ? 0
+                        : (
+                            (overallStatsData.GK_p /
+                              overallStatsData.matchesPlayed) *
+                            100
+                          ).toFixed(0)
+                    } %`}
+                  </Text>
                 </Box>
               </Box>
             </Grid>

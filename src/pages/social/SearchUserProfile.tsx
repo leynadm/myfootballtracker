@@ -1,4 +1,4 @@
-import { useParams, useLocation,useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import SearchUserProfileOverall from "./SearchUserProfileOverall";
 import { Routes, Route } from "react-router-dom";
 import SearchUserProfileMatches from "./SearchUserProfileMatches";
@@ -26,10 +26,8 @@ import { db } from "../../config/firebase";
 import { useContext, useState } from "react";
 import Achievements from "../game/Achievements";
 import { GiLaurelsTrophy } from "react-icons/gi";
-import { BsFillHeartbreakFill, BsYoutube } from "react-icons/bs";
-import { BsFillHeartFill } from "react-icons/bs";
-import { SlUserFollow,SlUserFollowing,SlUserUnfollow } from "react-icons/sl";
-import { RiUserFollowFill,RiUserUnfollowFill} from "react-icons/ri";
+import { BsYoutube } from "react-icons/bs";
+import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri";
 import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
 import { AuthContext } from "../../context/Auth";
 import { PiTelevisionSimpleBold } from "react-icons/pi";
@@ -39,30 +37,29 @@ import { MdVerified } from "react-icons/md";
 import { GiFootprint } from "react-icons/gi";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { useEffect } from "react";
-
+import PlayerComparisonModal from "./PlayerComparisonModal";
 function SearchUserProfile() {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
-  const {currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   const [follow, setFollow] = useState<string>("");
   const [userFollowers, setUserFollowers] = useState<number>(0);
-  const navigate = useNavigate()
-  const [queriedUserChartsData, setQueriedUserChartsData] = useState<ChartDataInterface>({})
+  const navigate = useNavigate();
+  const [queriedUserChartsData, setQueriedUserChartsData] =
+    useState<ChartDataInterface>({});
   // Access the queriedUser state from location.state
 
   const queriedUser = location.state.queriedUser;
 
-
-  useEffect(()=>{
-    getRelationshipStatus()
-    getChartsDoc(queriedUser.id)
-  },[])
+  useEffect(() => {
+    getRelationshipStatus();
+    getChartsDoc(queriedUser.id);
+  }, []);
 
   function handleFollowButtonClick() {
-
-    console.log('checking if Follow = Unfollow')
-    console.log({follow})
-    console.log(follow==='Unfollow')
+    console.log("checking if Follow = Unfollow");
+    console.log({ follow });
+    console.log(follow === "Unfollow");
     if (follow === "Follow") {
       followUser();
     } else {
@@ -77,14 +74,14 @@ function SearchUserProfile() {
 
     console.log(overallChartsDocSnap);
     if (overallChartsDocSnap.exists()) {
-      const userOverallChartsData = overallChartsDocSnap.data() as ChartDataInterface;
-      setQueriedUserChartsData(userOverallChartsData)
+      const userOverallChartsData =
+        overallChartsDocSnap.data() as ChartDataInterface;
+      setQueriedUserChartsData(userOverallChartsData);
     }
   }
 
   async function getRelationshipStatus() {
     try {
-
       const socialDocRef = doc(
         db,
         "users",
@@ -116,18 +113,20 @@ function SearchUserProfile() {
 
   async function followUser() {
     try {
-
-      console.log('inside follow user')
+      console.log("inside follow user");
       /* 
       if (currentUser.emailVerified === false) {
         console.log('user needs to verify his email first')
         return;
       } */
-  
+
       const queriedUserDoc = doc(db, "users", queriedUser.id);
       const userSocialColRef = collection(queriedUserDoc, "social");
 
-      const queriedUserSocialDocRef = doc(userSocialColRef, "social-relationships");
+      const queriedUserSocialDocRef = doc(
+        userSocialColRef,
+        "social-relationships"
+      );
       const queriedUserSocialDocSnap = await getDoc(queriedUserSocialDocRef);
 
       if (!queriedUserSocialDocSnap.exists()) {
@@ -171,42 +170,40 @@ function SearchUserProfile() {
     }
   }
 
-
-
   async function unfollowUser() {
-
     try {
-
-      console.log('inside unfollow')
+      console.log("inside unfollow");
       const queriedUserDoc = doc(db, "users", queriedUser.id);
       const userSocialColRef = collection(queriedUserDoc, "social");
 
-      const queriedUserSocialDocRef = doc(userSocialColRef, "social-relationships");
+      const queriedUserSocialDocRef = doc(
+        userSocialColRef,
+        "social-relationships"
+      );
       const queriedUserSocialDocSnap = await getDoc(queriedUserSocialDocRef);
 
-      console.log('working well')
+      console.log("working well");
       if (!queriedUserSocialDocSnap.exists()) {
         // If the followers feed document doesn't exist, there's nothing to unfollow
-        console.log('doc does not exist')
+        console.log("doc does not exist");
         return;
-      }  
-      console.log('working well again')
+      }
+      console.log("working well again");
       const queriedUserFollowersData = queriedUserSocialDocSnap.data();
       if (!queriedUserFollowersData.followers.includes(currentUser.uid)) {
         // If the current user is not in the users array, they're not following this user
-        console.log('doc does not exist')
+        console.log("doc does not exist");
         return;
       }
-  
-      
-      console.log('about to remove the user from doc')
+
+      console.log("about to remove the user from doc");
       await updateDoc(queriedUserSocialDocRef, {
         followers: arrayRemove(currentUser.uid),
       });
-  
+
       setFollow("Follow");
       setUserFollowers(userFollowers - 1);
-  
+
       const currentUserDoc = doc(db, "users", currentUser.uid);
       const currentUserSocialColRef = collection(currentUserDoc, "social");
 
@@ -218,21 +215,17 @@ function SearchUserProfile() {
       await updateDoc(currentUserSocialDocRef, {
         following: arrayRemove(queriedUser.id),
       });
-    
     } catch (error) {
-
       // Handle any errors that occur during the execution of the function
       console.error("Error in unfollowUser():", error);
       // You can add specific error handling here based on the error type if needed.
     }
   }
-  
-  
-
 
   return (
     <>
       <Container pb="50px">
+
         <Box
           display="flex"
           justifyContent="space-evenly"
@@ -325,12 +318,23 @@ function SearchUserProfile() {
             )}
           </Box>
 
-          <Box display='grid' gap={2}>
+          <Box display="grid" gap={2}>
             <WrapItem display="flex" justifyContent="center">
-              <Avatar size="2xl" name={`${queriedUser.firstName} ${queriedUser.lastName}`} src={queriedUser.profileImage} />{" "}
+              <Avatar
+                size="2xl"
+                name={`${queriedUser.firstName} ${queriedUser.lastName}`}
+                src={queriedUser.profileImage}
+                loading="lazy"
+              />{" "}
             </WrapItem>
             <Button
-              rightIcon={follow ==="Follow"? (<RiUserFollowFill />) : (<RiUserUnfollowFill />)}
+              rightIcon={
+                follow === "Follow" ? (
+                  <RiUserFollowFill />
+                ) : (
+                  <RiUserUnfollowFill />
+                )
+              }
               colorScheme="gray"
               variant="outline"
               fontSize="smaller"
@@ -338,10 +342,7 @@ function SearchUserProfile() {
             >
               {follow}
             </Button>
-
           </Box>
-
-
         </Box>
 
         <WrapItem
@@ -384,7 +385,11 @@ function SearchUserProfile() {
               colorScheme="gray"
               variant="outline"
               fontSize="smaller"
-              onClick={() => navigate("player-achievements", { state: { queriedUser,overallStatsData: queriedUser.stats  } })}
+              onClick={() =>
+                navigate("player-achievements", {
+                  state: { queriedUser, overallStatsData: queriedUser.stats },
+                })
+              }
             >
               Achievements
             </Button>
@@ -400,6 +405,9 @@ function SearchUserProfile() {
 
         <Divider borderWidth="1px" />
 
+        <Box display="flex" justifyContent="center" p={1}>
+        <PlayerComparisonModal queriedUser={queriedUser} />
+        </Box>
         <Routes>
           <Route
             path=""
@@ -413,9 +421,14 @@ function SearchUserProfile() {
 
           <Route
             path="player-achievements"
-            element={<Achievements overallStatsData={queriedUser.stats} queriedUser={queriedUser} overallChartsData={queriedUserChartsData}  />}
+            element={
+              <Achievements
+                overallStatsData={queriedUser.stats}
+                queriedUser={queriedUser}
+                overallChartsData={queriedUserChartsData}
+              />
+            }
           />
-
         </Routes>
       </Container>
     </>

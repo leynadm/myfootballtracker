@@ -46,9 +46,7 @@ import { TbRectangleVerticalFilled } from "react-icons/tb";
 import { GiWhistle } from "react-icons/gi";
 import { BiPlusMedical } from "react-icons/bi";
 import { FaRegHandshake } from "react-icons/fa";
-
 import { AiOutlineDislike } from "react-icons/ai";
-
 import { GiSoccerKick } from "react-icons/gi";
 import { FaHandPeace } from "react-icons/fa";
 import { BsStarHalf } from "react-icons/bs";
@@ -140,7 +138,6 @@ function SearchUserProfileOverall({queriedUser}:Props){
           color="blackAlpha.700"
           fontWeight="bold"
           marginTop="0.5rem"
-          height="40vh"
           mb="1rem"
         >
           <Box
@@ -635,7 +632,7 @@ function SearchUserProfileOverall({queriedUser}:Props){
                 : (
                     (queriedUser.stats.wins / queriedUser.stats.matchesPlayed) *
                     100
-                  ).toFixed(2)
+                  ).toFixed(1)
             }%`}</StatHelpText>
           </Stat>
 
@@ -660,7 +657,7 @@ function SearchUserProfileOverall({queriedUser}:Props){
                     (queriedUser.stats.draws /
                       queriedUser.stats.matchesPlayed) *
                     100
-                  ).toFixed(2)
+                  ).toFixed(1)
             }%`}</StatHelpText>
           </Stat>
 
@@ -685,7 +682,7 @@ function SearchUserProfileOverall({queriedUser}:Props){
                     (queriedUser.stats.defeats /
                       queriedUser.stats.matchesPlayed) *
                     100
-                  ).toFixed(2)
+                  ).toFixed(1)
             }%`}</StatHelpText>
           </Stat>
         </Box>

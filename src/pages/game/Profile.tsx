@@ -22,7 +22,8 @@ import {
   Select,
   Divider,
   Switch,
-  useToast
+  useToast,
+  Image
 } from "@chakra-ui/react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
@@ -252,7 +253,7 @@ export default function Profile() {
 
       const imageRefResized = ref(
         storage,
-        `profile-images/${currentUser.uid}/preview/${currentUser.uid}_profile_image_128x128`
+        `profile-images/${currentUser.uid}/preview/${currentUser.uid}_profile_image_1024x1024`
       );
       try {
         imageUrlResized = await getDownloadURL(imageRefResized);
@@ -315,6 +316,7 @@ export default function Profile() {
           <Stack spacing={3} mt={2}>
             <WrapItem display="flex" justifyContent="center">
               <Avatar
+              loading="lazy"
                 size="2xl"
                 key={imageKey}
                 src={fileSource || currentUserData.profileImage}
