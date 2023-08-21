@@ -24,8 +24,6 @@ async function updateOverallStatsDoc(dataToSubmit: MatchDataToSubmit, userId:str
   
   try {
 
-    const userOverallStatsDoc = doc(db,"users","stats","overall-stats")
-
     const userDocRef = doc(db, "users", userId);
     const userMatchesColRef = collection(userDocRef, "matches");
 

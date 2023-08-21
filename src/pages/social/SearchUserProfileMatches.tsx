@@ -1,5 +1,5 @@
 import MatchHistoryCard from "../../components/MatchHistoryCard";
-import { Container, Stack } from "@chakra-ui/react";
+import { Container, Stack,Box } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import UserProfileSearch from "../../utils/interfaces/UserProfileSearch";
 import {
@@ -81,13 +81,13 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
   }, []);
   return (
     <>
-      <Container display="flex" justifyContent="center" pb="80px">
+      <Box display="flex" justifyContent="center" pb="80px">
         <Stack spacing={1}>
           {userMatches.map((match: any, index: number) => (
             <MatchHistoryCard key={index} match={match} />
           ))}
         </Stack>
-      </Container>
+      </Box>
     </>
   );
 }

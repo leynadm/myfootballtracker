@@ -25,7 +25,7 @@ import MatchHistory from './MatchHistory'
 import { Routes, Route } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { OverallStatsContext } from '../../context/OverallStats'
-
+import Reviews from './Reviews'
 import Achievements from './Achievements'
 import { useContext } from 'react'
 
@@ -33,7 +33,7 @@ interface Props {
   children: React.ReactNode
 }
 
-const Links = ['Dashboard', 'Projects', 'Team']
+const Links = ['Match History', 'Achievements','Reviews', 'Help','Log Out']
 
 const NavLink = (props: Props) => {
   const { children } = props
@@ -52,8 +52,6 @@ const NavLink = (props: Props) => {
     </Box>
   )
 }
-
-
 
 export default function Overview() {
 
@@ -74,6 +72,11 @@ export default function Overview() {
     function handleNewMatchClickAction(){
         navigate("new-game")
     }
+
+    function handleReviewsClick(){
+      navigate("reviews")
+  }
+
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -85,6 +88,7 @@ export default function Overview() {
             <MenuList>
               <MenuItem onClick={handleMatchHistoryClick}>Match History</MenuItem>
               <MenuItem onClick={handleAchievementsClick}>Achievements</MenuItem>
+              <MenuItem onClick={handleReviewsClick}>Reviews</MenuItem>
               <MenuItem>Help</MenuItem>
               <MenuItem onClick={()=>auth.signOut()}>Log Out</MenuItem>
             </MenuList>
@@ -104,7 +108,9 @@ export default function Overview() {
               display={{ base: "none", md: "flex" }}
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link}
+                
+                >{link}</NavLink>
               ))}
             </HStack>
           </HStack>
@@ -146,6 +152,7 @@ export default function Overview() {
           </Flex>
         </Flex>
 
+
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
@@ -155,7 +162,8 @@ export default function Overview() {
             </Stack>
           </Box>
         ) : null}
-      </Box>
+     
+        </Box>
 
       <Box p={4}>
 
@@ -166,6 +174,9 @@ export default function Overview() {
           <Route path="new-game" element={<NewMatch />} />
           <Route path="match-history" element={<MatchHistory />} />
           <Route path="achievements" element={<Achievements overallStatsData={overallStatsData} overallChartsData={overallChartsData}/>} />
+          <Route path="reviews" element={<Reviews />} />
+        
+          
         </Routes>
       </Box>
     </>

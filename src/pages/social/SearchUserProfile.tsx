@@ -12,6 +12,8 @@ import {
   Badge,
   WrapItem,
   Avatar,
+  IconButton,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   doc,
@@ -22,6 +24,8 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import PlayerComparison from "./PlayerComparison";
+import UserRating from "./UserRating";
 import { db } from "../../config/firebase";
 import { useContext, useState } from "react";
 import Achievements from "../game/Achievements";
@@ -37,7 +41,13 @@ import { MdVerified } from "react-icons/md";
 import { GiFootprint } from "react-icons/gi";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { useEffect } from "react";
-import PlayerComparisonModal from "./PlayerComparisonModal";
+import { MdOutlineRateReview } from "react-icons/md";
+import { AiOutlineLineChart } from "react-icons/ai";
+import { GoGitCompare } from "react-icons/go";
+import { RiRunFill } from "react-icons/ri";
+
+import OverallStats from "../statistics/OverallStats";
+
 function SearchUserProfile() {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
@@ -225,7 +235,6 @@ function SearchUserProfile() {
   return (
     <>
       <Container pb="50px">
-
         <Box
           display="flex"
           justifyContent="space-evenly"
@@ -360,44 +369,6 @@ function SearchUserProfile() {
         <Divider borderWidth="1px" />
 
         <Box display="flex" justifyContent="space-evenly" p={2}>
-          <ButtonGroup>
-            <Button
-              rightIcon={<BsClipboard2Data />}
-              colorScheme="gray"
-              variant="outline"
-              fontSize="smaller"
-              onClick={() => navigate("", { state: { queriedUser } })}
-            >
-              Overview
-            </Button>
-            <Button
-              rightIcon={<PiTelevisionSimpleBold />}
-              colorScheme="gray"
-              variant="outline"
-              fontSize="smaller"
-              onClick={() => navigate("matches", { state: { queriedUser } })}
-            >
-              Matches
-            </Button>
-
-            <Button
-              rightIcon={<GiLaurelsTrophy />}
-              colorScheme="gray"
-              variant="outline"
-              fontSize="smaller"
-              onClick={() =>
-                navigate("player-achievements", {
-                  state: { queriedUser, overallStatsData: queriedUser.stats },
-                })
-              }
-            >
-              Achievements
-            </Button>
-          </ButtonGroup>
-        </Box>
-        <Divider borderWidth="1px" />
-
-        <Box display="flex" justifyContent="space-evenly" p={2}>
           <FaInstagramSquare fontSize="1.5rem" />
           <FaFacebook fontSize="1.5rem" />
           <BsYoutube fontSize="1.5rem" />
@@ -405,9 +376,92 @@ function SearchUserProfile() {
 
         <Divider borderWidth="1px" />
 
-        <Box display="flex" justifyContent="center" p={1}>
-        <PlayerComparisonModal queriedUser={queriedUser} />
+        <Box display="flex" justifyContent="space-around" p={2} gap={2}>
+          <Tooltip label="Overview" aria-label="Overview">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Overview"
+              icon={<RiRunFill />}
+              onClick={() => navigate("", { state: { queriedUser } })}
+              variant="solid"
+            />
+          </Tooltip>
+          <Tooltip label="Matches" aria-label="Matches">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Matches"
+              icon={<PiTelevisionSimpleBold />}
+              onClick={() => navigate("matches", { state: { queriedUser } })}
+              variant="solid"
+            />
+          </Tooltip>
+          <Tooltip label="Achievements" aria-label="Achievements">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Achievements"
+              icon={<GiLaurelsTrophy />}
+              onClick={() =>
+                navigate("player-achievements", {
+                  state: { queriedUser, overallStatsData: queriedUser.stats },
+                })
+              }
+              variant="solid"
+            />
+          </Tooltip>
+
+          <Tooltip label="Reviews" aria-label="Reviews">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Reviews"
+              icon={<MdOutlineRateReview />}
+              onClick={() => navigate("reviews", { state: { queriedUser } })}
+              variant="solid"
+            />
+          </Tooltip>
+          <Tooltip label="Statistics" aria-label="Statistics">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Statistics"
+              icon={<AiOutlineLineChart />}
+              onClick={() => navigate("charts", { state: { queriedUser } })}
+              variant="solid"
+            />
+          </Tooltip>
+          <Tooltip label="Comparison" aria-label="Comparison">
+            <IconButton
+              bg="black"
+              colorScheme="black"
+              color="white"
+              aria-label="Comparison"
+              icon={<GoGitCompare />}
+              onClick={() =>
+                navigate("comparison", {
+                  state: { queriedUser },
+                })
+              }
+              variant="solid"
+            />
+          </Tooltip>
         </Box>
+
+        <Divider borderWidth="1px" />
+        {/*
+        <Box display="flex" justifyContent="center" p={1}>
+           
+          <PlayerComparisonModal queriedUser={queriedUser} />
+ 
+          </Box>
+         */}
         <Routes>
           <Route
             path=""
@@ -428,6 +482,20 @@ function SearchUserProfile() {
                 overallChartsData={queriedUserChartsData}
               />
             }
+          />
+
+          <Route
+            path="reviews"
+            element={<UserRating queriedUserId={queriedUser.id} />}
+          />
+          <Route
+            path="charts"
+            element={<OverallStats chartsData={queriedUserChartsData} />}
+          />
+
+          <Route
+            path="comparison"
+            element={<PlayerComparison queriedUser={queriedUser} />}
           />
         </Routes>
       </Container>

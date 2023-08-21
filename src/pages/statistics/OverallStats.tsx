@@ -7,29 +7,20 @@ import ReBarChart from "./ReBarChart";
 import { groupBy } from "lodash";
 import {
   Box,
-  Flex,
-  Avatar,
-  HStack,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
   Stack,
   Container,
   Text,
-  ButtonGroup,
   Radio,
   RadioGroup,
 } from "@chakra-ui/react";
 import ReStackedAreaChart from "./ReStackedAreaChart";
+import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
 
+interface Props {
+  chartsData:ChartDataInterface
+}
 
-function OverallStats() {
-  const { overallChartsData,setOverallChartsData } = useContext(OverallStatsContext);
+function OverallStats({chartsData}:Props) {
 
   const [modeledChartData, setModeledChartData] = useState<Array<any>>([]); // Use the correct type
   const [dataFilter, setDataFilter] = useState("match");
@@ -38,7 +29,7 @@ function OverallStats() {
 
   function handleModelChartDataPerMatch() {
 
-    const dataPerMatch = overallChartsData.combinedStats
+    const dataPerMatch = chartsData.combinedStats
     
     dataPerMatch.sort((a, b) => {
       const dateA = new Date(a.matchDate); // Replace 'T' with a space for proper parsing
@@ -76,7 +67,7 @@ function OverallStats() {
 
   function handleModelChartDataPerYear() {
     const groupedChartDataPerYear = groupBy(
-      overallChartsData.combinedStats,
+      chartsData.combinedStats,
       ({ matchDate }) => getYearFromDate(matchDate)
     );
 
@@ -175,7 +166,7 @@ function OverallStats() {
   function handleModelChartDataPerMonth() {
 
     const groupedChartDataPerMonth = groupBy(
-      overallChartsData.combinedStats,
+      chartsData.combinedStats,
       ({ matchDate }) => getMonthFromDate(matchDate)
     );
 
@@ -273,7 +264,7 @@ function OverallStats() {
 
   function handleModelChartDataPerWeek() {
     const groupedChartDataPerWeek = groupBy(
-      overallChartsData.combinedStats,
+      chartsData.combinedStats,
       ({ matchDate }) => getWeekNumberFromDate(matchDate)
     );
     const summedChartDataPerWeek = {};

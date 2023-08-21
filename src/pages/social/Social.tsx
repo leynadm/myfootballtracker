@@ -255,6 +255,7 @@ export default function Social() {
           <Route path="profile" index element={<Profile />} />
           <Route path="results/*" element={<SocialSearchResults />} />
           <Route path="results/u/:id/*" element={<SearchUserProfile />} />
+
         </Routes>
       </Box>
     </>

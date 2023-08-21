@@ -166,6 +166,58 @@ export default function NewMatch() {
     fileInputRef.current?.click();
   }
 
+  /* 
+  async function uploadMatchImage() {
+    return new Promise(async (resolve, reject) => {
+      let imageRef = null;
+      let imageUrlResized = null;
+      const uniqueImageId = uuid();
+  
+      if (selectedFile) {
+        imageRef = ref(
+          matchesStorage,
+          `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}`
+        );
+  
+        await uploadBytes(imageRef, selectedFile);
+  
+        const imageRefResized = ref(
+          matchesStorage,
+          `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}_1024x1024`
+        );
+  
+        try {
+          imageUrlResized = await getDownloadURL(imageRefResized);
+          resolve(imageUrlResized); // Resolve the promise with the URL
+        } catch (error) {
+          console.error("Error fetching resized image:", error);
+  
+          let retryAttempts = 9;
+          while (retryAttempts > 0) {
+            await new Promise((innerResolve) => setTimeout(innerResolve, 2000));
+  
+            try {
+              imageUrlResized = await getDownloadURL(imageRefResized);
+              resolve(imageUrlResized); // Resolve the promise with the URL
+              break;
+            } catch (error) {
+              console.error("Error fetching resized image after retry:", error);
+              retryAttempts--;
+            }
+          }
+  
+          if (retryAttempts === 0) {
+            console.error("Retries exhausted. Unable to fetch resized image.");
+            reject("Unable to fetch resized image"); // Reject the promise with an error message
+          }
+        }
+      } else {
+        reject("No selected file"); // Reject the promise if there's no selected file
+      }
+    });
+  } */
+  
+  
   async function uploadMatchImage() {
 
     let imageRef = null;
@@ -187,8 +239,8 @@ export default function NewMatch() {
       );
       try {
         imageUrlResized = await getDownloadURL(imageRefResized);
-        console.log("getting imgUrlResized:");
-        console.log(imageUrlResized);
+        setMatchImage(imageUrlResized);
+        
       } catch (error) {
         console.error("Error fetching resized image:", error);
         // Retry logic
@@ -214,7 +266,7 @@ export default function NewMatch() {
 
       setMatchImage(imageUrlResized);
     }
-  }
+  } 
 
   function handleRemoveMatchPicture() {
     setSelectedFile(null);
@@ -542,8 +594,7 @@ export default function NewMatch() {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    
-    
+  
     event.preventDefault();
     setSavingMatch(true)
     setButtonDisabledCheck(true)
@@ -565,8 +616,23 @@ export default function NewMatch() {
       return;
     }
 
+     
     await uploadMatchImage();
+ 
 
+    /*
+    uploadMatchImage()
+    .then((imageUrl) => {
+      console.log("Resized image URL:", imageUrl);
+      setMatchImage(imageUrl)
+      // You can assign imageUrl to a variable or use it as needed
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      // Handle the error accordingly
+    });
+*/
+     
     try {
     
       const validityCheckPromise = checkMatchesPlayed(
@@ -616,7 +682,7 @@ export default function NewMatch() {
     } catch (error) {
       console.error(error);
     }
-        
+      
   };
 
   const colors = useColorModeValue(
