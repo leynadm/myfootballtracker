@@ -45,6 +45,7 @@ async function createUserDoc(userID: string, fullname: string | null) {
         preferredFoot: "",
         preferredPosition: "",
         shirtNumber: "",
+        shirtName:"",
         skillLevel: "",
         playingExperience: 0,
         instagramProfile: "",

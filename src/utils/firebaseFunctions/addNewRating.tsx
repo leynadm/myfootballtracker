@@ -12,6 +12,38 @@ async function addNewRating(
   queriedUserId: string,
   currentUserId: string
 ) {
+
+
+  const totalDefenceResult = calculateDefGKValue()
+
+  function calculateDefGKValue() {
+    
+    let totalDefence = 0;
+
+    if (reviewToSubmit.isPlayerGoalkeeper) {
+      totalDefence =
+        reviewToSubmit.headingAccuracy / 2 +
+        reviewToSubmit.marking / 2 +
+        reviewToSubmit.interceptions / 2 +
+        reviewToSubmit.standingTackle / 2 +
+        reviewToSubmit.slidingTackle / 2 +
+        reviewToSubmit.gKReflexes / 2 +
+        reviewToSubmit.gKCatching / 2 +
+        reviewToSubmit.gKClearing / 2 +
+        reviewToSubmit.gKReach / 2 +
+        reviewToSubmit.gKPositioning / 2;
+      return totalDefence;
+    } else {
+      totalDefence =
+        reviewToSubmit.headingAccuracy +
+        reviewToSubmit.marking +
+        reviewToSubmit.interceptions +
+        reviewToSubmit.standingTackle +
+        reviewToSubmit.slidingTackle;
+      return totalDefence;
+    }
+  } 
+
   try {
     const userDocRef = doc(db, "users", queriedUserId);
     const userReviewsColRef = collection(userDocRef, "reviews");
@@ -20,7 +52,8 @@ async function addNewRating(
     const timestamp = Timestamp.fromMillis(Date.now());
 
     await setDoc(subcollectionDocRef, {
-
+      id:currentUserId,
+      reviewComment:reviewToSubmit.reviewComment,
       firstName: reviewToSubmit.firstName,
       lastName: reviewToSubmit.lastName,
       shirtName: reviewToSubmit.shirtName,
@@ -54,9 +87,20 @@ async function addNewRating(
       gKReflexes: reviewToSubmit.gKReflexes,
       gKCatching: reviewToSubmit.gKCatching,
       gKClearing: reviewToSubmit.gKClearing,
+      gKReach:reviewToSubmit.gKReach,
+      gKPositioning:reviewToSubmit.gKPositioning,
       timestamp: timestamp,
       createdAt: serverTimestampObj,
       reviewStatus: "pending",
+      SPD:reviewToSubmit.SPD,
+      SHO:reviewToSubmit.SHO,
+      PAS:reviewToSubmit.PAS,
+      DRI:reviewToSubmit.DRI,
+      DEF:reviewToSubmit.DEF,
+      PHY:reviewToSubmit.PHY,
+      GKP:reviewToSubmit.GKP,
+      isPlayerGoalkeeper:reviewToSubmit.isPlayerGoalkeeper,
+      TDF:totalDefenceResult
     });
   } catch (error) {
     // Handle the error here

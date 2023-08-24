@@ -4,23 +4,24 @@ import {
     serverTimestamp,
     Timestamp,
     runTransaction,
+    arrayUnion
   } from "firebase/firestore";
   import { db } from "../../config/firebase";
   import RatingDataToSubmit from "../interfaces/ratingDataToSubmit";
   
   async function addNewRatingData(
     reviewToSubmit: RatingDataToSubmit,
-    queriedUserId: string,
     currentUserId:string
   ) {
 
+    
     try {
       await runTransaction(db, async (transaction) => {
         // Get the overall-stats document
         const reviewStatsDocRef = doc(
           db,
           "users",
-          queriedUserId,
+          currentUserId,
           "stats/review-stats"
         );
   
@@ -31,51 +32,16 @@ import {
         
         const userReviewsColRef = collection(userDocRef, "reviews");
         
-        const newReviewRef = doc(userReviewsColRef);
+        const reviewDocRef = doc(userReviewsColRef,reviewToSubmit.id);
         
-        const serverTimestampObj = serverTimestamp();
-        
-        const timestamp = Timestamp.fromMillis(Date.now());
-
-        console.log(reviewStatsDocSnapRef.exists())
         if (reviewStatsDocSnapRef.exists()) {
 
-          const previousReviewStats = reviewStatsDocSnapRef.data();
-   
-  
-          transaction.set(newReviewRef, {
-            sprint:reviewToSubmit.sprint,
-            acceleration:reviewToSubmit.acceleration,
-            finishing:reviewToSubmit.finishing,
-            longShots:reviewToSubmit.longShots,
-            shotPower:reviewToSubmit.shotPower,
-            curl:reviewToSubmit.curl,
-            weakFootUsage:reviewToSubmit.weakFootUsage,
-            shortPassing:reviewToSubmit.shortPassing,
-            longPassing:reviewToSubmit.longPassing,
-            vision:reviewToSubmit.vision,
-            crossing:reviewToSubmit.crossing,
-            weakFootAccuracy:reviewToSubmit.weakFootAccuracy,
-            ballControl:reviewToSubmit.ballControl,
-            composure:reviewToSubmit.composure,
-            balance:reviewToSubmit.balance,
-            agility:reviewToSubmit.agility,
-            strength:reviewToSubmit.strength,
-            stamina:reviewToSubmit.stamina,
-            jumping:reviewToSubmit.jumping,
-            reactions:reviewToSubmit.reactions,
-            headingAccuracy:reviewToSubmit.headingAccuracy,
-            marking:reviewToSubmit.marking,
-            interceptions:reviewToSubmit.interceptions,
-            standingTackle:reviewToSubmit.standingTackle,
-            slidingTackle:reviewToSubmit.slidingTackle,
-            gKReflexes:reviewToSubmit.gKReflexes,
-            gKCatching:reviewToSubmit.gKCatching,
-            gKClearing:reviewToSubmit.gKClearing,
-            timestamp: timestamp,
-            createdAt: serverTimestampObj,
+          transaction.update(reviewDocRef,{
+            reviewStatus:"approved"
           });
-  
+
+          const previousReviewStats = reviewStatsDocSnapRef.data();
+
           const updateSprint = reviewToSubmit.sprint + previousReviewStats.sprint
           const updateAcceleration = reviewToSubmit.acceleration + previousReviewStats.acceleration
           const updateFinishing = reviewToSubmit.finishing + previousReviewStats.finishing
@@ -104,9 +70,28 @@ import {
           const updateGKReflexes = reviewToSubmit.gKReflexes + previousReviewStats.gKReflexes
           const updateGKCatching = reviewToSubmit.gKCatching + previousReviewStats.gKCatching
           const updateGKClearing = reviewToSubmit.gKClearing + previousReviewStats.gKClearing
-          
+          const updateGKReach = reviewToSubmit.gKReach + previousReviewStats.gKReach
+          const updateGKPositioning = reviewToSubmit.gKPositioning + previousReviewStats.gKPositioning
+          const updateTDF = reviewToSubmit.TDF + previousReviewStats.TDF
+          const updateSPD = reviewToSubmit.SPD + previousReviewStats.SPD
+          const updateSHO = reviewToSubmit.SHO + previousReviewStats.SHO
+          const updatePAS = reviewToSubmit.PAS + previousReviewStats.PAS
+          const updateDRI = reviewToSubmit.DRI + previousReviewStats.DRI
+          const updateDEF = reviewToSubmit.DEF + previousReviewStats.DEF
+          const updatePHY = reviewToSubmit.PHY + previousReviewStats.PHY
+          const updateGKP = reviewToSubmit.GKP + previousReviewStats.GKP
+
+          const userData = {
+            'firstName':reviewToSubmit.firstName,
+            'lastName':reviewToSubmit.lastName,
+            'userId':reviewToSubmit.id,
+            'profileImage':reviewToSubmit.profileImage,
+            'shirtName':reviewToSubmit.shirtName,
+            'createdAt':reviewToSubmit.createdAt
+          }
 
           transaction.update(reviewStatsDocRef, {
+            usersThatSentReviews:arrayUnion(userData),
             numberOfReviews:previousReviewStats.numberOfReviews+1,
             sprint:updateSprint,
             acceleration:updateAcceleration,
@@ -136,7 +121,16 @@ import {
             gKReflexes:updateGKReflexes,
             gKCatching:updateGKCatching,
             gKClearing:updateGKClearing,
-            
+            gKReach:updateGKReach,
+            gKPositioning:updateGKPositioning,
+            TDF:updateTDF,
+            SPD:updateSPD,
+            SHO:updateSHO,
+            PAS:updatePAS,
+            DRI:updateDRI,
+            DEF:updateDEF,
+            PHY:updatePHY,
+            GKP:updateGKP,
           });
         }
       });

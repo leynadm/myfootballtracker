@@ -3,6 +3,7 @@ import { MdOutlineLogin } from "react-icons/md";
 import createUserDoc from "../../utils/firebaseFunctions/createUserDoc";
 import createOverallStatsDoc from "../../utils/firebaseFunctions/createOverallStatsDoc";
 import createChartStatsDoc from "../../utils/firebaseFunctions/createChartStatsDoc";
+import createReviewStatsDoc from "../../utils/firebaseFunctions/createReviewStatsDoc";
 import {
   Flex,
   Box,
@@ -50,6 +51,7 @@ function Login() {
           createUserDoc(user.uid, user.displayName);
           createOverallStatsDoc(user.uid)
           createChartStatsDoc(user.uid)
+          createReviewStatsDoc(user.uid)
         }
         
         // IdP data available using getAdditionalUserInfo(result)
@@ -79,6 +81,7 @@ function Login() {
           createUserDoc(user.uid, user.displayName);
           createOverallStatsDoc(user.uid)
           createChartStatsDoc(user.uid)
+          createReviewStatsDoc(user.uid)
         }
         
         // IdP data available using getAdditionalUserInfo(result)

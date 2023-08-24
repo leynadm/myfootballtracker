@@ -136,7 +136,7 @@ function Achievements({
 
   return (
     <>
-      <Container
+      <Box
         justifyContent="center"
         display="flex"
         flexDirection="column"
@@ -144,7 +144,7 @@ function Achievements({
         pb="80px"
         gap={3}
       >
-        <Text>Your Trophy Cabinet</Text>
+        <Text p={2}>Trophy Cabinet</Text>
 
         <Text fontSize="larger">Match Appearances</Text>
         <Grid templateColumns="repeat(2,1fr)" gap={2}>
@@ -1157,7 +1157,7 @@ function Achievements({
             )}
           </Box>
         </Grid>
-      </Container>
+      </Box>
     </>
   );
 }

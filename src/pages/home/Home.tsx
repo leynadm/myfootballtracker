@@ -9,7 +9,6 @@ export default function Home() {
     <>
       <OverallStatsProvider>
       <Navbar />
-
       <Routes>
         <Route path="game/*" index element={<Overview />} />
         <Route path="social/*" index element={<Social />} />

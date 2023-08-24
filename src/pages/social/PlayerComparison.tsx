@@ -462,7 +462,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{queriedUser.stats.wins}</Text>
             <Text>{`(${
               isNaN(queriedUser.stats.wins / queriedUser.stats.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (queriedUser.stats.wins / queriedUser.stats.matchesPlayed) *
                     100
@@ -474,7 +474,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{overallStatsData.wins}</Text>
             <Text>{`(${
               isNaN(overallStatsData.wins / overallStatsData.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (overallStatsData.wins / overallStatsData.matchesPlayed) *
                     100
@@ -509,7 +509,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{queriedUser.stats.draws}</Text>
             {`(${
               isNaN(queriedUser.stats.draws / queriedUser.stats.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (queriedUser.stats.draws /
                       queriedUser.stats.matchesPlayed) *
@@ -522,7 +522,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{overallStatsData.draws}</Text>
             {`(${
               isNaN(overallStatsData.draws / overallStatsData.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (overallStatsData.draws / overallStatsData.matchesPlayed) *
                     100
@@ -557,7 +557,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{queriedUser.stats.defeats}</Text>
             {`(${
               isNaN(queriedUser.stats.defeats / queriedUser.stats.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (queriedUser.stats.defeats /
                       queriedUser.stats.matchesPlayed) *
@@ -570,7 +570,7 @@ function PlayerComparison({ queriedUser }: Props) {
             <Text>{overallStatsData.defeats}</Text>
             {`(${
               isNaN(overallStatsData.defeats / overallStatsData.matchesPlayed)
-                ? "0.00%"
+                ? "0.0%"
                 : (
                     (overallStatsData.defeats /
                       overallStatsData.matchesPlayed) *
@@ -910,7 +910,7 @@ function PlayerComparison({ queriedUser }: Props) {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel p={0} m={0}>
+          <AccordionPanel p={0} m={0} pb={1}>
             <Box>
               <Text textAlign="center">Get on the scoresheet</Text>
 
@@ -1573,7 +1573,7 @@ function PlayerComparison({ queriedUser }: Props) {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel p={0} m={0}>
+          <AccordionPanel p={0} m={0} pb={1}>
             <Box>
               <Text textAlign="center">A Pleasure Doing Business</Text>
 
@@ -1734,13 +1734,13 @@ function PlayerComparison({ queriedUser }: Props) {
 
               <Box display="flex" justifyContent="space-around">
                 <Box display="flex" alignItems="center" gap={1}>
-                  {queriedUser.stats.omniescient >
-                  overallStatsData.omniescient ? (
+                  {queriedUser.stats.omniscient >
+                  overallStatsData.omniscient ? (
                     <MdKeyboardDoubleArrowUp color="green" />
                   ) : (
                     <MdKeyboardDoubleArrowDown color="red" />
                   )}
-                  <Text>{queriedUser.stats.omniescient}</Text>
+                  <Text>{queriedUser.stats.omniscient}</Text>
                 </Box>
                 <IconButton
                   aria-label="highlight icon"
@@ -1749,9 +1749,9 @@ function PlayerComparison({ queriedUser }: Props) {
                   bg="teal.200"
                 />
                 <Box display="flex" alignItems="center" gap={1}>
-                  <Text>{overallStatsData.omniescient}</Text>
-                  {queriedUser.stats.omniescient >=
-                  overallStatsData.omniescient ? (
+                  <Text>{overallStatsData.omniscient}</Text>
+                  {queriedUser.stats.omniscient >=
+                  overallStatsData.omniscient ? (
                     <MdKeyboardDoubleArrowDown color="green" />
                   ) : (
                     <MdKeyboardDoubleArrowUp color="red" />
@@ -1862,7 +1862,7 @@ function PlayerComparison({ queriedUser }: Props) {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel p={0} m={0}>
+          <AccordionPanel p={0} m={0} pb={1}>
             <Box>
               <Text textAlign="center">The Giant</Text>
 
@@ -2182,7 +2182,7 @@ function PlayerComparison({ queriedUser }: Props) {
               <AccordionIcon />
             </AccordionButton>
           </h2>
-          <AccordionPanel p={0} m={0}>
+          <AccordionPanel p={0} m={0} pb={1}>
             <Box>
               <Text textAlign="center">You Stop Here!</Text>
 

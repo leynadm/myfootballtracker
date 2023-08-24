@@ -1,10 +1,4 @@
-import { Timestamp } from "firebase/firestore";
-
-interface RatingDataToSubmit{
-    firstName:string;
-    lastName:string;
-    shirtName:string;
-    profileImage:string;
+interface OverallReviewsData{
     sprint:number;
     acceleration:number;
     finishing:number;
@@ -22,7 +16,6 @@ interface RatingDataToSubmit{
     balance:number;
     agility:number;
     strength:number;
-    reviewStatus:string;
     stamina:number;
     jumping:number;
     reactions:number;
@@ -48,9 +41,7 @@ interface RatingDataToSubmit{
     country:object[];
     isPlayerGoalkeeper:boolean;
     TDF:number;
-    usersThatSentReviews:object[];
-    createdAt?:Timestamp
-    timestamp:Timestamp
+    usersThatSentReviews:object[]
 }
 
-export default RatingDataToSubmit
+export default OverallReviewsData

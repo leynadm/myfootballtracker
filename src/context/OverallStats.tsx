@@ -14,34 +14,42 @@ import {
   dummyOverallStats,
   dummyOverallCharts,
 } from "../utils/dummyContextVariables";
+import OverallReviewsData from "../utils/interfaces/overallReviewsDataInterface";
 // Define the type for the context value
-import { LeaderboardUserData } from "../utils/interfaces/LeaderboardUserData";
+import LeaderboardUserData from "../utils/interfaces/LeaderboardUserData";
 interface OverallStatsContextValue {
   overallStatsData: OverallStatsDataInterface;
   overallChartsData: ChartDataInterface;
+  reviewsData: OverallReviewsData;
   setOverallStatsData: React.Dispatch<
     React.SetStateAction<OverallStatsDataInterface>
   >;
   setOverallChartsData: React.Dispatch<
     React.SetStateAction<ChartDataInterface>
   >;
-  userIndividualFollowingData:LeaderboardUserData;
+  userIndividualFollowingData: LeaderboardUserData;
   setUserIndividualFollowingData: React.Dispatch<
-  React.SetStateAction<LeaderboardUserData>
->;
+    React.SetStateAction<LeaderboardUserData>
+  >;
 
-  userIndividualFollowers:string[];
-  setUserIndividualFollowers:React.Dispatch<
-  React.SetStateAction<string[]>
->;
+  userIndividualFollowers: string[];
+  setUserIndividualFollowers: React.Dispatch<React.SetStateAction<string[]>>;
   dataLoadedTrigger: boolean;
 }
 
 // Create the context
-export const OverallStatsContext = createContext<
-  OverallStatsContextValue | undefined
->(undefined);
-
+export const OverallStatsContext = createContext<any>({
+  overallStatsData:null,
+  setOverallStatsData:null,
+  overallChartsData:null,
+  setOverallChartsData:null,
+  dataLoadedTrigger:null,
+  userIndividualFollowingData:null,
+  setUserIndividualFollowingData:null,
+  userIndividualFollowers:null,
+  setUserIndividualFollowers:null,
+  reviewsData:null
+})
 interface OverallStatsProviderProps {
   children: ReactNode;
 }
@@ -56,15 +64,21 @@ export const OverallStatsProvider = ({
   const [overallChartsData, setOverallChartsData] =
     useState<ChartDataInterface>({});
 
-    const [userIndividualFollowingData, setUserIndividualFollowingData] =
-    useState<LeaderboardUserData[]>([]);
-  const [userIndividualFollowers, setUserIndividualFollowers] = useState([]);
-  
+  const [reviewsData, setReviewsData] = useState<OverallReviewsData>({});
+
+  const [userIndividualFollowingData, setUserIndividualFollowingData] =
+    useState<LeaderboardUserData>([]);
+  const [userIndividualFollowers, setUserIndividualFollowers] = useState<
+    string[]
+  >([]);
+
   const [dataLoadedTrigger, setDataLoadedTrigger] = useState(false);
+
+
   useEffect(() => {
     fetchData();
-    console.log("feting data for overallstats");
   }, []);
+
 
   async function fetchData() {
     try {
@@ -81,15 +95,27 @@ export const OverallStatsProvider = ({
         currentUser.uid,
         "stats/chart-stats"
       );
+
+      const reviewStatsDocRef = doc(
+        db,
+        "users",
+        currentUser.uid,
+        "stats/review-stats"
+      );
+
       const chartDocSnap = await getDoc(chartStatsDocRef);
       const overallStatsDocSnap = await getDoc(overallStatsDocRef);
+      const reviewStatsDocSnap = await getDoc(reviewStatsDocRef);
 
       if (chartDocSnap.exists() && overallStatsDocSnap.exists()) {
         const userChartData = chartDocSnap.data() as ChartDataInterface;
         const userOverallStatsData =
           overallStatsDocSnap.data() as OverallStatsDataInterface;
+
+        const reviewStatsData = reviewStatsDocSnap.data() as OverallReviewsData;
         setOverallChartsData(userChartData);
         setOverallStatsData(userOverallStatsData);
+        setReviewsData(reviewStatsData);
       } else {
         setOverallChartsData(dummyOverallCharts);
         setOverallStatsData(dummyOverallStats);
@@ -105,12 +131,12 @@ export const OverallStatsProvider = ({
     setOverallStatsData,
     overallChartsData,
     setOverallChartsData,
-    dataLoadedTrigger,    
+    dataLoadedTrigger,
     userIndividualFollowingData,
     setUserIndividualFollowingData,
     userIndividualFollowers,
-    setUserIndividualFollowers
-
+    setUserIndividualFollowers,
+    reviewsData
   };
 
   return (

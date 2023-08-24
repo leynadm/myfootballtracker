@@ -1,36 +1,13 @@
 import UserProfileSearch from "../../utils/interfaces/UserProfileSearch"
 import {
     Box,
-    Container,
     Grid,
-    IconButton,
     Divider,
-    Badge,
     WrapItem,
     Stat,
     StatLabel,
     StatNumber,
     StatHelpText,
-    StatArrow,
-    StatGroup,
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-    TableContainer,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    Skeleton,
-    SkeletonCircle,
-    SkeletonText,
-    Avatar,
     Text
   } from "@chakra-ui/react";
 
@@ -75,9 +52,6 @@ function SearchUserProfileOverall({queriedUser}:Props){
     
       const calculateBackgroundColor = (value: number) => {
 
-        console.log('inside calcualteBackgroundColor:')
-        console.log(value)
-        
         const colorRange = [
           "#228B22", // Forestgreen
           "#00A36C", // Olive
@@ -144,7 +118,7 @@ function SearchUserProfileOverall({queriedUser}:Props){
             style={{
               ...boxStyle,
               backgroundColor: calculateBackgroundColor(
-                parseInt(queriedUser.stats.CF_p)
+                queriedUser.stats.CF_p
               ),
               color: calculateTextColor(queriedUser.stats.CF_p),
             }}

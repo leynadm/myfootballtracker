@@ -9,7 +9,7 @@ import {
 import { db } from "../../config/firebase";
 import MatchHistoryCard from "../../components/MatchHistoryCard";
 import { useContext, useEffect, useState } from "react";
-import { Container, Stack, Button } from "@chakra-ui/react";
+import { Container,Box, Stack, Button } from "@chakra-ui/react";
 import { AuthContext } from "../../context/Auth";
 import { HiUpload } from "react-icons/hi";
 import MatchHistorySkeleton from "../../components/MatchHistorySkeleton";
@@ -72,10 +72,26 @@ function MatchHistory() {
 
   useEffect(() => {
     getUserMatches();
-  }, []);
+  }, [loading]);
 
-  useEffect(() => {}, [loading]);
-  
+  if(userMatches.length===0 && loading===false){
+
+    return(
+      <>
+      <Box
+                display="flex"
+                justifyContent="center"
+                pb="80px"
+                flexDirection="column"
+      >
+        There are no matches to show.
+      </Box>
+      </>
+    )
+  }
+
+
+
   return (
     <>
       {!loading ? (

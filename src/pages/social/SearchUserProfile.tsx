@@ -35,7 +35,6 @@ import { RiUserFollowFill, RiUserUnfollowFill } from "react-icons/ri";
 import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
 import { AuthContext } from "../../context/Auth";
 import { PiTelevisionSimpleBold } from "react-icons/pi";
-import { BsClipboard2Data } from "react-icons/bs";
 import playerTshirt from "../../assets/player_tshirt.png";
 import { MdVerified } from "react-icons/md";
 import { GiFootprint } from "react-icons/gi";
@@ -45,7 +44,7 @@ import { MdOutlineRateReview } from "react-icons/md";
 import { AiOutlineLineChart } from "react-icons/ai";
 import { GoGitCompare } from "react-icons/go";
 import { RiRunFill } from "react-icons/ri";
-
+import { OverallStatsContext } from "../../context/OverallStats";
 import OverallStats from "../statistics/OverallStats";
 
 function SearchUserProfile() {
@@ -58,18 +57,20 @@ function SearchUserProfile() {
   const [queriedUserChartsData, setQueriedUserChartsData] =
     useState<ChartDataInterface>({});
   // Access the queriedUser state from location.state
+  const [queriedUserReviewsStats, setQueriedUserReviewsStats] = useState<any>(
+    {}
+  );
 
+  const {setUserIndividualFollowers,setUserIndividualFollowingData} = useContext(OverallStatsContext)
   const queriedUser = location.state.queriedUser;
 
   useEffect(() => {
     getRelationshipStatus();
     getChartsDoc(queriedUser.id);
+    getReviewsStatsDoc(queriedUser.id);
   }, []);
 
   function handleFollowButtonClick() {
-    console.log("checking if Follow = Unfollow");
-    console.log({ follow });
-    console.log(follow === "Unfollow");
     if (follow === "Follow") {
       followUser();
     } else {
@@ -77,12 +78,21 @@ function SearchUserProfile() {
     }
   }
 
+  async function getReviewsStatsDoc(docId: string) {
+    const reviewStatsDocRef = doc(db, "users", docId, "stats/review-stats");
+    const reviewStatsDocSnap = await getDoc(reviewStatsDocRef);
+
+    if (reviewStatsDocSnap.exists()) {
+      const userReviewStatsData =
+        reviewStatsDocSnap.data() as ChartDataInterface;
+      setQueriedUserReviewsStats(userReviewStatsData);
+    }
+  }
+
   async function getChartsDoc(docId: string) {
-    console.log("inside getStatsDoc function");
     const overallChartsDocRef = doc(db, "users", docId, "stats/chart-stats");
     const overallChartsDocSnap = await getDoc(overallChartsDocRef);
 
-    console.log(overallChartsDocSnap);
     if (overallChartsDocSnap.exists()) {
       const userOverallChartsData =
         overallChartsDocSnap.data() as ChartDataInterface;
@@ -123,7 +133,6 @@ function SearchUserProfile() {
 
   async function followUser() {
     try {
-      console.log("inside follow user");
       /* 
       if (currentUser.emailVerified === false) {
         console.log('user needs to verify his email first')
@@ -137,6 +146,7 @@ function SearchUserProfile() {
         userSocialColRef,
         "social-relationships"
       );
+
       const queriedUserSocialDocSnap = await getDoc(queriedUserSocialDocRef);
 
       if (!queriedUserSocialDocSnap.exists()) {
@@ -144,8 +154,7 @@ function SearchUserProfile() {
           followers: arrayUnion(currentUser.uid),
           following: [],
         });
-        setFollow("Unfollow");
-        setUserFollowers(userFollowers + 1);
+
       } else {
         const queriedUserSocialDocData = queriedUserSocialDocSnap.data();
         const queriedUserFollowers = queriedUserSocialDocData.followers;
@@ -154,25 +163,38 @@ function SearchUserProfile() {
           await updateDoc(queriedUserSocialDocRef, {
             followers: arrayUnion(currentUser.uid),
           });
-
-          const currentUserDoc = doc(db, "users", currentUser.uid);
-          const currentUserSocialColRef = collection(currentUserDoc, "social");
-
-          const currentUserSocialDocRef = doc(
-            currentUserSocialColRef,
-            "social-relationships"
-          );
-
-          await updateDoc(currentUserSocialDocRef, {
-            following: arrayUnion(queriedUser.id),
-          });
-
-          setFollow("Unfollow");
-          setUserFollowers(userFollowers + 1);
         } else {
           console.log("too many people following");
         }
       }
+
+      const currentUserDoc = doc(db, "users", currentUser.uid);
+      const currentUserSocialColRef = collection(currentUserDoc, "social");
+
+      const currentUserSocialDocRef = doc(
+        currentUserSocialColRef,
+        "social-relationships"
+      );
+
+      const currentUserSocialDocSnap = await getDoc(currentUserSocialDocRef);
+
+      if (!currentUserSocialDocSnap.exists()) {
+        await setDoc(currentUserSocialDocRef, {
+          followers: [],
+          following: arrayUnion(queriedUser.id),
+        });
+      } else {
+        await updateDoc(currentUserSocialDocRef, {
+          following: arrayUnion(queriedUser.id),
+        });
+        console.log('updating the doc.')
+      }
+
+      setUserFollowers(userFollowers + 1);
+      setFollow("Unfollow");
+      setUserIndividualFollowingData([])
+      setUserIndividualFollowers([])
+
     } catch (error) {
       // Handle any errors that occur during the execution of the function
       console.error("Error in followUser():", error);
@@ -182,7 +204,6 @@ function SearchUserProfile() {
 
   async function unfollowUser() {
     try {
-      console.log("inside unfollow");
       const queriedUserDoc = doc(db, "users", queriedUser.id);
       const userSocialColRef = collection(queriedUserDoc, "social");
 
@@ -192,21 +213,16 @@ function SearchUserProfile() {
       );
       const queriedUserSocialDocSnap = await getDoc(queriedUserSocialDocRef);
 
-      console.log("working well");
       if (!queriedUserSocialDocSnap.exists()) {
         // If the followers feed document doesn't exist, there's nothing to unfollow
-        console.log("doc does not exist");
         return;
       }
-      console.log("working well again");
       const queriedUserFollowersData = queriedUserSocialDocSnap.data();
       if (!queriedUserFollowersData.followers.includes(currentUser.uid)) {
         // If the current user is not in the users array, they're not following this user
-        console.log("doc does not exist");
         return;
       }
 
-      console.log("about to remove the user from doc");
       await updateDoc(queriedUserSocialDocRef, {
         followers: arrayRemove(currentUser.uid),
       });
@@ -225,6 +241,9 @@ function SearchUserProfile() {
       await updateDoc(currentUserSocialDocRef, {
         following: arrayRemove(queriedUser.id),
       });
+
+      setUserIndividualFollowingData([])
+      setUserIndividualFollowers([])
     } catch (error) {
       // Handle any errors that occur during the execution of the function
       console.error("Error in unfollowUser():", error);
@@ -369,9 +388,16 @@ function SearchUserProfile() {
         <Divider borderWidth="1px" />
 
         <Box display="flex" justifyContent="space-evenly" p={2}>
+        <a href={queriedUser.instagramProfile} target="_blank">
           <FaInstagramSquare fontSize="1.5rem" />
+          </a>
+          <a href={queriedUser.facebookProfile} target="_blank">
           <FaFacebook fontSize="1.5rem" />
+          </a>
+          <a href={queriedUser.youtubeChannel} target="_blank">
+          
           <BsYoutube fontSize="1.5rem" />
+             </a> 
         </Box>
 
         <Divider borderWidth="1px" />
@@ -486,11 +512,21 @@ function SearchUserProfile() {
 
           <Route
             path="reviews"
-            element={<UserRating queriedUserId={queriedUser.id} />}
+            element={
+              <UserRating
+                queriedUserId={queriedUser.id}
+                queriedUserReviewsStats={queriedUserReviewsStats}
+              />
+            }
           />
           <Route
             path="charts"
-            element={<OverallStats chartsData={queriedUserChartsData} />}
+            element={
+              <OverallStats
+                chartsData={queriedUserChartsData}
+                userCheck="queriedUser"
+              />
+            }
           />
 
           <Route

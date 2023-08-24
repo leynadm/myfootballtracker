@@ -1,4 +1,4 @@
-export interface LeaderboardUserData{
+interface LeaderboardUserData {
 
     firstName: string;
     lastName: string;
@@ -116,3 +116,4 @@ export interface LeaderboardUserData{
     theMountain:number;
 }
 
+export default LeaderboardUserData

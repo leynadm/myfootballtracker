@@ -43,7 +43,7 @@ import { BsFillImageFill } from "react-icons/bs";
 import updateProfile from "../../utils/firebaseFunctions/updateProfile";
 import countriesList from "../../utils/countries";
 export default function Profile() {
-  const { currentUser, currentUserData,setCurrentUserData } = useContext(AuthContext);
+  const { currentUser, currentUserData,setCurrentUserData,triggerDataRefresh } = useContext(AuthContext);
   
   const toast = useToast()
   
@@ -212,6 +212,7 @@ export default function Profile() {
       isClosable: true,
       position:"top"
     });
+    triggerDataRefresh()
   };
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -235,12 +236,8 @@ export default function Profile() {
 
   async function updateProfilePicture() {
 
-    console.log('current IMAGE SRC:')
-    console.log(profileImage)
     let imageRef = null;
     let imageUrlResized: string | null = null;
-    console.log('checking select file;')
-    console.log(selectedFile)
     if (selectedFile) {
       setSaving(true);
 

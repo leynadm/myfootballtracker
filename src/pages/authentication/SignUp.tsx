@@ -2,6 +2,7 @@
 import { useState,ChangeEvent } from "react";
 import { auth } from "../../config/firebase";
 import createChartStatsDoc from "../../utils/firebaseFunctions/createChartStatsDoc";
+import createReviewStatsDoc from "../../utils/firebaseFunctions/createReviewStatsDoc";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -48,7 +49,9 @@ export default function SignUp() {
       await createUserDoc(user.uid, `${firstname} ${lastname}`);
       await createOverallStatsDoc(user.uid);
       await createChartStatsDoc(user.uid);
+      await createReviewStatsDoc(user.uid)
 
+      await sendEmailVerification(user);
       /* 
       await sendEmailVerification(user);
       */

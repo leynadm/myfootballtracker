@@ -5,10 +5,11 @@ import ReDoubleLineChart from "./ReDoubleLineChart";
 import ReSingleLineChart from "./ReSingleLineChart";
 import ReBarChart from "./ReBarChart";
 import { groupBy } from "lodash";
+import { AuthContext } from "../../context/Auth";
+import ReAttributesHexChart from "./ReAttributesHexChart";
 import {
   Box,
   Stack,
-  Container,
   Text,
   Radio,
   RadioGroup,
@@ -17,49 +18,64 @@ import ReStackedAreaChart from "./ReStackedAreaChart";
 import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
 
 interface Props {
-  chartsData:ChartDataInterface
+  chartsData:ChartDataInterface,
+  userCheck:string
 }
 
-function OverallStats({chartsData}:Props) {
+function OverallStats({chartsData,userCheck}:Props) {
+
 
   const [modeledChartData, setModeledChartData] = useState<Array<any>>([]); // Use the correct type
   const [dataFilter, setDataFilter] = useState("match");
-  const [matchRatingData, setMatchRatingData] = useState([]);
+  const {reviewsData} = useContext(OverallStatsContext)
+  const [statsHex, setStatsHex]= useState({})
 
+  const {currentUser} = useContext(AuthContext)
+  useEffect(()=>{
+
+    const statsHexArray = [
+      { attribute: 'SPD', score: (reviewsData.SPD/(20* reviewsData.numberOfReviews)*100) },
+      { attribute: 'SHO', score: (reviewsData.SHO/(50* reviewsData.numberOfReviews)*100) },
+      { attribute: 'PAS', score: (reviewsData.PAS/(50* reviewsData.numberOfReviews)*100) },
+      { attribute: 'DRI', score: (reviewsData.DRI/(40* reviewsData.numberOfReviews)*100) },
+      { attribute: 'DEF', score: (reviewsData.TDF/(50* reviewsData.numberOfReviews)*100) },
+      { attribute: 'PHY', score: (reviewsData.PHY/(50* reviewsData.numberOfReviews)*100) },
+    ];
+
+    setStatsHex(statsHexArray);
+
+  },[])
 
   function handleModelChartDataPerMatch() {
+    const dataPerMatch = chartsData.combinedStats;
 
-    const dataPerMatch = chartsData.combinedStats
-    
     dataPerMatch.sort((a, b) => {
       const dateA = new Date(a.matchDate); // Replace 'T' with a space for proper parsing
       const dateB = new Date(b.matchDate);
-      
-      return dateA - dateB;
-    })
-    
-    const startIndex = 0; // Starting index
-    const endIndex = 10;   // Ending index (exclusive)
 
-    
+      return dateA - dateB;
+    });
+
+    const startIndex = 0; // Starting index
+    const endIndex = 10; // Ending index (exclusive)
+
     for (const obj of dataPerMatch) {
-    
       const newDate = obj.matchDate.substring(startIndex, endIndex);
-    
-      if(obj.resultValue==="win"){
-        obj.wins=1;
-        obj.draws=0;
-        obj.defeats=0;
-      } else if(obj.resultValue==="draw"){
-        obj.wins=0;
-        obj.draws=1;
-        obj.defeats=0;
-      } else if(obj.resultValue==="loss"){
-        obj.wins=0;
-        obj.draws=0;
-        obj.defeats=1;
+
+      if (obj.resultValue === "win") {
+        obj.wins = 1;
+        obj.draws = 0;
+        obj.defeats = 0;
+      } else if (obj.resultValue === "draw") {
+        obj.wins = 0;
+        obj.draws = 1;
+        obj.defeats = 0;
+      } else if (obj.resultValue === "loss") {
+        obj.wins = 0;
+        obj.draws = 0;
+        obj.defeats = 1;
       }
-      obj.matchDate =newDate
+      obj.matchDate = newDate;
     }
 
     setModeledChartData(dataPerMatch);
@@ -383,6 +399,7 @@ function OverallStats({chartsData}:Props) {
   }
 
   useEffect(() => {
+
     console.log("clicked data filter:");
     if (dataFilter === "match") {
       handleModelChartDataPerMatch();
@@ -397,7 +414,7 @@ function OverallStats({chartsData}:Props) {
 
   return (
     <>
-      <Container
+      <Box
         height="100%"
         width="100%"
         p={0}
@@ -417,31 +434,60 @@ function OverallStats({chartsData}:Props) {
           </Stack>
         </RadioGroup>
 
+        {userCheck === "currentUser" && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            w="100%"
+            borderRadius="5px"
+          >
+            <Text textAlign="center">Performance Hexagon</Text>
+
+            <ReAttributesHexChart data={statsHex} />
+          </Box>
+        )}
+
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Goals Scored & Assists</Text>
           <ReDoubleLineChart data={modeledChartData} />
         </Box>
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Match Performance Rating</Text>
-          <ReSingleLineChart data={modeledChartData} firstKPI={"matchPerformance"} />
+          <ReSingleLineChart
+            data={modeledChartData}
+            firstKPI={"matchPerformance"}
+          />
         </Box>
 
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Goal Contributions</Text>
-          <ReStackedBarChart data={modeledChartData} firstKPI ={"goalsScored"} secondKPI={"assistsProvided"} topValues="goalContributions" />
+          <ReStackedBarChart
+            data={modeledChartData}
+            firstKPI={"goalsScored"}
+            secondKPI={"assistsProvided"}
+            topValues="goalContributions"
+          />
         </Box>
 
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Fouls</Text>
-          <ReBarChart data={modeledChartData} firstKPI ={"foulsObtained"} secondKPI={"foulsCommited"} />
+          <ReBarChart
+            data={modeledChartData}
+            firstKPI={"foulsObtained"}
+            secondKPI={"foulsCommited"}
+          />
         </Box>
 
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Match Results</Text>
-          <ReStackedAreaChart data={modeledChartData} firstKPI ={"wins"} secondKPI={"draws"} thirdKPI={"defeats"}/>
+          <ReStackedAreaChart
+            data={modeledChartData}
+            firstKPI={"wins"}
+            secondKPI={"draws"}
+            thirdKPI={"defeats"}
+          />
         </Box>
-
-      </Container>
+      </Box>
     </>
   );
 }

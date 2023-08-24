@@ -15,6 +15,7 @@ export interface User {
   preferredFoot: string;
   preferredPosition:string;
   shirtNumber: string;
+  shirtName:string;
   skillLevel: string;
   playingExperience: number;
   instagramProfile:string;

@@ -55,7 +55,6 @@ export default function OverallMatchInfo() {
   const [totalPositions, setTotalPositions] = useState(0);
 
   function calculatePositionsPlayed() {
-    console.log(overallStatsData.positionsPlayed);
     let positionsPlayed = 0;
     for (const value of Object.values(overallStatsData.positionsPlayed)) {
       positionsPlayed += value;
@@ -65,8 +64,7 @@ export default function OverallMatchInfo() {
   }
 
   const calculateBackgroundColor = (value: number) => {
-    console.log("inside calcualteBackgroundColor:");
-    console.log(value);
+
 
     const colorRange = [
       "#228B22", // Forestgreen

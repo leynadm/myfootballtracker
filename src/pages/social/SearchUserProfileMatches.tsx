@@ -1,5 +1,5 @@
 import MatchHistoryCard from "../../components/MatchHistoryCard";
-import { Container, Stack,Box } from "@chakra-ui/react";
+import { Container, Stack, Box, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import UserProfileSearch from "../../utils/interfaces/UserProfileSearch";
 import {
@@ -17,7 +17,6 @@ interface Props {
 }
 
 function SearchUserProfileMatches({ queriedUser }: Props) {
-
   const [latestDoc, setLatestDoc] = useState<any>(null);
   const [userMatches, setUserMatches] = useState<any[]>([]);
   const [loadButtonStatus, setLoadButtonStatus] = useState(false);
@@ -79,6 +78,17 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
   useEffect(() => {
     getUserMatches();
   }, []);
+
+  if (userMatches.length === 0) {
+    return (
+      <>
+        <Text textAlign="center" p={5}>
+          There are no matches to show.
+        </Text>
+      </>
+    );
+  }
+
   return (
     <>
       <Box display="flex" justifyContent="center" pb="80px">

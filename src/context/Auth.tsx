@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     undefined
   );
   const [loginFetchTrigger, setLoginFetchTrigger] = useState(false);
+  const [refreshUserDataCounter, setRefreshUserDataCounter] = useState(0);
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged(async (user) => {
@@ -53,7 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     fetchData();
-  }, [currentUser]);
+  }, [currentUser,refreshUserDataCounter]);
 
   async function fetchData() {
     if (currentUser === null) {
@@ -75,6 +76,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  const triggerDataRefresh = () => {
+    setRefreshUserDataCounter((prevCounter) => prevCounter + 1);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -82,6 +87,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         currentUserData,
         setCurrentUserData,
         loginFetchTrigger,
+        refreshUserDataCounter,         // Pass the counter to the context
+        triggerDataRefresh,  
       }}
     >
       {children}

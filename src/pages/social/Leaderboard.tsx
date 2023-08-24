@@ -44,20 +44,18 @@ import { BsStarHalf } from "react-icons/bs";
 import { GiSoccerField } from "react-icons/gi";
 import { doc, getDoc, collection } from "firebase/firestore";
 import { db } from "../../config/firebase";
-import { LeaderboardUserData } from "../../utils/interfaces/LeaderboardUserData";
 function Leaderboard() {
   const { currentUser } = useContext(AuthContext);
-  const {userIndividualFollowingData,setUserIndividualFollowingData,userIndividualFollowers,setUserIndividualFollowers} = useContext(OverallStatsContext)
+  
+  const {userIndividualFollowingData,setUserIndividualFollowingData,userIndividualFollowers,setUserIndividualFollowers,refreshUserDataCounter} = useContext(OverallStatsContext)
+  
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  /* 
-  const [userIndividualFollowingData, setUserIndividualFollowingData] =
-    useState<LeaderboardUserData[]>([]);
-  const [userIndividualFollowers, setUserIndividualFollowers] = useState([]);
- */
 
   const navigate = useNavigate()
+
   useEffect(() => {
+    
     if (userIndividualFollowers.length === 0) {
       getFollowing();
     }    
@@ -69,6 +67,14 @@ function Leaderboard() {
     }
   }, [userIndividualFollowers]);
 
+
+
+  /* 
+  useEffect(()=>{
+    getFollowing();
+    fetchUserIndividualFollowingData()
+  },[refreshUserDataCounter])
+ */
   const resultsPerPage = 5;
 
   async function getFollowing() {
@@ -135,7 +141,7 @@ function Leaderboard() {
       // You can show a user-friendly error message or take appropriate actions.
     }
   }
-
+ 
   async function getUserDocumentById(documentId: string) {
     try {
       const userDocRef = doc(db, "users", documentId); // Replace with your collection name
