@@ -38,8 +38,10 @@ import {
   RadioGroup,
   Textarea,
   Image,
-  Spinner
+  Spinner,
+  Tag
 } from "@chakra-ui/react";
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { useNavigate } from "react-router-dom";
 import { getApp } from "firebase/app";
 import { BsFillCameraReelsFill } from "react-icons/bs";
@@ -737,7 +739,16 @@ export default function NewMatch() {
                 color: "white",
               }}
             >
-              CF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CF"),
+                  }}
+                >
+                  CF
+                </Tag>
             </Box>
 
             <Box
@@ -754,7 +765,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("SS")}
             >
-              SS
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("SS"),
+                  }}
+                >
+                  SS
+                </Tag>
             </Box>
 
             <Box
@@ -771,7 +791,16 @@ export default function NewMatch() {
                 color: "white",
               }}
             >
-              LWF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LWF"),
+                  }}
+                >
+                  LWF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -787,7 +816,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("RWF")}
             >
-              RWF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RWF"),
+                  }}
+                >
+                  RWF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -803,7 +841,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("LMF")}
             >
-              LMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LMF"),
+                  }}
+                >
+                  LMF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -819,7 +866,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("AMF")}
             >
-              AMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("AMF"),
+                  }}
+                >
+                  AMF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -835,7 +891,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("RMF")}
             >
-              RMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RMF"),
+                  }}
+                >
+                  RMF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -851,7 +916,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("CMF")}
             >
-              CMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CMF"),
+                  }}
+                >
+                  CMF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -867,7 +941,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("DMF")}
             >
-              DMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("DMF"),
+                  }}
+                >
+                  DMF
+                </Tag>
             </Box>
             <Box
               style={{
@@ -883,7 +966,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("LB")}
             >
-              LB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LB"),
+                  }}
+                >
+                  LB
+                </Tag>
             </Box>
             <Box
               style={{
@@ -899,7 +991,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("CB")}
             >
-              CB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CB"),
+                  }}
+                >
+                  CB
+                </Tag>
             </Box>
             <Box
               style={{
@@ -915,7 +1016,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("RB")}
             >
-              RB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RB"),
+                  }}
+                >
+                  RB
+                </Tag>
             </Box>
             <Box
               style={{
@@ -931,7 +1041,16 @@ export default function NewMatch() {
               }}
               onClick={() => handleClick("GK")}
             >
-              GK
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("GK"),
+                  }}
+                >
+                  GK
+                </Tag>
             </Box>
           </Grid>
 

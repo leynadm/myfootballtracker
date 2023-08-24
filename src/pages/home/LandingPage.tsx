@@ -12,6 +12,7 @@ import {
   Image,
   Heading,
   Progress,
+  Tag
 } from "@chakra-ui/react";
 
 interface BeforeInstallPromptEventChoiceResult {
@@ -24,7 +25,7 @@ interface BeforeInstallPromptEvent extends Event {
   readonly userChoice: Promise<BeforeInstallPromptEventChoiceResult>;
   prompt(): void;
 }
-
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { useEffect } from "react";
 import ReSampleChart from "../statistics/ReSampleChart";
 import { useNavigate } from "react-router-dom";
@@ -106,6 +107,8 @@ export default function LandingPage() {
               Install
             </Button>
           </Flex>
+
+          <Box display="flex" flexDirection="column">
           <Box>
             <Heading as="h1" size="xl" noOfLines={2} fontFamily="Outfit" p={1}>
               <Text textAlign="center">Your football story,</Text>
@@ -116,7 +119,7 @@ export default function LandingPage() {
           </Box>
           
           <Box  display="flex" justifyContent="center" alignItems="center">
-                <img src={Logo} alt="logo" />
+                <img height="80%" width="80%" src={Logo} alt="logo" />
               </Box>
 
           <Box>
@@ -140,6 +143,7 @@ export default function LandingPage() {
             >
               Get Started
             </Button>
+          </Box>
           </Box>
         </Stack>
         <Stack spacing={10}>
@@ -180,45 +184,173 @@ export default function LandingPage() {
               alignSelf="center"
             >
               <Box style={boxStyle} gridArea="CF">
-                CF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CF"),
+                  }}
+                >
+                  CF
+                </Tag>
               </Box>
 
               <Box style={boxStyle} gridArea="SS">
-                SS
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("SS"),
+                  }}
+                >
+                  SS
+                </Tag>
               </Box>
 
               <Box style={boxStyle} gridArea="LWF">
-                LWF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LWF"),
+                  }}
+                  p={1}
+                >
+                  LWF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="RWF">
-                RWF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RWF"),
+                  }}
+                  p={1}
+                >
+                  RWF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="LMF">
-                LMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LMF"),
+                  }}
+                  p={1}
+                >
+                  LMF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="AMF">
-                AMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("AMF"),
+                  }}
+                  p={1}
+                >
+                  AMF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="RMF">
-                RMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RMF"),
+                  }}
+                  p={1}
+                >
+                  RMF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="CMF">
-                CMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CMF"),
+                  }}
+                  p={1}
+                >
+                  CMF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="DMF">
-                DMF
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("DMF"),
+                  }}
+                  p={1}
+                >
+                  DMF
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="LB">
-                LB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LB"),
+                  }}
+                  p={1}
+                >
+                  LB
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="CB">
-                CB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CB"),
+                  }}
+                  p={1}
+                >
+                  CB
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="RB">
-                RB
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RB"),
+                  }}
+                  p={1}
+                >
+                  RB
+                </Tag>
               </Box>
               <Box style={boxStyle} gridArea="GK">
-                GK
+              <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("GK"),
+                  }}
+                  p={1}
+                >
+                  GK
+                </Tag>
               </Box>
             </Grid>
           </Box>

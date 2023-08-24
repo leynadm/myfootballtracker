@@ -61,8 +61,7 @@ function Achievements({
       matchesWith8Stops +
       matchesWith12Stops +
       matchesWith15Stops;
-    console.log("logging total defender stops:");
-    console.log(totalStops);
+
     setDefenderPerformance(totalStops);
   }
 
@@ -72,11 +71,9 @@ function Achievements({
       for (const key in match) {
         const matchRating = match[key];
 
-        console.log(matchRating > 6);
 
         if (matchRating >= 6) {
           matchesWithRatingHigherThan6++;
-          console.log({ matchesWithRatingHigherThan6 });
         }
       }
       setMatchPerfBronze(matchesWithRatingHigherThan6);
@@ -89,11 +86,10 @@ function Achievements({
       for (const key in match) {
         const matchRating = match[key];
 
-        console.log(matchRating > 6);
 
         if (matchRating >= 7.5) {
           matchesWithRatingHigherThan7dot5++;
-          console.log({ matchesWithRatingHigherThan7dot5 });
+
         }
       }
       setMatchPerfSilver(matchesWithRatingHigherThan7dot5);
@@ -106,11 +102,8 @@ function Achievements({
       for (const key in match) {
         const matchRating = match[key];
 
-        console.log(matchRating > 6);
-
         if (matchRating >= 9) {
           matchesWithRatingHigherThan9++;
-          console.log({ matchesWithRatingHigherThan9 });
         }
       }
       setMatchPerfGold(matchesWithRatingHigherThan9);
@@ -123,11 +116,9 @@ function Achievements({
       for (const key in match) {
         const matchRating = match[key];
 
-        console.log(matchRating > 6);
 
         if (matchRating === 10) {
           matchesWithRating10++;
-          console.log({ matchesWithRating10 });
         }
       }
       setMatchPerfDiamond(matchesWithRating10);
@@ -886,7 +877,7 @@ function Achievements({
                 alt="goal"
                 style={{
                   filter:
-                    overallStatsData.matchesPlayed <= 25 ? "blur(5px)" : "none",
+                  defenderPerformance <= 250 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -920,7 +911,7 @@ function Achievements({
                 alt="goal"
                 style={{
                   filter:
-                    overallStatsData.matchesPlayed <= 50 ? "blur(5px)" : "none",
+                  defenderPerformance <= 500 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -956,7 +947,7 @@ function Achievements({
                 src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fdefend_03_gold_1024x1024.jpeg?alt=media&token=5aa69751-84da-42f6-bf84-7b8befc8f4a6"
                 alt="goal"
                 style={{
-                  filter: overallStatsData.wins <= 75 ? "blur(5px)" : "none",
+                  filter: defenderPerformance <= 750 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -991,7 +982,7 @@ function Achievements({
                 src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fdefend_04_diamond_1024x1024.jpeg?alt=media&token=19e102bb-45db-4800-80d6-4d46c583c380"
                 alt="goal"
                 style={{
-                  filter: overallStatsData.wins <= 100 ? "blur(5px)" : "none",
+                  filter: defenderPerformance <= 1000 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -1031,7 +1022,7 @@ function Achievements({
                 alt="goal"
                 style={{
                   filter:
-                    overallStatsData.matchesPlayed <= 25 ? "blur(5px)" : "none",
+                    keeperSavesPerformance <= 250 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -1065,7 +1056,7 @@ function Achievements({
                 alt="goal"
                 style={{
                   filter:
-                    overallStatsData.matchesPlayed <= 50 ? "blur(5px)" : "none",
+                  keeperSavesPerformance <= 500 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -1100,7 +1091,7 @@ function Achievements({
                 src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fglove_03_gold.jpeg?alt=media&token=c7638ce3-8570-4f36-9e97-88e931880102"
                 alt="goal"
                 style={{
-                  filter: overallStatsData.wins <= 75 ? "blur(5px)" : "none",
+                  filter: keeperSavesPerformance <= 750 ? "blur(5px)" : "none",
                 }}
               />
             </Box>
@@ -1136,7 +1127,7 @@ function Achievements({
                 src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fglove_04_diamond.jpeg?alt=media&token=6d691034-35f4-420f-8081-7b7e79909fe2"
                 alt="goal"
                 style={{
-                  filter: overallStatsData.wins <= 100 ? "blur(5px)" : "none",
+                  filter: keeperSavesPerformance <= 1000 ? "blur(5px)" : "none",
                 }}
               />
             </Box>

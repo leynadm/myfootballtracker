@@ -18,7 +18,7 @@ import {
   StatNumber,
   StatHelpText,
   WrapItem,
-  Badge,
+  Tag,
   Accordion,
   AccordionItem,
   AccordionButton,
@@ -159,19 +159,19 @@ function MatchHistoryCard({ match }: { match: any }) {
             <Box display="flex" alignItems="center" gap={2}>
               {match.homeTeamGoals}-{match.awayTeamGoals}{" "}
               {match.winValue === "win" && (
-                <Badge fontSize="1em" colorScheme="green" height="100%">
-                  {match.winValue}
-                </Badge>
+                <Tag fontSize="1em" fontWeight="bold" colorScheme="orange" height="100%">
+                  {match.winValue.toUpperCase()}
+                </Tag>
               )}
               {match.winValue === "draw" && (
-                <Badge fontSize="1em" colorScheme="blue">
-                  {match.winValue}
-                </Badge>
+                <Tag fontSize="1em" colorScheme="blue" fontWeight="bold" height="100%">
+                  {match.winValue.toUpperCase()}
+                </Tag>
               )}
               {match.winValue === "loss" && (
-                <Badge fontSize="1em" colorScheme="red">
-                  {match.winValue}
-                </Badge>
+                <Tag fontSize="1em" colorScheme="red" fontWeight="bold" height="100%">
+                  {match.winValue.toUpperCase()}
+                </Tag>
               )}
             </Box>
           </Heading>

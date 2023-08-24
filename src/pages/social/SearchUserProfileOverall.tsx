@@ -8,7 +8,8 @@ import {
     StatLabel,
     StatNumber,
     StatHelpText,
-    Text
+    Text,
+    Tag
   } from "@chakra-ui/react";
 
 interface Props{
@@ -16,7 +17,7 @@ interface Props{
 }
 
 import MatchHighlightsTable from "../../components/MatchHighlightsTable";
-
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { TbRectangleVerticalFilled } from "react-icons/tb";
@@ -123,15 +124,25 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.CF_p),
             }}
             gridArea="CF"
+            p={1}
           >
-            <Text textAlign="center">CF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CF"),
+                  }}
+                >
+                  CF
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
               alignItems="center"
               gap={1}
             >
-              <Text>({queriedUser.stats.CF_p})</Text>
+
               <Text>
                 {`${
                   isNaN(
@@ -156,8 +167,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.SS_p),
             }}
             gridArea="SS"
+            p={1}
           >
-            <Text textAlign="center">SS</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("SS"),
+                  }}
+                >
+                  SS
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
@@ -193,7 +214,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LWF"
           >
-            <Text textAlign="center">LWF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LWF"),
+                  }}
+                >
+                  LWF
+                </Tag>
             <Text>({queriedUser.stats.LWF_p})</Text>
 
             <Text>
@@ -221,7 +251,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RWF"
           >
-            <Text textAlign="center">RWF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RWF"),
+                  }}
+                >
+                  RWF
+                </Tag>
             <Text>({queriedUser.stats.RWF_p})</Text>
 
             <Text>
@@ -249,7 +288,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LMF"
           >
-            <Text textAlign="center">LMF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LMF"),
+                  }}
+                >
+                  LMF
+                </Tag>
             <Text>({queriedUser.stats.LMF_p})</Text>
 
             <Text>
@@ -276,8 +324,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.AMF_p),
             }}
             gridArea="AMF"
+            p={1}
           >
-            <Text textAlign="center">AMF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("AMF"),
+                  }}
+                >
+                  AMF
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
@@ -313,7 +371,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RMF"
           >
-            <Text textAlign="center">RMF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RMF"),
+                  }}
+                >
+                  RMF
+                </Tag>
             <Text>({queriedUser.stats.RMF_p})</Text>
 
             <Text>
@@ -340,8 +407,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.CMF_p),
             }}
             gridArea="CMF"
+            p={1}
           >
-            <Text textAlign="center">CMF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CMF"),
+                  }}
+                >
+                  CMF
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
@@ -376,8 +453,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.DMF_p),
             }}
             gridArea="DMF"
+            p={1}
           >
-            <Text textAlign="center">DMF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("DMF"),
+                  }}
+                >
+                  DMF
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
@@ -411,7 +498,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="LB"
           >
-            <Text textAlign="center">LB</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LB"),
+                  }}
+                >
+                  LB
+                </Tag>
             <Text>({queriedUser.stats.LB_p})</Text>
 
             <Text>
@@ -436,8 +532,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.CB_p),
             }}
             gridArea="CB"
+            p={1}
           >
-            <Text textAlign="center">CB</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CB"),
+                  }}
+                >
+                  CB
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"
@@ -470,7 +576,16 @@ function SearchUserProfileOverall({queriedUser}:Props){
             }}
             gridArea="RB"
           >
-            <Text textAlign="center">RB</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RB"),
+                  }}
+                >
+                  RB
+                </Tag>
             <Text>({queriedUser.stats.RB_p})</Text>
 
             <Text>
@@ -495,8 +610,18 @@ function SearchUserProfileOverall({queriedUser}:Props){
               color: calculateTextColor(queriedUser.stats.GK_p),
             }}
             gridArea="GK"
+            p={1}
           >
-            <Text textAlign="center">GK</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("GK"),
+                  }}
+                >
+                  GK
+                </Tag>
             <Box
               display="flex"
               justifyContent="center"

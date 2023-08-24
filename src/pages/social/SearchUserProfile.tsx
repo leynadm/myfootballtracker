@@ -9,11 +9,12 @@ import {
   Box,
   Container,
   Divider,
-  Badge,
+  Tag,
   WrapItem,
   Avatar,
   IconButton,
   Tooltip,
+  useToast
 } from "@chakra-ui/react";
 import {
   doc,
@@ -24,6 +25,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import PlayerComparison from "./PlayerComparison";
 import UserRating from "./UserRating";
 import { db } from "../../config/firebase";
@@ -61,8 +63,10 @@ function SearchUserProfile() {
     {}
   );
 
+  const toast=useToast()
   const {setUserIndividualFollowers,setUserIndividualFollowingData} = useContext(OverallStatsContext)
   const queriedUser = location.state.queriedUser;
+
 
   useEffect(() => {
     getRelationshipStatus();
@@ -76,6 +80,17 @@ function SearchUserProfile() {
     } else {
       unfollowUser();
     }
+  }
+
+  function handleNoProfile(){
+
+    toast({
+      title: `The player didn't link his account.`,
+      status: "info",
+      isClosable: true,
+      position: "top",
+    });
+
   }
 
   async function getReviewsStatsDoc(docId: string) {
@@ -281,27 +296,27 @@ function SearchUserProfile() {
             </WrapItem>
 
             {queriedUser.preferredPosition !== "" ? (
-              <Badge
-                borderRadius="5px"
+              <Tag
                 fontSize="1rem"
                 fontWeight="bold"
                 bg="black"
-                color="white"
-                m={1}
+                sx={{
+                  color: getTagTextColor(queriedUser.preferredPosition),
+                }}
               >
                 {queriedUser.preferredPosition}
-              </Badge>
+              </Tag>
             ) : (
-              <Badge
-                borderRadius="5px"
+              <Tag
                 fontSize="1rem"
                 fontWeight="bold"
                 bg="black"
-                color="white"
-                m={1}
+                sx={{
+                  color: getTagTextColor(queriedUser.preferredPosition),
+                }}
               >
                 Bench
-              </Badge>
+              </Tag>
             )}
 
             {queriedUser.country.country !== "" ? (
@@ -388,16 +403,25 @@ function SearchUserProfile() {
         <Divider borderWidth="1px" />
 
         <Box display="flex" justifyContent="space-evenly" p={2}>
-        <a href={queriedUser.instagramProfile} target="_blank">
-          <FaInstagramSquare fontSize="1.5rem" />
-          </a>
-          <a href={queriedUser.facebookProfile} target="_blank">
-          <FaFacebook fontSize="1.5rem" />
-          </a>
-          <a href={queriedUser.youtubeChannel} target="_blank">
-          
-          <BsYoutube fontSize="1.5rem" />
-             </a> 
+          {queriedUser.instagramProfile !== "" ? (
+            <a href={queriedUser.instagramProfile} target="_blank"></a>
+          ) : (
+            <FaInstagramSquare fontSize="1.5rem" onClick={handleNoProfile} />
+          )}
+
+          {queriedUser.facebookProfile !== "" ? (
+            <a href={queriedUser.facebookProfile} target="_blank"></a>
+          ) : (
+            <FaFacebook fontSize="1.5rem" onClick={handleNoProfile} />
+          )}
+
+          {queriedUser.youtubeChannel !== "" ? (
+            <a href={queriedUser.youtubeChannel} target="_blank">
+              <BsYoutube fontSize="1.5rem" />
+            </a>
+          ) : (
+            <BsYoutube fontSize="1.5rem" onClick={handleNoProfile} />
+          )}
         </Box>
 
         <Divider borderWidth="1px" />

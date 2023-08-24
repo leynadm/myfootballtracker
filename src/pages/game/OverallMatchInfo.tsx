@@ -7,7 +7,7 @@ import {
   Container,
   Grid,
   Divider,
-  Badge,
+  Tag,
   WrapItem,
   Stat,
   StatLabel,
@@ -15,6 +15,7 @@ import {
   StatHelpText,
 } from "@chakra-ui/react";
 
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { TbRectangleVerticalFilled } from "react-icons/tb";
@@ -146,27 +147,27 @@ export default function OverallMatchInfo() {
               </Text>
 
               {currentUserData.preferredPosition !== "" ? (
-                <Badge
-                  borderRadius="5px"
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
-                  color="white"
-                  m={1}
+                  sx={{
+                    color: getTagTextColor(currentUserData.preferredPosition),
+                  }}
                 >
                   {currentUserData.preferredPosition}
-                </Badge>
+                </Tag>
               ) : (
-                <Badge
-                  borderRadius="5px"
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
-                  color="white"
-                  m={1}
+                  sx={{
+                    color: getTagTextColor(currentUserData.preferredPosition),
+                  }}
                 >
                   Bench
-                </Badge>
+                </Tag>
               )}
             </WrapItem>
 
@@ -194,8 +195,19 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.CF_p),
                 }}
                 gridArea="CF"
+                p={1}
               >
-                <Text textAlign="center">CF</Text>
+                <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CF"),
+                  }}
+                >
+                  CF
+                </Tag>
+
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -230,8 +242,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.SS_p),
                 }}
                 gridArea="SS"
+              p={1}
               >
-                <Text textAlign="center">SS</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("SS"),
+                  }}
+                >
+                  SS
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -268,7 +290,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LWF"
               >
-                <Text textAlign="center">LWF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LWF"),
+                  }}
+                >
+                  LWF
+                </Tag>
                 <Text>({overallStatsData.LWF_p})</Text>
 
                 <Text>
@@ -297,7 +328,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RWF"
               >
-                <Text textAlign="center">RWF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RWF"),
+                  }}
+                >
+                  RWF
+                </Tag>
                 <Text>({overallStatsData.RWF_p})</Text>
 
                 <Text>
@@ -326,7 +366,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LMF"
               >
-                <Text textAlign="center">LMF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LMF"),
+                  }}
+                >
+                  LMF
+                </Tag>
                 <Text>({overallStatsData.LMF_p})</Text>
 
                 <Text>
@@ -354,8 +403,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.AMF_p),
                 }}
                 gridArea="AMF"
+                p={1}
               >
-                <Text textAlign="center">AMF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("AMF"),
+                  }}
+                >
+                  AMF
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -391,7 +450,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RMF"
               >
-                <Text textAlign="center">RMF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RMF"),
+                  }}
+                >
+                  RMF
+                </Tag>
                 <Text>({overallStatsData.RMF_p})</Text>
 
                 <Text>
@@ -419,8 +487,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.CMF_p),
                 }}
                 gridArea="CMF"
+                p={1}
               >
-                <Text textAlign="center">CMF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CMF"),
+                  }}
+                >
+                  CMF
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -455,8 +533,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.DMF_p),
                 }}
                 gridArea="DMF"
+                p={1}
               >
-                <Text textAlign="center">DMF</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("DMF"),
+                  }}
+                >
+                  DMF
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -492,7 +580,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LB"
               >
-                <Text textAlign="center">LB</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("LB"),
+                  }}
+                >
+                  LB
+                </Tag>
                 <Text>({overallStatsData.LB_p})</Text>
 
                 <Text>
@@ -519,8 +616,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.CB_p),
                 }}
                 gridArea="CB"
+                p={1}
               >
-                <Text textAlign="center">CB</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("CB"),
+                  }}
+                >
+                  CB
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
@@ -556,7 +663,16 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RB"
               >
-                <Text textAlign="center">RB</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("RB"),
+                  }}
+                >
+                  RB
+                </Tag>
                 <Text>({overallStatsData.RB_p})</Text>
 
                 <Text>
@@ -583,8 +699,18 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.GK_p),
                 }}
                 gridArea="GK"
+                p={1}
               >
-                <Text textAlign="center">GK</Text>
+               <Tag
+                  fontSize="1rem"
+                  fontWeight="bold"
+                  bg="black"
+                  sx={{
+                    color: getTagTextColor("GK"),
+                  }}
+                >
+                  GK
+                </Tag>
                 <Box
                   display="flex"
                   justifyContent="center"
