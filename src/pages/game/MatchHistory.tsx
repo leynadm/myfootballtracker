@@ -9,7 +9,7 @@ import {
 import { db } from "../../config/firebase";
 import MatchHistoryCard from "../../components/MatchHistoryCard";
 import { useContext, useEffect, useState } from "react";
-import { Container,Box, Stack, Button } from "@chakra-ui/react";
+import { Container, Box, Stack, Button } from "@chakra-ui/react";
 import { AuthContext } from "../../context/Auth";
 import { HiUpload } from "react-icons/hi";
 import MatchHistorySkeleton from "../../components/MatchHistorySkeleton";
@@ -30,13 +30,13 @@ function MatchHistory() {
           collection(db, "users", currentUser.uid, "matches"),
           orderBy("createdAt", "desc"),
           startAfter(latestDoc),
-          limit(5)
+          limit(3)
         );
       } else {
         q = query(
           collection(db, "users", currentUser.uid, "matches"),
           orderBy("createdAt", "desc"),
-          limit(5)
+          limit(3)
         );
       }
 
@@ -67,30 +67,27 @@ function MatchHistory() {
       // You can also show a user-friendly error message to the user
       // For example: setErrorState("Failed to fetch user posts. Please try again later.");
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   useEffect(() => {
     getUserMatches();
-  }, [loading]);
+  }, []);
 
-  if(userMatches.length===0 && loading===false){
-
-    return(
+  if (userMatches.length === 0 && loading === false) {
+    return (
       <>
-      <Box
-                display="flex"
-                justifyContent="center"
-                pb="80px"
-                flexDirection="column"
-      >
-        There are no matches to show.
-      </Box>
+        <Box
+          display="flex"
+          justifyContent="center"
+          pb="80px"
+          flexDirection="column"
+        >
+          There are no matches to show.
+        </Box>
       </>
-    )
+    );
   }
-
-
 
   return (
     <>
@@ -108,11 +105,13 @@ function MatchHistory() {
           </Stack>
 
           <Button
+            isDisabled={loadButtonStatus}
             rightIcon={<HiUpload />}
             colorScheme="blue"
             variant="solid"
             m={3}
             type="submit"
+            onClick={getUserMatches}
           >
             Load More Matches
           </Button>

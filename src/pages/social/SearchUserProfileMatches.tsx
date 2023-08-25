@@ -1,5 +1,5 @@
 import MatchHistoryCard from "../../components/MatchHistoryCard";
-import { Container, Stack, Box, Text } from "@chakra-ui/react";
+import { Button, Stack, Box, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import UserProfileSearch from "../../utils/interfaces/UserProfileSearch";
 import {
@@ -11,7 +11,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
-
+import { HiUpload } from "react-icons/hi";
 interface Props {
   queriedUser: UserProfileSearch;
 }
@@ -32,13 +32,13 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
           collection(db, "users", queriedUser.id, "matches"),
           orderBy("createdAt", "desc"),
           startAfter(latestDoc),
-          limit(5)
+          limit(3)
         );
       } else {
         q = query(
           collection(db, "users", queriedUser.id, "matches"),
           orderBy("createdAt", "desc"),
-          limit(5)
+          limit(3)
         );
       }
 
@@ -91,12 +91,23 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
 
   return (
     <>
-      <Box display="flex" justifyContent="center" pb="80px">
+      <Box display="flex" justifyContent="center" pb="80px" flexDirection="column">
         <Stack spacing={1}>
           {userMatches.map((match: any, index: number) => (
             <MatchHistoryCard key={index} match={match} />
           ))}
         </Stack>
+        <Button
+            isDisabled={loadButtonStatus}
+            rightIcon={<HiUpload />}
+            colorScheme="blue"
+            variant="solid"
+            m={3}
+            type="submit"
+            onClick={getUserMatches}
+          >
+            Load More Matches
+          </Button>
       </Box>
     </>
   );

@@ -44,6 +44,8 @@ import {
 import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { useNavigate } from "react-router-dom";
 import { getApp } from "firebase/app";
+
+import { GiFox } from "react-icons/gi";
 import { BsFillCameraReelsFill } from "react-icons/bs";
 import { GiMoonOrbit } from "react-icons/gi";
 import { GiGiant } from "react-icons/gi";
@@ -305,6 +307,7 @@ export default function NewMatch() {
   const [letTheShowBegin, setLetTheShowBegin] = useState(false);
   const [slingshot, setSlingshot] = useState(false);
   const [aroundThePlanet, SetAroundThePlanet] = useState(false);
+  const [foxInTheBox, SetFoxInTheBox] = useState(false);  
   const [hawkeye, setHawkeye] = useState(false);
   const [cannonball, setCannonball] = useState(false);
   const [noExcuses, setNoExcuses] = useState(false);
@@ -530,6 +533,7 @@ export default function NewMatch() {
     hawkeye: hawkeye,
     slingshot: slingshot,
     aroundThePlanet: aroundThePlanet,
+    foxInTheBox: foxInTheBox,
     cannonball: cannonball,
     cornerstonePresence: cornerstonePresence,
     marksman: marksman,
@@ -704,7 +708,6 @@ export default function NewMatch() {
   return (
     <>
       <Box paddingBottom="75px">
-
         <Container>
           <Text textAlign="center" mt={2}>
             Choose the position played in the match:
@@ -740,15 +743,15 @@ export default function NewMatch() {
               }}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("CF"),
-                  }}
-                >
-                  CF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("CF"),
+                }}
+              >
+                CF
+              </Tag>
             </Box>
 
             <Box
@@ -766,15 +769,15 @@ export default function NewMatch() {
               onClick={() => handleClick("SS")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("SS"),
-                  }}
-                >
-                  SS
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("SS"),
+                }}
+              >
+                SS
+              </Tag>
             </Box>
 
             <Box
@@ -792,15 +795,15 @@ export default function NewMatch() {
               }}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("LWF"),
-                  }}
-                >
-                  LWF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("LWF"),
+                }}
+              >
+                LWF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -817,15 +820,15 @@ export default function NewMatch() {
               onClick={() => handleClick("RWF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("RWF"),
-                  }}
-                >
-                  RWF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("RWF"),
+                }}
+              >
+                RWF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -842,15 +845,15 @@ export default function NewMatch() {
               onClick={() => handleClick("LMF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("LMF"),
-                  }}
-                >
-                  LMF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("LMF"),
+                }}
+              >
+                LMF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -867,15 +870,15 @@ export default function NewMatch() {
               onClick={() => handleClick("AMF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("AMF"),
-                  }}
-                >
-                  AMF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("AMF"),
+                }}
+              >
+                AMF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -892,15 +895,15 @@ export default function NewMatch() {
               onClick={() => handleClick("RMF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("RMF"),
-                  }}
-                >
-                  RMF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("RMF"),
+                }}
+              >
+                RMF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -917,15 +920,15 @@ export default function NewMatch() {
               onClick={() => handleClick("CMF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("CMF"),
-                  }}
-                >
-                  CMF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("CMF"),
+                }}
+              >
+                CMF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -942,15 +945,15 @@ export default function NewMatch() {
               onClick={() => handleClick("DMF")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("DMF"),
-                  }}
-                >
-                  DMF
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("DMF"),
+                }}
+              >
+                DMF
+              </Tag>
             </Box>
             <Box
               style={{
@@ -967,15 +970,15 @@ export default function NewMatch() {
               onClick={() => handleClick("LB")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("LB"),
-                  }}
-                >
-                  LB
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("LB"),
+                }}
+              >
+                LB
+              </Tag>
             </Box>
             <Box
               style={{
@@ -992,15 +995,15 @@ export default function NewMatch() {
               onClick={() => handleClick("CB")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("CB"),
-                  }}
-                >
-                  CB
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("CB"),
+                }}
+              >
+                CB
+              </Tag>
             </Box>
             <Box
               style={{
@@ -1017,15 +1020,15 @@ export default function NewMatch() {
               onClick={() => handleClick("RB")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("RB"),
-                  }}
-                >
-                  RB
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("RB"),
+                }}
+              >
+                RB
+              </Tag>
             </Box>
             <Box
               style={{
@@ -1042,15 +1045,15 @@ export default function NewMatch() {
               onClick={() => handleClick("GK")}
             >
               <Tag
-                  fontSize="1rem"
-                  fontWeight="bold"
-                  bg="black"
-                  sx={{
-                    color: getTagTextColor("GK"),
-                  }}
-                >
-                  GK
-                </Tag>
+                fontSize="1rem"
+                fontWeight="bold"
+                bg="black"
+                sx={{
+                  color: getTagTextColor("GK"),
+                }}
+              >
+                GK
+              </Tag>
             </Box>
           </Grid>
 
@@ -1465,6 +1468,14 @@ export default function NewMatch() {
                           />
 
                           <MatchHighlight
+                            highlightTitle="Fox In The Box"
+                            highlightText="Score a goal from inside the 6m box."
+                            highlightIcon={GiFox}
+                            highlightState={foxInTheBox}
+                            setHighlightState={SetFoxInTheBox}
+                          />
+
+                          <MatchHighlight
                             highlightTitle="Hawkeye"
                             highlightText="Score a goal directly from a free-kick"
                             highlightIcon={GiBowman}
@@ -1765,7 +1776,8 @@ export default function NewMatch() {
                                   </Text>
                                   <Text fontSize="small">
                                     Stop between 1-3 opponent attacks during the
-                                    game via tackles, interceptions or clearances.
+                                    game via tackles, interceptions or
+                                    clearances.
                                   </Text>
                                 </Box>
 
@@ -1790,7 +1802,8 @@ export default function NewMatch() {
                                   </Text>
                                   <Text fontSize="small">
                                     Stop between 4-6 opponent attacks during the
-                                    game via tackles, interceptions or clearances.
+                                    game via tackles, interceptions or
+                                    clearances.
                                   </Text>
                                 </Box>
 
@@ -1814,8 +1827,9 @@ export default function NewMatch() {
                                     The Monument
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop between 7-9 opponent attacks during
-                                    the game via tackles, interceptions or clearances.
+                                    Stop between 7-9 opponent attacks during the
+                                    game via tackles, interceptions or
+                                    clearances.
                                   </Text>
                                 </Box>
 
@@ -1840,7 +1854,8 @@ export default function NewMatch() {
                                   </Text>
                                   <Text fontSize="small">
                                     Stop between 10-14 opponent attacks during
-                                    the game via tackles, interceptions or clearances.
+                                    the game via tackles, interceptions or
+                                    clearances.
                                   </Text>
                                 </Box>
 
@@ -1864,7 +1879,8 @@ export default function NewMatch() {
                                     The Mountain
                                   </Text>
                                   <Text fontSize="small">
-                                    Stop 15+ opponent attacks during the game via tackles, interceptions or clearances.
+                                    Stop 15+ opponent attacks during the game
+                                    via tackles, interceptions or clearances.
                                   </Text>
                                 </Box>
 

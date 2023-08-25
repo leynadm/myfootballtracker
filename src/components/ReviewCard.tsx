@@ -10,21 +10,15 @@ import {
   Text,
   Heading,
   Avatar,
-  Radio,
-  RadioGroup,
-  Stack,
   Textarea,
   Slider,
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
-  SliderMark,
   Tag,
   TagLabel,
-  TagLeftIcon,
   TagRightIcon,
-  TagCloseButton,
-  
+  useToast,
 } from "@chakra-ui/react";
 
 import addNewRatingData from "../utils/firebaseFunctions/addNewRatingData";
@@ -36,28 +30,57 @@ import RatingDataToSubmit from "../utils/interfaces/ratingDataToSubmit";
 import { BsHourglass } from "react-icons/bs";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 
-
 interface Props {
   review: RatingDataToSubmit;
+  triggerReviewsComponentRefresh: () => void;
 }
-
+import { OverallStatsContext } from "../context/OverallStats";
 import { AuthContext } from "../context/Auth";
-import { useContext, useEffect } from "react";
-function ReviewCard({ review }: Props) {
+import { useContext } from "react";
+function ReviewCard({ review, triggerReviewsComponentRefresh }: Props) {
   const { currentUser } = useContext(AuthContext);
-
+  const {triggerDataRefresh} = useContext(OverallStatsContext)
+  const toast = useToast();
   const dateObject = review.timestamp.toDate();
 
   // Format the date as a human-readable string
-  const formattedDate = dateObject.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const formattedDate = dateObject.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
+
+  async function handleApprovalRating() {
+    await addNewRatingData(review, currentUser.uid);
+
+    toast({
+      title: "The review was approved!",
+      status: "success",
+      isClosable: true,
+      position: "top",
+    });
+
+    triggerReviewsComponentRefresh();
+    triggerDataRefresh()
+  }
+
+  async function handleRejectionRating() {
+    await rejectReview(currentUser.uid, review.id);
+
+    toast({
+      title: "The review was rejected!",
+      status: "error",
+      isClosable: true,
+      position: "top",
+    });
+
+    triggerReviewsComponentRefresh();
+    triggerDataRefresh()
+  }
 
   return (
     <>
-      <Card maxW="lg" >
+      <Card maxW="lg" p={0} mb={5}>
         <CardHeader>
           <Flex>
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -66,13 +89,11 @@ function ReviewCard({ review }: Props) {
                 <Heading size="sm">{`${review.firstName} ${review.lastName}`}</Heading>
                 <Tag size="sm" variant="outline" colorScheme="blue">
                   <TagLabel>{formattedDate}</TagLabel>
-                  {review.reviewStatus === "pending"?
-                  
-                
-                (                  <TagRightIcon as={BsHourglass} />):
-              (<TagRightIcon as={AiOutlineCheckCircle} />)
-              }
-
+                  {review.reviewStatus === "pending" ? (
+                    <TagRightIcon as={BsHourglass} />
+                  ) : (
+                    <TagRightIcon as={AiOutlineCheckCircle} />
+                  )}
                 </Tag>
               </Box>
             </Flex>
@@ -656,27 +677,35 @@ function ReviewCard({ review }: Props) {
           </Box>
         </CardBody>
 
-        <CardFooter
-  pl={4} pr={4} pb="50px" pt={0}
->
-          <Box display="flex" justifyContent="center" alignItems="center" width="100%" gap={2} p={0} m={0}> 
-          <Button
-            flex="1"
-            variant="outline"
-            leftIcon={<IoIosCheckmarkCircle />}
-            onClick={() => addNewRatingData(review, currentUser.uid)}
-          >
-            Approve
-          </Button>
-          <Button
-            flex="1"
-            variant="outline"
-            leftIcon={<MdCancel />}
-            onClick={() => rejectReview(currentUser.uid, review.id)}
-          >
-            Reject
-          </Button>
-          </Box>
+        <CardFooter pl={4} pr={4} pb="50px" pt={0}>
+          {review.reviewStatus === "pending" && (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="100%"
+              gap={2}
+              p={0}
+              m={0}
+            >
+              <Button
+                flex="1"
+                variant="outline"
+                leftIcon={<IoIosCheckmarkCircle />}
+                onClick={handleApprovalRating}
+              >
+                Approve
+              </Button>
+              <Button
+                flex="1"
+                variant="outline"
+                leftIcon={<MdCancel />}
+                onClick={handleRejectionRating}
+              >
+                Reject
+              </Button>
+            </Box>
+          )}
         </CardFooter>
       </Card>
     </>

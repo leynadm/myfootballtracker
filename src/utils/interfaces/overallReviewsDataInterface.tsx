@@ -42,6 +42,7 @@ interface OverallReviewsData{
     isPlayerGoalkeeper:boolean;
     TDF:number;
     usersThatSentReviews:object[]
+    usersThatWereReviewed:object[]
 }
 
 export default OverallReviewsData

@@ -14,6 +14,7 @@ import {
   AccordionPanel,
   AccordionIcon,
 } from "@chakra-ui/react";
+import { GiFox } from "react-icons/gi";
 import { GiMoonOrbit } from "react-icons/gi";
 import { GiGiant } from "react-icons/gi";
 import { FaMonument } from "react-icons/fa";
@@ -264,6 +265,25 @@ function MatchHighlightsTable({overallStatsData}:Props) {
                         </Td>
                         <Td pl={0} pr={0} textAlign="center">
                           x {overallStatsData.aroundThePlanet}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.foxInTheBox !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<GiFox />}
+                            fontSize="1.5rem"
+                            bg="red.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Fox In The Box
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.foxInTheBox}
                         </Td>
                       </Tr>
                     )}

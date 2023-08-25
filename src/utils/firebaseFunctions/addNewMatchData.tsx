@@ -1,5 +1,4 @@
 import {
-  setDoc,
   doc,
   collection,
   serverTimestamp,
@@ -205,6 +204,7 @@ async function addNewMatchData(
           hawkeye: dataToSubmit.hawkeye,
           slingshot: dataToSubmit.slingshot,
           aroundThePlanet: dataToSubmit.aroundThePlanet,
+          foxInTheBox: dataToSubmit.foxInTheBox,
           cannonball: dataToSubmit.cannonball,
           noExcuses: dataToSubmit.noExcuses,
           cornerstonePresence: dataToSubmit.cornerstonePresence,
@@ -334,6 +334,9 @@ async function addNewMatchData(
           const updateAroundThePlanet = dataToSubmit.aroundThePlanet
           ? previousOverallStats.aroundThePlanet + 1
           : previousOverallStats.aroundThePlanet;
+          const updateFoxInTheBox = dataToSubmit.foxInTheBox
+          ? previousOverallStats.foxInTheBox + 1
+          : previousOverallStats.foxInTheBox;
           const updateCannonball = dataToSubmit.cannonball
           ? previousOverallStats.cannonball + 1
           : previousOverallStats.cannonball;
@@ -536,6 +539,7 @@ async function addNewMatchData(
           hawkeye: updateHawkeye,
           slingshot:updateSlingshot,
           aroundThePlanet:updateAroundThePlanet,
+          foxInTheBOx:updateFoxInTheBox,
           cannonball: updateCannonball,
           noExcuses: updateNoExcuses,
           cornerstonePresence: updateCornerstonePresence,

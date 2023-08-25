@@ -119,7 +119,11 @@ export default function LandingPage() {
           </Box>
           
           <Box  display="flex" justifyContent="center" alignItems="center">
-                <img height="80%" width="80%" src={Logo} alt="logo" />
+                <img  
+                style={{
+                  maxWidth: window.innerWidth >= 768 ? '50%' : '80%', // Adjust the breakpoint as needed
+                }}
+                src={Logo} alt="logo" />
               </Box>
 
           <Box>

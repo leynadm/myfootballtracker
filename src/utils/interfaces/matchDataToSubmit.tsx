@@ -39,6 +39,7 @@ interface MatchDataToSubmit {
     hawkeye: boolean;
     slingshot: boolean;
     aroundThePlanet:boolean;
+    foxInTheBox:boolean;
     cannonball: boolean;
     noExcuses: boolean;
     cornerstonePresence: boolean;

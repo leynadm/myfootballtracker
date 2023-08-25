@@ -35,6 +35,7 @@ interface OverallStatsContextValue {
   userIndividualFollowers: string[];
   setUserIndividualFollowers: React.Dispatch<React.SetStateAction<string[]>>;
   dataLoadedTrigger: boolean;
+  triggerDataRefresh:()=>void
 }
 
 // Create the context
@@ -48,7 +49,8 @@ export const OverallStatsContext = createContext<any>({
   setUserIndividualFollowingData:null,
   userIndividualFollowers:null,
   setUserIndividualFollowers:null,
-  reviewsData:null
+  reviewsData:null,
+  triggerDataRefresh:null
 })
 interface OverallStatsProviderProps {
   children: ReactNode;
@@ -73,11 +75,12 @@ export const OverallStatsProvider = ({
   >([]);
 
   const [dataLoadedTrigger, setDataLoadedTrigger] = useState(false);
+  const [refreshUserDataCounter, setRefreshUserDataCounter] = useState(0);
 
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refreshUserDataCounter]);
 
 
   async function fetchData() {
@@ -126,6 +129,10 @@ export const OverallStatsProvider = ({
     }
   }
 
+  const triggerDataRefresh = () => {
+    setRefreshUserDataCounter((prevCounter) => prevCounter + 1);
+  };
+
   const contextValue: OverallStatsContextValue = {
     overallStatsData,
     setOverallStatsData,
@@ -136,7 +143,8 @@ export const OverallStatsProvider = ({
     setUserIndividualFollowingData,
     userIndividualFollowers,
     setUserIndividualFollowers,
-    reviewsData
+    reviewsData,
+    triggerDataRefresh
   };
 
   return (

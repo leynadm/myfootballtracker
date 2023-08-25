@@ -26,6 +26,7 @@ interface OverallStatsDataInterface{
     hawkeye: number;
     slingshot: number;
     aroundThePlanet:number;
+    foxInTheBox:number;
     cannonball: number;
     noExcuses: number;
     cornerstonePresence: number;
