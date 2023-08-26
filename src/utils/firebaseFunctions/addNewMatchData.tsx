@@ -8,10 +8,13 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import MatchDataToSubmit from "../interfaces/matchDataToSubmit";
-
+import uuid from "react-uuid";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { getApp } from "firebase/app";
 async function addNewMatchData(
   dataToSubmit: MatchDataToSubmit,
-  userId: string
+  userId: string,
+  selectedFile: File | null
 ) {
   const { GK, CB, RB, LB, DMF, CMF, AMF, RMF, LMF, LWF, RWF, SS, CF } =
     dataToSubmit.positionsPlayed;
@@ -31,6 +34,14 @@ async function addNewMatchData(
   const CF_p = CF ?? null;
 
   try {
+
+    let urlForUploadedImage:string|null=null;
+    
+    if(selectedFile){
+      urlForUploadedImage = await uploadMatchImage(userId,selectedFile)
+    }
+
+
     await runTransaction(db, async (transaction) => {
       // Get the overall-stats document
       const overallStatsDocRef = doc(
@@ -175,7 +186,7 @@ async function addNewMatchData(
  
 
         transaction.set(newMatchRef, {
-          matchImage:dataToSubmit.matchImage,
+          matchImage:urlForUploadedImage,
           matchRecordingLink:dataToSubmit.matchRecordingLink,
           matchComments: dataToSubmit.matchComments,
           winValue: dataToSubmit.winValue,
@@ -613,5 +624,63 @@ async function addNewMatchData(
     throw error;
   }
 }
+
+
+async function uploadMatchImage(userId:string,selectedFile:File): Promise<string | null>  {
+
+  const firebaseApp = getApp();
+  const matchesStorage = getStorage(
+    firebaseApp,
+    "gs://myfootballtracker-matches"
+  );
+
+  let imageRef = null;
+  let imageUrlResized: string | null = null;
+  const uniqueImageId = uuid();
+
+  if (selectedFile) {
+
+    imageRef = ref(
+      matchesStorage,
+      `match-images/${userId}/preview/${userId}_${uniqueImageId}`
+    );
+
+    await uploadBytes(imageRef, selectedFile);
+
+    const imageRefResized = ref(
+      matchesStorage,
+      `match-images/${userId}/preview/${userId}_${uniqueImageId}_1024x1024`
+    );
+    try {
+      imageUrlResized = await getDownloadURL(imageRefResized);
+
+      
+    } catch (error) {
+      console.error("Error fetching resized image:", error);
+      // Retry logic
+
+      let retryAttempts = 9;
+      while (retryAttempts > 0) {
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 3 seconds
+
+        try {
+          imageUrlResized = await getDownloadURL(imageRefResized);
+          return imageUrlResized;
+          break; // If successful, break out of the loop
+        } catch (error) {
+          console.error("Error fetching resized image after retry:", error);
+          retryAttempts--;
+        }
+      }
+
+      if (retryAttempts === 0) {
+        console.error("Retries exhausted. Unable to fetch resized image.");
+        // Handle the error and display an error message to the user
+      }
+    }
+
+  }
+  return null; 
+} 
 
 export default addNewMatchData;

@@ -6,6 +6,7 @@ import {
   limit,
   query,
   where,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { AuthContext } from "../../context/Auth";
@@ -18,8 +19,10 @@ import {
   Tab,
   TabPanel,
   Container,
-  Text
+  Text,
+  Button,
 } from "@chakra-ui/react";
+import { HiUpload } from "react-icons/hi";
 import { Box } from "@chakra-ui/react";
 import UserRatingForm from "../../components/UserRatingForm";
 import { OverallStatsContext } from "../../context/OverallStats";
@@ -36,28 +39,35 @@ function Reviews() {
   const [previousReviewDate, setPreviousReviewData] = useState("");
   const { reviewsData } = useContext(OverallStatsContext);
   const [refreshReviewsCounter, setRefreshReviewsCounter] = useState(0);
-
+  const [loadPendingReviewsBtnStatus, setLoadPendingReviewsBtnStatus] =
+    useState(false);
+  const [loadPrevReviewsBtnStatus, setLoadPrevReviewsBtnStatus] =
+    useState(false);
+  const [latestPrevDoc, setLatestPrevDoc] = useState<any>(null);
+  const [latestPendingDoc, setLatestPendingDoc] = useState<any>(null);
   const triggerReviewsComponentRefresh = () => {
     setRefreshReviewsCounter((prevCounter) => prevCounter + 1);
+    setPendingReviews([])
+    setPendingReviews([])
   };
 
   useEffect(() => {
-    console.log('Inside Reviews UseEffect:');
-    console.log(refreshReviewsCounter);
-  
+
     const fetchData = async () => {
       await getPendingReviews();
       await getHistoryReviews();
-      setLoading(false)
+      setLoading(false);
     };
-  
+
     fetchData();
 
-    if (reviewsData.usersThatWereReviewed.length > 0) {
+  }, [loading, refreshReviewsCounter]);
 
+  useEffect(()=>{
+    if (reviewsData.usersThatWereReviewed.length > 0) {
       reviewsData.usersThatWereReviewed.forEach((obj) => {
         const previousReviewId = obj.userId;
-        
+
         if (previousReviewId === currentUser.uid) {
           setCheckPreviousReview(true);
           const dateObject = obj.createdAt.toDate();
@@ -82,9 +92,7 @@ function Reviews() {
         }
       });
     }
-
-  }, [loading, refreshReviewsCounter]);
-  
+  },[])
 
   async function getHistoryReviews() {
     try {
@@ -93,17 +101,43 @@ function Reviews() {
       const userReviewsColRef = collection(userDocRef, "reviews");
 
       // Query the subcollection documents where reviewStats is "pending"
-      const q = query(
-        userReviewsColRef,
-        where("reviewStatus", "==", "approved"),
-        limit(1)
-      );
+      let q;
+      if (latestPrevDoc) {
+        q = query(
+          userReviewsColRef,
+          startAfter(latestPrevDoc),
+          where("reviewStatus", "==", "approved"),
+          limit(1)
+        );
+      } else {
+        q = query(
+          userReviewsColRef,
+          where("reviewStatus", "==", "approved"),
+          limit(1)
+        );
+      }
+
       const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.docs.length > 0) {
+        setLatestPrevDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
+      }
+
+      if (querySnapshot.empty) {
+        setLoadPrevReviewsBtnStatus(true);
+      }
 
       // Convert the querySnapshot to an array of document data
       const previousReviewsData = querySnapshot.docs.map((doc) => doc.data());
 
-      setPreviousReviews(previousReviewsData);
+      if (latestPrevDoc) {
+        setPreviousReviews((prevReviewsData) => [
+          ...prevReviewsData,
+          ...previousReviewsData,
+        ]);
+      } else {
+        setPreviousReviews(previousReviewsData);
+      }
     } catch (error) {
       console.error("Error getting pending reviews:", error);
     }
@@ -116,18 +150,43 @@ function Reviews() {
       const userReviewsColRef = collection(userDocRef, "reviews");
 
       // Query the subcollection documents where reviewStats is "pending"
-      const q = query(
-        userReviewsColRef,
-        where("reviewStatus", "==", "pending"),
-        limit(1)
-      );
+
+      let q;
+      if (latestPendingDoc) {
+        q = query(
+          userReviewsColRef,
+          startAfter(latestPendingDoc),
+          where("reviewStatus", "==", "pending"),
+          limit(1)
+        );
+      } else {
+        q = query(
+          userReviewsColRef,
+          where("reviewStatus", "==", "pending"),
+          limit(1)
+        );
+      }
       const querySnapshot = await getDocs(q);
 
-      
+      if (querySnapshot.docs.length > 0) {
+        setLatestPendingDoc(querySnapshot.docs[querySnapshot.docs.length - 1]);
+      }
+
       // Convert the querySnapshot to an array of document data
       const pendingReviewsData = querySnapshot.docs.map((doc) => doc.data());
 
-      setPendingReviews(pendingReviewsData);
+      if (latestPendingDoc) {
+        setPendingReviews((prevPendingReviewsData) => [
+          ...prevPendingReviewsData,
+          ...pendingReviewsData,
+        ]);
+      } else {
+        setPendingReviews(pendingReviewsData);
+      }
+
+      if (querySnapshot.empty) {
+        setLoadPendingReviewsBtnStatus(true);
+      }
     } catch (error) {
       console.error("Error getting pending reviews:", error);
     }
@@ -162,29 +221,84 @@ function Reviews() {
                   <Text>You have no pending reviews.</Text>
                 </Box>
               ) : (
-                pendingReviews.map((review, index) => (
-                  <Box key={index} p={0} m={0}>
-                    <ReviewCard
-                      review={review}
-                      triggerReviewsComponentRefresh={
-                        triggerReviewsComponentRefresh
-                      }
-                    />
-                  </Box>
-                ))
+                <Box
+                  justifyContent="center"
+                  display="flex"
+                  flexDirection="column"
+                  gap={3}
+                  pb="50px"
+                >
+                  {pendingReviews.map((review, index) => (
+                    <Box key={index} p={0} m={0}>
+                      <ReviewCard
+                        review={review}
+                        triggerReviewsComponentRefresh={
+                          triggerReviewsComponentRefresh
+                        }
+                      />
+                    </Box>
+                  ))}
+
+                  {pendingReviews.length !== 0 && loading === false && (
+                    <Button
+                      isDisabled={loadPendingReviewsBtnStatus}
+                      rightIcon={<HiUpload />}
+                      colorScheme="blue"
+                      variant="solid"
+                      m={3}
+                      type="submit"
+                      onClick={getPendingReviews}
+                    >
+                      Load More Reviews
+                    </Button>
+                  )}
+                </Box>
               )}
             </TabPanel>
             <TabPanel p={0} m={0}>
-              {previousReviews.map((review, index) => (
-                <Box key={index}>
-                  <ReviewCard
-                    review={review}
-                    triggerReviewsComponentRefresh={
-                      triggerReviewsComponentRefresh
-                    }
-                  />
+              {previousReviews.length === 0 && loading === false ? (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  pt="20px"
+                >
+                  <Text>You didn't approve any reviews yet.</Text>
                 </Box>
-              ))}
+              ) : (
+                <Box
+                  justifyContent="center"
+                  display="flex"
+                  flexDirection="column"
+                  gap={3}
+                  pb="50px"
+                >
+                  {previousReviews.map((review, index) => (
+                    <Box key={index}>
+                      <ReviewCard
+                        review={review}
+                        triggerReviewsComponentRefresh={
+                          triggerReviewsComponentRefresh
+                        }
+                      />
+                    </Box>
+                  ))}
+
+                  {previousReviews.length !== 0 && loading === false && (
+                    <Button
+                      isDisabled={loadPrevReviewsBtnStatus}
+                      rightIcon={<HiUpload />}
+                      colorScheme="blue"
+                      variant="solid"
+                      m={3}
+                      type="submit"
+                      onClick={getHistoryReviews}
+                    >
+                      Load More Reviews
+                    </Button>
+                  )}
+                </Box>
+              )}
             </TabPanel>
             <TabPanel pb="50px">
               {checkPreviousReview ? (

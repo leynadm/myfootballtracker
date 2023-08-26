@@ -2,7 +2,7 @@ import MatchHighlight from "../../components/MatchHighlight";
 import addNewMatchData from "../../utils/firebaseFunctions/addNewMatchData";
 import checkMatchesPlayed from "../../utils/firebaseFunctions/checkMatchesPlayed";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
-import uuid from "react-uuid";
+
 import {
   Button,
   Text,
@@ -222,55 +222,8 @@ export default function NewMatch() {
   } */
   
   
-  async function uploadMatchImage() {
+  /*  */
 
-    let imageRef = null;
-    let imageUrlResized: string | null = null;
-    const uniqueImageId = uuid();
-
-    if (selectedFile) {
-
-      imageRef = ref(
-        matchesStorage,
-        `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}`
-      );
-
-      await uploadBytes(imageRef, selectedFile);
-
-      const imageRefResized = ref(
-        matchesStorage,
-        `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}_1024x1024`
-      );
-      try {
-        imageUrlResized = await getDownloadURL(imageRefResized);
-        setMatchImage(imageUrlResized);
-        
-      } catch (error) {
-        console.error("Error fetching resized image:", error);
-        // Retry logic
-
-        let retryAttempts = 9;
-        while (retryAttempts > 0) {
-          await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait for 3 seconds
-
-          try {
-            imageUrlResized = await getDownloadURL(imageRefResized);
-            break; // If successful, break out of the loop
-          } catch (error) {
-            console.error("Error fetching resized image after retry:", error);
-            retryAttempts--;
-          }
-        }
-
-        if (retryAttempts === 0) {
-          console.error("Retries exhausted. Unable to fetch resized image.");
-          // Handle the error and display an error message to the user
-        }
-      }
-
-      setMatchImage(imageUrlResized);
-    }
-  } 
 
   function handleRemoveMatchPicture() {
     setSelectedFile(null);
@@ -602,8 +555,7 @@ export default function NewMatch() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   
     event.preventDefault();
-    setSavingMatch(true)
-    setButtonDisabledCheck(true)
+
 
     let positionSelected = true;
     
@@ -622,23 +574,9 @@ export default function NewMatch() {
       return;
     }
 
-     
-    await uploadMatchImage();
- 
-
-    /*
-    uploadMatchImage()
-    .then((imageUrl) => {
-      console.log("Resized image URL:", imageUrl);
-      setMatchImage(imageUrl)
-      // You can assign imageUrl to a variable or use it as needed
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      // Handle the error accordingly
-    });
-*/
-     
+    setSavingMatch(true)
+    setButtonDisabledCheck(true)
+    
     try {
     
       const validityCheckPromise = checkMatchesPlayed(
@@ -657,7 +595,7 @@ export default function NewMatch() {
               position: "top",
             });
           } else {
-            addNewMatchData(dataToSubmit, currentUser.uid)
+            addNewMatchData(dataToSubmit, currentUser.uid,selectedFile)
               .then(() => {
                 toast({
                   title: "Your match was registered successfully!",
@@ -2206,7 +2144,7 @@ export default function NewMatch() {
                 <Slider
                   max={10}
                   min={1}
-                  step={0.5}
+                  step={0.25}
                   aria-label="slider-ex-6"
                   onChange={(val) => setMatchPerformance(val)}
                 >

@@ -50,7 +50,8 @@ async function createReviewStatsDoc(userId:string) {
         PHY:0,
         GKP:0,
         TDF:0,
-        usersThatSentReviews:[]
+        usersThatSentReviews:[],
+        usersThatWereReviewed:[]
     });
   } catch (error) {
     // Handle the error here

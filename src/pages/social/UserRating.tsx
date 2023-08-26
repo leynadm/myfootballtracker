@@ -94,14 +94,12 @@ function UserRating({ queriedUserId, queriedUserReviewsStats }: Props) {
       });
     }
 
-    console.log(reviewsData.usersThatWereReviewed.length);
 
     if (reviewsData.usersThatWereReviewed.length > 0) {
 
       reviewsData.usersThatWereReviewed.forEach((obj) => {
         const previousReviewId = obj.userId;
-        console.log(previousReviewId);
-        console.log(queriedUserId);
+
         if (previousReviewId === queriedUserId) {
           setCheckPreviousReview(true);
           const dateObject = obj.createdAt.toDate();

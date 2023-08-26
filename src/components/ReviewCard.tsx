@@ -51,8 +51,8 @@ function ReviewCard({ review, triggerReviewsComponentRefresh }: Props) {
   });
 
   async function handleApprovalRating() {
-    await addNewRatingData(review, currentUser.uid);
 
+    await addNewRatingData(review, currentUser.uid);
     toast({
       title: "The review was approved!",
       status: "success",
@@ -80,7 +80,7 @@ function ReviewCard({ review, triggerReviewsComponentRefresh }: Props) {
 
   return (
     <>
-      <Card maxW="lg" p={0} mb={5}>
+      <Card maxW="lg" p={0} >
         <CardHeader>
           <Flex>
             <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
@@ -677,7 +677,7 @@ function ReviewCard({ review, triggerReviewsComponentRefresh }: Props) {
           </Box>
         </CardBody>
 
-        <CardFooter pl={4} pr={4} pb="50px" pt={0}>
+        <CardFooter pl={4} pr={4} pt={0}>
           {review.reviewStatus === "pending" && (
             <Box
               display="flex"
