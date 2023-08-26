@@ -82,6 +82,7 @@ function MatchHistory() {
           justifyContent="center"
           pb="80px"
           flexDirection="column"
+          alignItems="center"
         >
           There are no matches to show.
         </Box>

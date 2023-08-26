@@ -83,6 +83,7 @@ async function createOverallStatsDoc(userId:string) {
       livingInAFortress: 0,
       theOnlyHero: 0,
       instantReflexes: 0,
+      foxInTheBox:0,
       matchDateArrOnly:[],
       wins:0,
       defeats:0,
@@ -112,7 +113,19 @@ async function createOverallStatsDoc(userId:string) {
       theMonument:0,
       thePathBreaker:0,
       theMountain:0,
-      telescopeVision:0
+      telescopeVision:0,
+      mathGenius:0,
+      freePath:0,
+      sneakIn:0,
+      olimpico:0,
+      threadTheNeedle:0,
+      equallyImpressive:0,
+      heelOfAnAssist:0,
+      cleverDummy:0,
+      bigBrain:0,
+      lobbedWonder:0,
+      servedOnAPlate:0,
+      numberOfPositionsPlayed:0
     });
   } catch (error) {
     // Handle the error here

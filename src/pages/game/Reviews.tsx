@@ -306,10 +306,12 @@ function Reviews() {
                   You already did a self-assessment on {previousReviewDate}.
                 </Text>
               ) : (
+                <Box>
+                  <Text textAlign="center" p={1}>Here you can make a self-review of your skills every 3 months.</Text>
                 <UserRatingForm
                   queriedUserId={currentUser.uid}
                   queriedUserReviewsStats={reviewsData}
-                />
+                /></Box>
               )}
             </TabPanel>
           </TabPanels>

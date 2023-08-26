@@ -39,12 +39,10 @@ import {
   Textarea,
   Image,
   Spinner,
-  Tag
+  Tag,
 } from "@chakra-ui/react";
 import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { useNavigate } from "react-router-dom";
-import { getApp } from "firebase/app";
-
 import { GiFox } from "react-icons/gi";
 import { BsFillCameraReelsFill } from "react-icons/bs";
 import { GiMoonOrbit } from "react-icons/gi";
@@ -54,6 +52,18 @@ import { GiHumanPyramid } from "react-icons/gi";
 import { GiMaze } from "react-icons/gi";
 import { GiMountaintop } from "react-icons/gi";
 import { GoTelescope } from "react-icons/go";
+import { TbMathFunctionOff } from "react-icons/tb";
+import { PiRoadHorizonFill } from "react-icons/pi";
+import { PiKeyholeFill } from "react-icons/pi";
+import { TbOlympics } from "react-icons/tb";
+import { TbNeedleThread } from "react-icons/tb";
+import { GiSteeltoeBoots } from "react-icons/gi";
+import { PiHighHeelFill } from "react-icons/pi";
+import { GiPuppet } from "react-icons/gi";
+import { GiBrain } from "react-icons/gi";
+import { TbMathMax } from "react-icons/tb";
+import { MdFastfood } from "react-icons/md";
+
 import { BsFillSignStopFill } from "react-icons/bs";
 import { GiAngryEyes } from "react-icons/gi";
 import { FaGitkraken } from "react-icons/fa";
@@ -117,7 +127,7 @@ import MatchDataToSubmit from "../../utils/interfaces/matchDataToSubmit";
 
 import { useContext, useState, FormEvent, useRef } from "react";
 import { AuthContext } from "../../context/Auth";
-
+import { OverallStatsContext } from "../../context/OverallStats";
 interface PositionsPlayed {
   [key: string]: boolean;
 }
@@ -135,22 +145,18 @@ export default function NewMatch() {
   };
 
   const toast = useToast();
-  const firebaseApp = getApp();
-  const matchesStorage = getStorage(
-    firebaseApp,
-    "gs://myfootballtracker-matches"
-  );
 
   const { currentUser } = useContext(AuthContext);
+  const {triggerDataRefresh} = useContext(OverallStatsContext)
   const [winValue, setWinValue] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileSource, setFileSource] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [savingMatch, setSavingMatch] = useState(false);
-  const [matchImage, setMatchImage] = useState<string>("");
-  const [buttonDisabledCheck, setButtonDisabledCheck] = useState(false)
-  const navigate = useNavigate()
-  
+
+  const [buttonDisabledCheck, setButtonDisabledCheck] = useState(false);
+  const navigate = useNavigate();
+
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
@@ -169,60 +175,6 @@ export default function NewMatch() {
   function handleProfilePhotoChange() {
     fileInputRef.current?.click();
   }
-
-  /* 
-  async function uploadMatchImage() {
-    return new Promise(async (resolve, reject) => {
-      let imageRef = null;
-      let imageUrlResized = null;
-      const uniqueImageId = uuid();
-  
-      if (selectedFile) {
-        imageRef = ref(
-          matchesStorage,
-          `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}`
-        );
-  
-        await uploadBytes(imageRef, selectedFile);
-  
-        const imageRefResized = ref(
-          matchesStorage,
-          `match-images/${currentUser.uid}/preview/${currentUser.uid}_${uniqueImageId}_1024x1024`
-        );
-  
-        try {
-          imageUrlResized = await getDownloadURL(imageRefResized);
-          resolve(imageUrlResized); // Resolve the promise with the URL
-        } catch (error) {
-          console.error("Error fetching resized image:", error);
-  
-          let retryAttempts = 9;
-          while (retryAttempts > 0) {
-            await new Promise((innerResolve) => setTimeout(innerResolve, 2000));
-  
-            try {
-              imageUrlResized = await getDownloadURL(imageRefResized);
-              resolve(imageUrlResized); // Resolve the promise with the URL
-              break;
-            } catch (error) {
-              console.error("Error fetching resized image after retry:", error);
-              retryAttempts--;
-            }
-          }
-  
-          if (retryAttempts === 0) {
-            console.error("Retries exhausted. Unable to fetch resized image.");
-            reject("Unable to fetch resized image"); // Reject the promise with an error message
-          }
-        }
-      } else {
-        reject("No selected file"); // Reject the promise if there's no selected file
-      }
-    });
-  } */
-  
-  
-  /*  */
 
 
   function handleRemoveMatchPicture() {
@@ -260,13 +212,25 @@ export default function NewMatch() {
   const [letTheShowBegin, setLetTheShowBegin] = useState(false);
   const [slingshot, setSlingshot] = useState(false);
   const [aroundThePlanet, SetAroundThePlanet] = useState(false);
-  const [foxInTheBox, SetFoxInTheBox] = useState(false);  
+  const [foxInTheBox, SetFoxInTheBox] = useState(false);
   const [hawkeye, setHawkeye] = useState(false);
   const [cannonball, setCannonball] = useState(false);
+  const [mathGenius, setMathGenius] = useState(false);
+  const [freePath, setFreePath] = useState(false);
+  const [sneakIn, setSneakIn] = useState(false);
+  const [olimpico, setOlimpico] = useState(false);
   const [noExcuses, setNoExcuses] = useState(false);
   const [cornerstonePresence, setCornerstonePresence] = useState(false);
   const [marksman, setMarksman] = useState(false);
   const [telescopeVision, setTelescopeVision] = useState(false);
+  const [threadTheNeedle, setThreadTheNeedle] = useState(false);
+  const [equallyImpressive, setEquallyImpressive] = useState(false);
+  const [heelOfAnAssist, setHeelOfAnAssist] = useState(false);
+  const [cleverDummy, setCleverDummy] = useState(false);
+  const [bigBrain, setBigBrain] = useState(false);
+  const [lobbedWonder, setLobbedWonder] = useState(false);
+  const [servedOnAPlate, setServedOnAPlate] = useState(false);
+
   const [coldBloodedBeast, setColdBloodedBeast] = useState(false);
   const [aerialThreat, setAerialThreat] = useState(false);
   const [silkySmooth, setSiklySmooth] = useState(false);
@@ -309,8 +273,7 @@ export default function NewMatch() {
   const [thePathBreaker, setThePathBreaker] = useState(false);
   const [theMountain, setTheMountain] = useState(false);
 
-  function checkGoalsRadioValue(e:string) {
-
+  function checkGoalsRadioValue(e: string) {
     if (e === "getOnTheScoresheet") {
       setGetOnTheScoresheet(true);
     } else {
@@ -347,11 +310,10 @@ export default function NewMatch() {
       setHistoryMaker(false);
     }
 
-    setGoalsRadioValue(e)
+    setGoalsRadioValue(e);
   }
 
-  function checkSavesRadioValue(e:string) {
-   
+  function checkSavesRadioValue(e: string) {
     if (e === "youStopHere") {
       setYouStopHere(true);
     } else {
@@ -382,12 +344,11 @@ export default function NewMatch() {
       setProtectorOfTheGalaxy(false);
     }
 
-    setSavesRadioValue(e)
+    setSavesRadioValue(e);
   }
 
-  function checkDefenceRadioValue(e:string) {
-
-    setDefenceRadioValue(e)
+  function checkDefenceRadioValue(e: string) {
+    setDefenceRadioValue(e);
     if (e === "theGiant") {
       setTheGiant(true);
     } else {
@@ -460,6 +421,7 @@ export default function NewMatch() {
   }
 
   const dataToSubmit: MatchDataToSubmit = {
+    numberOfPositionsPlayed:0,
     winValue: winValue,
     positionsPlayed: positionsPlayed,
     matchDate: matchDate,
@@ -532,7 +494,18 @@ export default function NewMatch() {
     thePathBreaker: thePathBreaker,
     theMountain: theMountain,
     matchRecordingLink: matchRecordingLink,
-    matchImage: matchImage,
+    matchImage: "",
+    mathGenius:mathGenius,
+    freePath:freePath,
+    sneakIn:sneakIn,
+    olimpico:olimpico,
+    threadTheNeedle:threadTheNeedle,
+    equallyImpressive:equallyImpressive,
+    heelOfAnAssist:heelOfAnAssist,
+    cleverDummy:cleverDummy,
+    bigBrain:bigBrain,
+    lobbedWonder:lobbedWonder,
+    servedOnAPlate:servedOnAPlate,
   };
 
   const handleClick = (boxName: string) => {
@@ -553,12 +526,10 @@ export default function NewMatch() {
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-  
     event.preventDefault();
 
-
     let positionSelected = true;
-    
+
     for (const key in positionsPlayed) {
       if (positionsPlayed[key] === true) {
         positionSelected = false;
@@ -574,11 +545,10 @@ export default function NewMatch() {
       return;
     }
 
-    setSavingMatch(true)
-    setButtonDisabledCheck(true)
-    
+    setSavingMatch(true);
+    setButtonDisabledCheck(true);
+
     try {
-    
       const validityCheckPromise = checkMatchesPlayed(
         dataToSubmit,
         currentUser.uid
@@ -595,7 +565,7 @@ export default function NewMatch() {
               position: "top",
             });
           } else {
-            addNewMatchData(dataToSubmit, currentUser.uid,selectedFile)
+            addNewMatchData(dataToSubmit, currentUser.uid, selectedFile)
               .then(() => {
                 toast({
                   title: "Your match was registered successfully!",
@@ -605,7 +575,9 @@ export default function NewMatch() {
                 });
                 setButtonDisabledCheck(false);
                 setSavingMatch(false);
-                navigate("/home/game/match-history")
+                navigate("/home/game/match-history");
+              }).then(()=>{
+                triggerDataRefresh()
               })
               .catch((error) => {
                 console.error("Error registering match:", error);
@@ -619,6 +591,7 @@ export default function NewMatch() {
                 });
               });
           }
+     
         })
         .catch((error) => {
           console.error("Error during validity check:", error);
@@ -626,7 +599,9 @@ export default function NewMatch() {
     } catch (error) {
       console.error(error);
     }
-      
+
+
+
   };
 
   const colors = useColorModeValue(
@@ -1429,6 +1404,38 @@ export default function NewMatch() {
                           />
 
                           <MatchHighlight
+                            highlightTitle="Math Genius"
+                            highlightText="Score a goal with a shot from the half-way line."
+                            highlightIcon={TbMathFunctionOff}
+                            highlightState={mathGenius}
+                            setHighlightState={setMathGenius}
+                          />
+
+                          <MatchHighlight
+                            highlightTitle="Free Path"
+                            highlightText="Score a goal by nutmegging the goalkeeper."
+                            highlightIcon={PiRoadHorizonFill}
+                            highlightState={freePath}
+                            setHighlightState={setFreePath}
+                          />
+
+                          <MatchHighlight
+                            highlightTitle="Sneak In"
+                            highlightText="Score a goal with a shot from a very tight angle."
+                            highlightIcon={PiKeyholeFill}
+                            highlightState={sneakIn}
+                            setHighlightState={setSneakIn}
+                          />
+
+                          <MatchHighlight
+                            highlightTitle="Olimpico"
+                            highlightText="Score a goal directly from a corner kick."
+                            highlightIcon={TbOlympics}
+                            highlightState={olimpico}
+                            setHighlightState={setOlimpico}
+                          />
+
+                          <MatchHighlight
                             highlightTitle="No Excuses"
                             highlightText="Score a goal with your weak foot."
                             highlightIcon={GiWingfoot}
@@ -1542,7 +1549,6 @@ export default function NewMatch() {
 
                                 <Radio value="aPleasureDoingBusiness" />
                               </Box>
-
                               <Box
                                 display="grid"
                                 gridTemplateColumns="1fr 8fr 1fr"
@@ -1566,7 +1572,6 @@ export default function NewMatch() {
 
                                 <Radio value="foodOnTheTable" />
                               </Box>
-
                               <Box
                                 display="grid"
                                 gridTemplateColumns="1fr 8fr 1fr"
@@ -1590,7 +1595,6 @@ export default function NewMatch() {
 
                                 <Radio value="assistsMaestro" />
                               </Box>
-
                               <Box
                                 display="grid"
                                 gridTemplateColumns="1fr 8fr 1fr"
@@ -1614,7 +1618,6 @@ export default function NewMatch() {
 
                                 <Radio value="industrialProvider" />
                               </Box>
-
                               <Box
                                 display="grid"
                                 gridTemplateColumns="1fr 8fr 1fr"
@@ -1638,7 +1641,6 @@ export default function NewMatch() {
 
                                 <Radio value="puppetMaster" />
                               </Box>
-
                               <Box
                                 display="grid"
                                 gridTemplateColumns="1fr 8fr 1fr"
@@ -1662,15 +1664,13 @@ export default function NewMatch() {
 
                                 <Radio value="omniscient" />
                               </Box>
-
                               <MatchHighlight
                                 highlightTitle="Cornerstone Presence"
-                                highlightText="Provide an assist directly from a corner kick."
+                                highlightText="Provide an assist directly from a corner kick or a set-piece."
                                 highlightIcon={LuFlagTriangleLeft}
                                 highlightState={cornerstonePresence}
                                 setHighlightState={setCornerstonePresence}
                               />
-
                               <MatchHighlight
                                 highlightTitle="Marksman"
                                 highlightText="Provide an assist from a cross."
@@ -1678,13 +1678,67 @@ export default function NewMatch() {
                                 highlightState={marksman}
                                 setHighlightState={setMarksman}
                               />
-
                               <MatchHighlight
                                 highlightTitle="Telescope Vision"
                                 highlightText="Provide an assist with a pass from your own half of the pitch."
                                 highlightIcon={GoTelescope}
                                 highlightState={telescopeVision}
                                 setHighlightState={setTelescopeVision}
+                              />
+                              <MatchHighlight
+                                highlightTitle="Thread The Needle"
+                                highlightText="Provide an assist with an accurate through ball pass."
+                                highlightIcon={TbNeedleThread}
+                                highlightState={threadTheNeedle}
+                                setHighlightState={setThreadTheNeedle}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Equally Impressive"
+                                highlightText="Provide an assist with your weak foot."
+                                highlightIcon={GiSteeltoeBoots}
+                                highlightState={equallyImpressive}
+                                setHighlightState={setEquallyImpressive}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Heel of An Assist"
+                                highlightText="Provide an assist with your backheel."
+                                highlightIcon={PiHighHeelFill}
+                                highlightState={heelOfAnAssist}
+                                setHighlightState={setHeelOfAnAssist}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Clever Dummy"
+                                highlightText="Intentionally leave the ball for a teammate in a better position to score."
+                                highlightIcon={GiPuppet}
+                                highlightState={cleverDummy}
+                                setHighlightState={setCleverDummy}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Big Brain"
+                                highlightText="Provide an assist by redirecting the ball to a teammate with a header."
+                                highlightIcon={GiBrain}
+                                highlightState={bigBrain}
+                                setHighlightState={setBigBrain}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Lobbed Wonder"
+                                highlightText="Provide an assist with a lofted pass over the opponent defence."
+                                highlightIcon={TbMathMax}
+                                highlightState={lobbedWonder}
+                                setHighlightState={setLobbedWonder}
+                              />
+
+                              <MatchHighlight
+                                highlightTitle="Served On A Plate"
+                                highlightText="Provide an assist after dribbling the opponent defenders."
+                                highlightIcon={MdFastfood}
+                                highlightState={servedOnAPlate}
+                                setHighlightState={setServedOnAPlate}
                               />
                             </Stack>
                           </RadioGroup>
@@ -2122,7 +2176,7 @@ export default function NewMatch() {
                     </FormControl>
                     {fileSource && (
                       <Image
-                        src={fileSource || matchImage}
+                        src={fileSource}
                         alt="upload"
                         borderRadius="5px"
                       />
@@ -2144,7 +2198,7 @@ export default function NewMatch() {
                 <Slider
                   max={10}
                   min={1}
-                  step={0.25}
+                  step={0.5}
                   aria-label="slider-ex-6"
                   onChange={(val) => setMatchPerformance(val)}
                 >

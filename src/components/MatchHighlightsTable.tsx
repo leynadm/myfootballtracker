@@ -64,16 +64,24 @@ import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
-
+import { TbMathFunctionOff } from "react-icons/tb";
+import { PiRoadHorizonFill } from "react-icons/pi";
+import { PiKeyholeFill } from "react-icons/pi";
+import { TbOlympics } from "react-icons/tb";
+import { TbNeedleThread } from "react-icons/tb";
+import { GiSteeltoeBoots } from "react-icons/gi";
+import { PiHighHeelFill } from "react-icons/pi";
+import { GiPuppet } from "react-icons/gi";
+import { GiBrain } from "react-icons/gi";
+import { TbMathMax } from "react-icons/tb";
+import { MdFastfood } from "react-icons/md";
 import OverallStatsDataInterface from "../utils/interfaces/overallStatsDataInterface";
 
-interface Props{
-
-  overallStatsData:OverallStatsDataInterface
-
+interface Props {
+  overallStatsData: OverallStatsDataInterface;
 }
 
-function MatchHighlightsTable({overallStatsData}:Props) {
+function MatchHighlightsTable({ overallStatsData }: Props) {
   return (
     <>
       <Box>
@@ -322,6 +330,82 @@ function MatchHighlightsTable({overallStatsData}:Props) {
                         </Td>
                         <Td pl={0} pr={0} textAlign="center">
                           x {overallStatsData.cannonball}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.mathGenius !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<TbMathFunctionOff />}
+                            fontSize="1.5rem"
+                            bg="red.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Math Genius
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.mathGenius}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.freePath !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<PiRoadHorizonFill />}
+                            fontSize="1.5rem"
+                            bg="red.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Free Path
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.freePath}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.sneakIn !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<PiKeyholeFill />}
+                            fontSize="1.5rem"
+                            bg="red.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Sneak In
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.sneakIn}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.olimpico !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<TbOlympics />}
+                            fontSize="1.5rem"
+                            bg="red.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Olimpico
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.olimpico}
                         </Td>
                       </Tr>
                     )}
@@ -727,6 +811,139 @@ function MatchHighlightsTable({overallStatsData}:Props) {
                         </Td>
                         <Td pl={0} pr={0} textAlign="center">
                           x {overallStatsData.telescopeVision}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.threadTheNeedle !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<TbNeedleThread />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Thread The Needle
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.threadTheNeedle}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.equallyImpressive !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<GiSteeltoeBoots />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Equally Impressive
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.equallyImpressive}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.heelOfAnAssist !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<PiHighHeelFill />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Heel Of An Assist
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.heelOfAnAssist}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.cleverDummy !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<GiPuppet />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Clever Dummy
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.cleverDummy}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.bigBrain !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<GiBrain />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Big Brain
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.bigBrain}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.lobbedWonder !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<TbMathMax />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Lobbed Wonder
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.lobbedWonder}
+                        </Td>
+                      </Tr>
+                    )}
+
+                    {overallStatsData.servedOnAPlate !== 0 && (
+                      <Tr textAlign="center">
+                        <Td p={0} m={0} textAlign="center">
+                          <IconButton
+                            aria-label="highlight icon"
+                            icon={<MdFastfood />}
+                            fontSize="1.5rem"
+                            bg="teal.200"
+                          />
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="start">
+                          Served On A Plate
+                        </Td>
+                        <Td pl={0} pr={0} textAlign="center">
+                          x {overallStatsData.servedOnAPlate}
                         </Td>
                       </Tr>
                     )}

@@ -26,8 +26,23 @@ import {
   AccordionIcon,
   IconButton,
   Textarea,
-  Tabs, TabList, TabPanels, Tab, TabPanel 
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
+import { TbMathFunctionOff } from "react-icons/tb";
+import { PiRoadHorizonFill } from "react-icons/pi";
+import { PiKeyholeFill } from "react-icons/pi";
+import { TbOlympics } from "react-icons/tb";
+import { TbNeedleThread } from "react-icons/tb";
+import { GiSteeltoeBoots } from "react-icons/gi";
+import { PiHighHeelFill } from "react-icons/pi";
+import { GiPuppet } from "react-icons/gi";
+import { GiBrain } from "react-icons/gi";
+import { TbMathMax } from "react-icons/tb";
+import { MdFastfood } from "react-icons/md";
 import { PiSoccerBallFill } from "react-icons/pi";
 import { GiBarefoot } from "react-icons/gi";
 import { TbRectangleVerticalFilled } from "react-icons/tb";
@@ -98,14 +113,13 @@ function MatchHistoryCard({ match }: { match: any }) {
     transition: "background-color 0.2s", // Add a smooth transition effect
     backgroundColor: "green",
     color: "white",
-    fontWeight:"bold"
+    fontWeight: "bold",
   };
 
   const calculateBackgroundColor = (value: boolean) => {
+    console.log("inside calcualteBackgroundColor:");
+    console.log(value);
 
-    console.log('inside calcualteBackgroundColor:')
-    console.log(value)
-    
     const colorRange = [
       "#228B22", // Forestgreen
       "#00A36C", // Olive
@@ -120,15 +134,13 @@ function MatchHistoryCard({ match }: { match: any }) {
     if (!value) {
       backgroundColorToUse = "green";
     } else {
-      backgroundColorToUse = "#00FF00"
+      backgroundColorToUse = "#00FF00";
     }
-    
 
     return backgroundColorToUse;
   };
 
   const calculateTextColor = (value: boolean) => {
-    
     const colorRange = [
       "#228B22", // Forestgreen
       "#00A36C", // Olive
@@ -143,9 +155,8 @@ function MatchHistoryCard({ match }: { match: any }) {
     if (!value) {
       textColorToUse = "white";
     } else {
-      textColorToUse = "black"
+      textColorToUse = "black";
     }
-    
 
     return textColorToUse;
   };
@@ -159,17 +170,32 @@ function MatchHistoryCard({ match }: { match: any }) {
             <Box display="flex" alignItems="center" gap={2}>
               {match.homeTeamGoals}-{match.awayTeamGoals}{" "}
               {match.winValue === "win" && (
-                <Tag fontSize="1em" fontWeight="bold" colorScheme="orange" height="100%">
+                <Tag
+                  fontSize="1em"
+                  fontWeight="bold"
+                  colorScheme="orange"
+                  height="100%"
+                >
                   {match.winValue.toUpperCase()}
                 </Tag>
               )}
               {match.winValue === "draw" && (
-                <Tag fontSize="1em" colorScheme="blue" fontWeight="bold" height="100%">
+                <Tag
+                  fontSize="1em"
+                  colorScheme="blue"
+                  fontWeight="bold"
+                  height="100%"
+                >
                   {match.winValue.toUpperCase()}
                 </Tag>
               )}
               {match.winValue === "loss" && (
-                <Tag fontSize="1em" colorScheme="red" fontWeight="bold" height="100%">
+                <Tag
+                  fontSize="1em"
+                  colorScheme="red"
+                  fontWeight="bold"
+                  height="100%"
+                >
                   {match.winValue.toUpperCase()}
                 </Tag>
               )}
@@ -688,6 +714,54 @@ function MatchHistoryCard({ match }: { match: any }) {
                     </Box>
                   )}
 
+                  {match.mathGenius && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<TbMathFunctionOff />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Math Genius</Text>
+                    </Box>
+                  )}
+
+                  {match.freePath && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<PiRoadHorizonFill />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Free Path</Text>
+                    </Box>
+                  )}
+
+                  {match.sneakIn && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<PiKeyholeFill />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Sneak In</Text>
+                    </Box>
+                  )}
+
+                  {match.olimpico && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<TbOlympics />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Olimpico</Text>
+                    </Box>
+                  )}
+
                   {match.noExcuses && (
                     <Box textAlign="center">
                       <IconButton
@@ -934,6 +1008,90 @@ function MatchHistoryCard({ match }: { match: any }) {
                         bg="teal.200"
                       />
                       <Text>Telescope Vision</Text>
+                    </Box>
+                  )}
+
+                  {match.threadTheNeedle && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<TbNeedleThread />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Thread The Needle</Text>
+                    </Box>
+                  )}
+
+                  {match.equallyImpressive && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiSteeltoeBoots />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Equally Impressive</Text>
+                    </Box>
+                  )}
+
+                  {match.heelOfAnAssist && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<PiHighHeelFill />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Heel Of An Assist</Text>
+                    </Box>
+                  )}
+
+                  {match.cleverDummy && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiPuppet />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Clever Dummy</Text>
+                    </Box>
+                  )}
+
+                  {match.bigBrain && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiBrain />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Big Brain</Text>
+                    </Box>
+                  )}
+
+                  {match.lobbedWonder && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<TbMathMax />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Lobbed Wonder</Text>
+                    </Box>
+                  )}
+
+                  {match.servedOnAPlate && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<MdFastfood />}
+                        fontSize="1rem"
+                        bg="teal.200"
+                      />
+                      <Text>Served On A Plate</Text>
                     </Box>
                   )}
                 </Grid>

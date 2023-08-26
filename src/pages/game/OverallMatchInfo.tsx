@@ -219,13 +219,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.CF_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.CF_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -266,13 +266,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.SS_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.SS_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -306,13 +306,13 @@ export default function OverallMatchInfo() {
                   {`${
                     isNaN(
                       (overallStatsData.LWF_p /
-                        overallStatsData.matchesPlayed) *
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.LWF_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -344,13 +344,13 @@ export default function OverallMatchInfo() {
                   {`${
                     isNaN(
                       (overallStatsData.RWF_p /
-                        overallStatsData.matchesPlayed) *
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.RWF_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -382,13 +382,13 @@ export default function OverallMatchInfo() {
                   {`${
                     isNaN(
                       (overallStatsData.LMF_p /
-                        overallStatsData.matchesPlayed) *
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.LMF_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -427,13 +427,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.AMF_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.AMF_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -466,13 +466,13 @@ export default function OverallMatchInfo() {
                   {`${
                     isNaN(
                       (overallStatsData.RMF_p /
-                        overallStatsData.matchesPlayed) *
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.RMF_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -511,13 +511,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.CMF_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.CMF_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -557,13 +557,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.DMF_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.DMF_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -595,13 +595,13 @@ export default function OverallMatchInfo() {
                 <Text>
                   {`${
                     isNaN(
-                      (overallStatsData.LB_p / overallStatsData.matchesPlayed) *
+                      (overallStatsData.LB_p / overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.LB_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -640,13 +640,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.CB_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.CB_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}
@@ -678,13 +678,13 @@ export default function OverallMatchInfo() {
                 <Text>
                   {`${
                     isNaN(
-                      (overallStatsData.RB_p / overallStatsData.matchesPlayed) *
+                      (overallStatsData.RB_p / overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
                       : (
                           (overallStatsData.RB_p /
-                            overallStatsData.matchesPlayed) *
+                            overallStatsData.numberOfPositionsPlayed) *
                           100
                         ).toFixed(0)
                   } %`}
@@ -723,13 +723,13 @@ export default function OverallMatchInfo() {
                     {`${
                       isNaN(
                         (overallStatsData.GK_p /
-                          overallStatsData.matchesPlayed) *
+                          overallStatsData.numberOfPositionsPlayed) *
                           100
                       )
                         ? 0
                         : (
                             (overallStatsData.GK_p /
-                              overallStatsData.matchesPlayed) *
+                              overallStatsData.numberOfPositionsPlayed) *
                             100
                           ).toFixed(0)
                     } %`}

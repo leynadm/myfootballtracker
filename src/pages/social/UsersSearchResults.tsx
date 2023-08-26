@@ -9,43 +9,18 @@ import {
   Box,
   Text,
   Container,
-  IconButton,
   Divider,
-  Badge,
+  Tag,
   WrapItem,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
   Card,
   CardHeader,
   CardBody,
   GridItem,
   CardFooter,
-  Heading,
-  Image,
-  Grid,
-  Avatar
+  Avatar,
+  Grid
 } from "@chakra-ui/react";
+import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { BsStarHalf } from "react-icons/bs";
 import { GiFootprint } from "react-icons/gi";
 import { PiSoccerBallFill } from "react-icons/pi";
@@ -53,6 +28,9 @@ import { GiBarefoot } from "react-icons/gi";
 import { GiWhistle } from "react-icons/gi";
 import { FaHandPeace } from "react-icons/fa";
 import { GiSoccerField } from "react-icons/gi";
+import { BiSolidTShirt } from "react-icons/bi";
+import getCardBackgroundColor from "../../utils/colorFunctions/getCardBackgroundColor";
+import getCardTextColor from "../../utils/colorFunctions/getCardTextColor";
 import { Link, useNavigate } from "react-router-dom";
 interface ParentProps {
   usersFound: UserProfileSearch[];
@@ -61,12 +39,9 @@ interface ParentProps {
 function UsersSearchResults({ usersFound }: ParentProps) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(usersFound);
-  }, []);
   return (
     <>
-      <Container pb='50px'>
+      <Container pb="50px">
         {usersFound.map((user: UserProfileSearch, index: number) => (
           <Box
             key={index}
@@ -76,13 +51,15 @@ function UsersSearchResults({ usersFound }: ParentProps) {
           >
             <Card
               maxW="md"
-/* 
-              bg="radial-gradient(circle, rgba(192,192,192,1) 0%, rgba(171,144,144,1) 100%)"
-    */
-   bg="#eeeeee"
+              style={{
+                background: getCardBackgroundColor(user.stats.matchesPlayed),
+                color:getCardTextColor(user.stats.matchesPlayed),
+              }}
+              
               m={4}
               mt={0}
               p={1}
+
               boxShadow="rgba(0, 0, 0, 0.25) 0px 25px 50px -12px"
             >
               <CardHeader p={1}>
@@ -105,31 +82,36 @@ function UsersSearchResults({ usersFound }: ParentProps) {
                           <Text fontSize="1.25rem">0</Text>
                         )}
 
-                        <img src={playerTshirt} alt="tshirt" width="15rem" />
+                        <BiSolidTShirt/>
                       </WrapItem>
 
                       {user.preferredPosition !== "" ? (
-                        <Badge
+                        <Tag
                           borderRadius="5px"
                           fontSize="1rem"
                           fontWeight="bold"
+                          style={{
+                            color:getTagTextColor(user.preferredPosition)
+                          }}
                           bg="black"
-                          color="white"
                           m={1}
+                          
                         >
                           {user.preferredPosition}
-                        </Badge>
+                        </Tag>
                       ) : (
-                        <Badge
+                        <Tag
                           borderRadius="5px"
                           fontSize="1rem"
                           fontWeight="bold"
+                          style={{
+                            color:getTagTextColor(user.preferredPosition)
+                          }}
                           bg="black"
-                          color="white"
                           m={1}
                         >
                           Bench
-                        </Badge>
+                        </Tag>
                       )}
 
                       {user.country.country !== "" ? (
@@ -174,10 +156,18 @@ function UsersSearchResults({ usersFound }: ParentProps) {
                       )}
                     </Box>
                   </GridItem>
-                  <GridItem rowSpan={2} colSpan={1} justifyContent="center" alignContent="center" display="flex">
-                  
-    <Avatar size='2xl' name={`${user.firstName} ${user.lastName}`} src={user.profileImage} />{' '}
-  
+                  <GridItem
+                    rowSpan={2}
+                    colSpan={1}
+                    justifyContent="center"
+                    alignContent="center"
+                    display="flex"
+                  >
+                    <Avatar
+                      size="2xl"
+                      name={`${user.firstName} ${user.lastName}`}
+                      src={user.profileImage}
+                    />{" "}
                   </GridItem>
                 </Grid>
               </CardHeader>
@@ -185,10 +175,13 @@ function UsersSearchResults({ usersFound }: ParentProps) {
               <CardBody p={1} className="shiny">
                 <Divider />
 
-                <Text textAlign="center" fontSize="1.5rem" fontWeight="bold" 
-                              bg="radial-gradient(circle, rgba(192,192,192,1) 0%, rgba(171,144,144,1) 100%)"
+                <Text
+                  textAlign="center"
+                  fontSize="1.5rem"
+                  fontWeight="bold"
+
                 >
-                  { `${user.firstName} ${user.lastName}`}
+                  {`${user.firstName} ${user.lastName}`}
                 </Text>
                 <Divider />
                 <Grid
@@ -303,7 +296,6 @@ function UsersSearchResults({ usersFound }: ParentProps) {
                 }}
                 p={1}
               >
-                <Text fontSize="smaller">Last Match: 30/01/2020</Text>
               </CardFooter>
             </Card>
             <Divider borderWidth="2px" />

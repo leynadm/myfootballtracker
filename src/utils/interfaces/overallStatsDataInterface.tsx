@@ -89,6 +89,18 @@ interface OverallStatsDataInterface{
     theMonument:number;
     thePathBreaker:number;
     theMountain:number;
+    mathGenius:number;
+    freePath:number;
+    sneakIn:number;
+    olimpico:number;
+    threadTheNeedle:number;
+    equallyImpressive:number;
+    heelOfAnAssist:number;
+    cleverDummy:number;
+    bigBrain:number;
+    lobbedWonder:number;
+    servedOnAPlate:number;
+    numberOfPositionsPlayed:number;
 }
 
 export default OverallStatsDataInterface

@@ -11,6 +11,11 @@ import MatchDataToSubmit from "../interfaces/matchDataToSubmit";
 import uuid from "react-uuid";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { getApp } from "firebase/app";
+
+type PositionsPlayedType = {
+  [key: string]: boolean | undefined;
+};
+
 async function addNewMatchData(
   dataToSubmit: MatchDataToSubmit,
   userId: string,
@@ -33,6 +38,18 @@ async function addNewMatchData(
   const SS_p = SS ?? null;
   const CF_p = CF ?? null;
 
+
+  let positionsPlayedCount = 0;
+  const positionsPlayedObj:PositionsPlayedType = dataToSubmit.positionsPlayed
+
+  for (const key in positionsPlayedObj) {
+    if (positionsPlayedObj[key] === true) {
+      positionsPlayedCount++;
+    }
+  }
+
+  console.log('count for positionsPlayedCount:')
+  console.log({positionsPlayedCount})
   try {
 
     let urlForUploadedImage:string|null=null;
@@ -186,6 +203,7 @@ async function addNewMatchData(
  
 
         transaction.set(newMatchRef, {
+          numberOfPositionsPlayed:positionsPlayedCount,
           matchImage:urlForUploadedImage,
           matchRecordingLink:dataToSubmit.matchRecordingLink,
           matchComments: dataToSubmit.matchComments,
@@ -259,6 +277,17 @@ async function addNewMatchData(
           theMonument: dataToSubmit.theMonument,
           thePathBreaker: dataToSubmit.thePathBreaker,
           theMountain: dataToSubmit.theMountain,
+          mathGenius:dataToSubmit.mathGenius,
+          freePath:dataToSubmit.freePath,
+          sneakIn:dataToSubmit.sneakIn,
+          olimpico:dataToSubmit.olimpico,
+          threadTheNeedle:dataToSubmit.threadTheNeedle,
+          equallyImpressive:dataToSubmit.equallyImpressive,
+          heelOfAnAssist:dataToSubmit.heelOfAnAssist,
+          cleverDummy:dataToSubmit.cleverDummy,
+          bigBrain:dataToSubmit.bigBrain,
+          lobbedWonder:dataToSubmit.lobbedWonder,
+          servedOnAPlate:dataToSubmit.servedOnAPlate,
           GK_p,
           CB_p,
           RB_p,
@@ -460,6 +489,12 @@ async function addNewMatchData(
           ? previousOverallStats.imNotKidding + 1
           : previousOverallStats.imNotKidding;
 
+          
+
+          const updateNumberOfPositionsPlayed = positionsPlayedCount
+          ? previousOverallStats.numberOfPositionsPlayed + positionsPlayedCount
+          : previousOverallStats.numberOfPositionsPlayed;
+
           const updateTheKraken = dataToSubmit.theKraken
           ? previousOverallStats.theKraken + 1
           : previousOverallStats.theKraken;
@@ -492,6 +527,49 @@ async function addNewMatchData(
           ? previousOverallStats.theMountain + 1
           : previousOverallStats.theMountain;
 
+          const updateMathGenius = dataToSubmit.mathGenius
+          ? previousOverallStats.mathGenius + 1
+          : previousOverallStats.mathGenius;
+
+          const updateFreePath = dataToSubmit.freePath
+          ? previousOverallStats.freePath + 1
+          : previousOverallStats.freePath;
+
+          const updateSneakIn = dataToSubmit.sneakIn
+          ? previousOverallStats.sneakIn + 1
+          : previousOverallStats.sneakIn;
+
+          const updateOlimpico = dataToSubmit.olimpico
+          ? previousOverallStats.olimpico + 1
+          : previousOverallStats.olimpico;
+
+          const updateThreadTheNeedle = dataToSubmit.threadTheNeedle
+          ? previousOverallStats.threadTheNeedle + 1
+          : previousOverallStats.threadTheNeedle;
+
+          const updateEquallyImpressive = dataToSubmit.equallyImpressive
+          ? previousOverallStats.equallyImpressive + 1
+          : previousOverallStats.equallyImpressive;
+
+          const updateHeelOfAnAssist = dataToSubmit.heelOfAnAssist
+          ? previousOverallStats.heelOfAnAssist + 1
+          : previousOverallStats.heelOfAnAssist;
+
+          const updateCleverDummy = dataToSubmit.cleverDummy
+          ? previousOverallStats.cleverDummy + 1
+          : previousOverallStats.cleverDummy;
+
+          const updateBigBrain = dataToSubmit.bigBrain
+          ? previousOverallStats.bigBrain + 1
+          : previousOverallStats.bigBrain;
+
+          const updateLobbedWonder = dataToSubmit.lobbedWonder
+          ? previousOverallStats.lobbedWonder + 1
+          : previousOverallStats.lobbedWonder;
+
+          const updateServedOnAPlate = dataToSubmit.servedOnAPlate
+          ? previousOverallStats.servedOnAPlate + 1
+          : previousOverallStats.servedOnAPlate;
 
         const distanceUnitKey = dataToSubmit.matchDate;
 
@@ -511,6 +589,7 @@ async function addNewMatchData(
             SS_p: updateSS_p,
             CF_p: updateCF_p,
           },
+          numberOfPositionsPlayed:updateNumberOfPositionsPlayed,
           matchesPlayed: previousOverallStats.matchesPlayed + 1,
           matchDateArr: arrayUnion(newMatchDateStat),
           matchDurationArr: arrayUnion(newMatchDurationStat),
@@ -614,6 +693,17 @@ async function addNewMatchData(
           theMonument: updateTheMonument,
           thePathBreaker: updateThePathBreaker,
           theMountain: updateTheMountain,
+          mathGenius:updateMathGenius,
+          freePath:updateFreePath,
+          sneakIn:updateSneakIn,
+          olimpico:updateOlimpico,
+          threadTheNeedle:updateThreadTheNeedle,
+          equallyImpressive:updateEquallyImpressive,
+          heelOfAnAssist:updateHeelOfAnAssist,
+          cleverDummy:updateCleverDummy,
+          bigBrain:updateBigBrain,
+          lobbedWonder:updateLobbedWonder,
+          servedOnAPlate:updateServedOnAPlate,
         });
       }
     });

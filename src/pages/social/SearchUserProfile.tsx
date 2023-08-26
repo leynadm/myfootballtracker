@@ -25,6 +25,8 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import getCardBackgroundColor from "../../utils/colorFunctions/getCardBackgroundColor";
+import getCardTextColor from "../../utils/colorFunctions/getCardTextColor";
 import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import PlayerComparison from "./PlayerComparison";
 import UserRating from "./UserRating";
@@ -266,6 +268,8 @@ function SearchUserProfile() {
     }
   }
 
+
+
   return (
     <>
       <Container pb="50px">
@@ -274,6 +278,8 @@ function SearchUserProfile() {
           justifyContent="space-evenly"
           alignItems="space-around"
           w="100%"
+          borderRadius="5px"
+          p={1}
         >
           <Box
             display="flex"
@@ -282,6 +288,7 @@ function SearchUserProfile() {
             alignItems="center"
             gap={0}
             p={2}
+            borderRadius="5px"
           >
             <WrapItem alignItems="center" gap={1}>
               {queriedUser.shirtNumber !== "" ? (
@@ -361,7 +368,9 @@ function SearchUserProfile() {
             )}
           </Box>
 
-          <Box display="grid" gap={2}>
+          <Box display="grid" gap={2}
+          
+          >
             <WrapItem display="flex" justifyContent="center">
               <Avatar
                 size="2xl"
@@ -392,7 +401,7 @@ function SearchUserProfile() {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          gap={2}
+          borderRadius="5px"
         >
           <Text textAlign="center" fontWeight="bold" p={1} fontSize="2rem">
             {`${queriedUser.firstName} ${queriedUser.lastName}`}

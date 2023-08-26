@@ -13,6 +13,7 @@ import { db } from "../config/firebase";
 import {
   dummyOverallStats,
   dummyOverallCharts,
+  dummyReviewsData
 } from "../utils/dummyContextVariables";
 import OverallReviewsData from "../utils/interfaces/overallReviewsDataInterface";
 // Define the type for the context value
@@ -122,6 +123,7 @@ export const OverallStatsProvider = ({
       } else {
         setOverallChartsData(dummyOverallCharts);
         setOverallStatsData(dummyOverallStats);
+        setReviewsData(dummyReviewsData);
       }
       setDataLoadedTrigger(true);
     } catch (error) {

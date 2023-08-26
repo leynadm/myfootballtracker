@@ -99,6 +99,18 @@ interface MatchDataToSubmit {
     theMountain:boolean;
     matchRecordingLink:string;
     matchImage:string;
+    mathGenius:boolean;
+    freePath:boolean;
+    sneakIn:boolean;
+    olimpico:boolean;
+    threadTheNeedle:boolean;
+    equallyImpressive:boolean;
+    heelOfAnAssist:boolean;
+    cleverDummy:boolean;
+    bigBrain:boolean;
+    lobbedWonder:boolean;
+    servedOnAPlate:boolean;
+    numberOfPositionsPlayed:number;
   }
 
   export default MatchDataToSubmit

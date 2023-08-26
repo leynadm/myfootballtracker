@@ -26,17 +26,19 @@ import {
 import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { GiFootprint, GiFox } from "react-icons/gi";
 import playerTshirt from "../../assets/player_tshirt.png";
-import { PiSoccerBallFill } from "react-icons/pi";
-import { GiBarefoot } from "react-icons/gi";
-import { TbRectangleVerticalFilled } from "react-icons/tb";
-import { GiWhistle } from "react-icons/gi";
-import { BiPlusMedical } from "react-icons/bi";
-import { FaRegHandshake } from "react-icons/fa";
-import { AiOutlineDislike } from "react-icons/ai";
-import { GiSoccerKick } from "react-icons/gi";
-import { FaHandPeace } from "react-icons/fa";
-import { BsStarHalf } from "react-icons/bs";
-import { GiSoccerField } from "react-icons/gi";
+
+import { TbMathFunctionOff } from "react-icons/tb";
+import { PiRoadHorizonFill } from "react-icons/pi";
+import { PiKeyholeFill } from "react-icons/pi";
+import { TbOlympics } from "react-icons/tb";
+import { TbNeedleThread } from "react-icons/tb";
+import { GiSteeltoeBoots } from "react-icons/gi";
+import { PiHighHeelFill } from "react-icons/pi";
+import { GiPuppet } from "react-icons/gi";
+import { GiBrain } from "react-icons/gi";
+import { TbMathMax } from "react-icons/tb";
+import { MdFastfood } from "react-icons/md";
+
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { GiMoonOrbit } from "react-icons/gi";
@@ -99,7 +101,6 @@ interface Props {
 function PlayerComparison({ queriedUser }: Props) {
   const { overallStatsData } = useContext(OverallStatsContext);
   const { currentUSer, currentUserData } = useContext(AuthContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -133,9 +134,9 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
           borderRadius="10px"
-        >
+          bg="gray.200"
+>
           <Text>T-Shirt Number</Text>
           <Box display="flex" w="100%" justifyContent="space-around">
             <WrapItem alignItems="center" gap={1}>
@@ -170,7 +171,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Preferred Position</Text>
@@ -239,7 +240,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Country</Text>
@@ -274,7 +275,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Preferred Foot</Text>
@@ -355,7 +356,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Matches Played</Text>
@@ -388,7 +389,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Avg. Match Performance</Text>
@@ -449,7 +450,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Wins</Text>
@@ -497,7 +498,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Draws</Text>
@@ -546,7 +547,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Defeats</Text>
@@ -597,7 +598,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Goals Scored</Text>
@@ -654,7 +655,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Assists Provided</Text>
@@ -713,7 +714,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Goal Contributions</Text>
@@ -786,7 +787,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Yellow Received</Text>
@@ -819,7 +820,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Red Received</Text>
@@ -852,7 +853,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Fouls Commited</Text>
@@ -884,7 +885,7 @@ function PlayerComparison({ queriedUser }: Props) {
           flexDirection="column"
           alignItems="center"
           width="100%"
-          bg="lightblue"
+          bg="gray.200"
           borderRadius="10px"
         >
           <Text>Fouls Obtained</Text>
@@ -1194,7 +1195,7 @@ function PlayerComparison({ queriedUser }: Props) {
                   </Box>
                 </Box>
               </Box>
-
+ 
 
               <Box>
                 <Text textAlign="center">Fox In The Box</Text>
@@ -1276,6 +1277,131 @@ function PlayerComparison({ queriedUser }: Props) {
                     <Text>{overallStatsData.cannonball}</Text>
                     {queriedUser.stats.cannonball >=
                     overallStatsData.cannonball ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Math Genius</Text>
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.mathGenius >
+                    overallStatsData.mathGenius ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.mathGenius}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<TbMathFunctionOff />}
+                    fontSize="1.5rem"
+                    bg="red.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.mathGenius}</Text>
+                    {queriedUser.stats.mathGenius >=
+                    overallStatsData.mathGenius ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Free Path</Text>
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.freePath >
+                    overallStatsData.freePath ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.freePath}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<PiRoadHorizonFill />}
+                    fontSize="1.5rem"
+                    bg="red.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.freePath}</Text>
+                    {queriedUser.stats.freePath >=
+                    overallStatsData.freePath ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+
+              <Box>
+                <Text textAlign="center">Sneak In</Text>
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.sneakIn >
+                    overallStatsData.sneakIn ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.sneakIn}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<PiKeyholeFill />}
+                    fontSize="1.5rem"
+                    bg="red.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.sneakIn}</Text>
+                    {queriedUser.stats.sneakIn >=
+                    overallStatsData.sneakIn ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Olimpico</Text>
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.olimpico >
+                    overallStatsData.olimpico ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.olimpico}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<TbOlympics />}
+                    fontSize="1.5rem"
+                    bg="red.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.olimpico}</Text>
+                    {queriedUser.stats.olimpico >=
+                    overallStatsData.olimpico ? (
                       <MdKeyboardDoubleArrowDown color="green" />
                     ) : (
                       <MdKeyboardDoubleArrowUp color="red" />
@@ -1900,6 +2026,231 @@ function PlayerComparison({ queriedUser }: Props) {
                   </Box>
                 </Box>
               </Box>
+
+              <Box>
+                <Text textAlign="center">Thread The Needle</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.threadTheNeedle >
+                    overallStatsData.threadTheNeedle ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.threadTheNeedle}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<TbNeedleThread />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.threadTheNeedle}</Text>
+                    {queriedUser.stats.threadTheNeedle >=
+                    overallStatsData.threadTheNeedle ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Equally Impressive</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.equallyImpressive >
+                    overallStatsData.equallyImpressive ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.equallyImpressive}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<GiSteeltoeBoots />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.equallyImpressive}</Text>
+                    {queriedUser.stats.equallyImpressive >=
+                    overallStatsData.equallyImpressive ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Heel Of An Assist</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.heelOfAnAssist >
+                    overallStatsData.heelOfAnAssist ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.heelOfAnAssist}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<PiHighHeelFill />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.heelOfAnAssist}</Text>
+                    {queriedUser.stats.heelOfAnAssist >=
+                    overallStatsData.heelOfAnAssist ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Clever Dummy</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.cleverDummy >
+                    overallStatsData.cleverDummy ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.cleverDummy}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<GiPuppet />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.cleverDummy}</Text>
+                    {queriedUser.stats.cleverDummy >=
+                    overallStatsData.cleverDummy ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+
+              <Box>
+                <Text textAlign="center">Big Brain</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.bigBrain >
+                    overallStatsData.bigBrain ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.bigBrain}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<GiBrain />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.bigBrain}</Text>
+                    {queriedUser.stats.bigBrain >=
+                    overallStatsData.bigBrain ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Lobbed Wonder</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.lobbedWonder >
+                    overallStatsData.lobbedWonder ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.lobbedWonder}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<TbMathMax />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.lobbedWonder}</Text>
+                    {queriedUser.stats.lobbedWonder >=
+                    overallStatsData.lobbedWonder ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
+
+              <Box>
+                <Text textAlign="center">Served On A Plate</Text>
+
+                <Box display="flex" justifyContent="space-around">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    {queriedUser.stats.servedOnAPlate >
+                    overallStatsData.servedOnAPlate ? (
+                      <MdKeyboardDoubleArrowUp color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowDown color="red" />
+                    )}
+                    <Text>{queriedUser.stats.servedOnAPlate}</Text>
+                  </Box>
+                  <IconButton
+                    aria-label="highlight icon"
+                    icon={<MdFastfood />}
+                    fontSize="1.5rem"
+                    bg="teal.200"
+                  />
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Text>{overallStatsData.servedOnAPlate}</Text>
+                    {queriedUser.stats.servedOnAPlate >=
+                    overallStatsData.servedOnAPlate ? (
+                      <MdKeyboardDoubleArrowDown color="green" />
+                    ) : (
+                      <MdKeyboardDoubleArrowUp color="red" />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+
             </AccordionPanel>
           </AccordionItem>
 
