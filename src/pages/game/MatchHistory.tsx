@@ -5,6 +5,7 @@ import {
   orderBy,
   startAfter,
   limit,
+  where,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import MatchHistoryCard from "../../components/MatchHistoryCard";
@@ -36,24 +37,30 @@ function MatchHistory() {
       if (latestDoc) {
         q = query(
           collection(db, "users", currentUser.uid, "matches"),
-          orderBy("createdAt", "desc"),
+          orderBy("timestamp","desc"),
           startAfter(latestDoc),
           limit(3)
         );
       } else {
         q = query(
           collection(db, "users", currentUser.uid, "matches"),
-          orderBy("createdAt", "desc"),
+          orderBy("timestamp","desc"),
           limit(3)
         );
       }
 
       const querySnapshot = await getDocs(q);
 
+
+
       const userData = querySnapshot.docs.map((doc) => {
+      
+
         const data = doc.data();
+        console.log(data)
         return { ...data, postId: doc.id,userId:currentUser.uid };
-      });
+      })
+
 
       if (latestDoc) {
         setUserMatches((prevUserMatches) => [...prevUserMatches, ...userData]);

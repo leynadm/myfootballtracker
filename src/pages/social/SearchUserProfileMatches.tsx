@@ -30,14 +30,14 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
       if (latestDoc) {
         q = query(
           collection(db, "users", queriedUser.id, "matches"),
-          orderBy("createdAt", "desc"),
+          orderBy("timestamp", "desc"),
           startAfter(latestDoc),
           limit(3)
         );
       } else {
         q = query(
           collection(db, "users", queriedUser.id, "matches"),
-          orderBy("createdAt", "desc"),
+          orderBy("timestamp", "desc"),
           limit(3)
         );
       }

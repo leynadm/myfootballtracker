@@ -48,9 +48,10 @@ async function addNewMatchData(
     }
   }
 
-  console.log('logging empty selected file:')
-  console.log(selectedFile)
   
+  const dateObject = new Date(dataToSubmit.matchDate);
+  const timestampValue = Timestamp.fromDate(dateObject)
+
   try {
 
     let urlForUploadedImage: string | null = null;
@@ -302,7 +303,7 @@ async function addNewMatchData(
           RWF_p,
           SS_p,
           CF_p,
-          timestamp: timestamp,
+          timestamp: timestampValue,
           createdAt: serverTimestampObj,
         });
 

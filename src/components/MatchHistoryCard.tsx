@@ -34,6 +34,9 @@ import {
   MenuItem,
   useToast,
 } from "@chakra-ui/react";
+import {BiTimeFive} from "react-icons/bi"
+
+import { TbPlayFootball } from "react-icons/tb";
 import deleteMatch from "../utils/firebaseFunctions/deleteMatch";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { TbMathFunctionOff } from "react-icons/tb";
@@ -569,6 +572,18 @@ function MatchHistoryCard({
               </Stat>
             </Box>
 
+            <Box display="flex" justifyContent="space-evenly">
+              <Box display="flex" alignItems="center" gap={1}>
+                <BiTimeFive />
+                <Text>Duration: {match.matchDuration} min</Text>
+              </Box>
+
+              <Box display="flex" alignItems="center" gap={1}>
+                <TbPlayFootball/>
+                <Text>Type:</Text>
+                <Text>{match.matchType}</Text>
+              </Box>
+            </Box>
             {match.matchComments !== "" && (
               <Textarea
                 value={match.matchComments}
