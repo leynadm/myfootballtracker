@@ -48,11 +48,12 @@ async function addNewMatchData(
     }
   }
 
-  console.log('count for positionsPlayedCount:')
-  console.log({positionsPlayedCount})
+  console.log('logging empty selected file:')
+  console.log(selectedFile)
+  
   try {
 
-    let urlForUploadedImage:string|null=null;
+    let urlForUploadedImage: string | null = null;
     
     if(selectedFile){
       urlForUploadedImage = await uploadMatchImage(userId,selectedFile)
@@ -629,7 +630,7 @@ async function addNewMatchData(
           hawkeye: updateHawkeye,
           slingshot:updateSlingshot,
           aroundThePlanet:updateAroundThePlanet,
-          foxInTheBOx:updateFoxInTheBox,
+          foxInTheBox:updateFoxInTheBox,
           cannonball: updateCannonball,
           noExcuses: updateNoExcuses,
           cornerstonePresence: updateCornerstonePresence,
@@ -716,7 +717,7 @@ async function addNewMatchData(
 }
 
 
-async function uploadMatchImage(userId:string,selectedFile:File): Promise<string | null>  {
+async function uploadMatchImage(userId:string,selectedFile:File | null): Promise<string | null>  {
 
   const firebaseApp = getApp();
   const matchesStorage = getStorage(

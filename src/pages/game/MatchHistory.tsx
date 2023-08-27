@@ -15,14 +15,22 @@ import { HiUpload } from "react-icons/hi";
 import MatchHistorySkeleton from "../../components/MatchHistorySkeleton";
 function MatchHistory() {
   const { currentUser } = useContext(AuthContext);
-
   const [latestDoc, setLatestDoc] = useState<any>(null);
   const [userMatches, setUserMatches] = useState<any[]>([]);
   const [loadButtonStatus, setLoadButtonStatus] = useState(false);
   const [hasMatches, setHasMatches] = useState(false);
+  const [refreshMatchHistoryCounter, setRefreshMatchHistoryCounter] = useState(0);
+  
   const [loading, setLoading] = useState(true);
 
+  const triggerMatchHistoryComponentRefresh = () => {
+    setRefreshMatchHistoryCounter((prevCounter) => prevCounter + 1);
+    setUserMatches([])
+    setLatestDoc(null)
+  };
+
   async function getUserMatches() {
+    
     try {
       let q;
       if (latestDoc) {
@@ -44,7 +52,7 @@ function MatchHistory() {
 
       const userData = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        return { ...data, postId: doc.id };
+        return { ...data, postId: doc.id,userId:currentUser.uid };
       });
 
       if (latestDoc) {
@@ -70,9 +78,16 @@ function MatchHistory() {
     setLoading(false);
   }
 
+
   useEffect(() => {
-    getUserMatches();
-  }, []);
+
+    console.log(userMatches)
+    const fetchData = async () => {
+      await getUserMatches();
+    };
+
+    fetchData();
+  }, [refreshMatchHistoryCounter]);
 
   if (userMatches.length === 0 && loading === false) {
     return (
@@ -101,7 +116,7 @@ function MatchHistory() {
         >
           <Stack spacing={1}>
             {userMatches.map((match: any, index: number) => (
-              <MatchHistoryCard key={index} match={match} />
+              <MatchHistoryCard key={index} match={match} triggerMatchHistoryComponentRefresh={triggerMatchHistoryComponentRefresh} />
             ))}
           </Stack>
 

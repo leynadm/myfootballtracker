@@ -45,6 +45,7 @@ function Reviews() {
     useState(false);
   const [latestPrevDoc, setLatestPrevDoc] = useState<any>(null);
   const [latestPendingDoc, setLatestPendingDoc] = useState<any>(null);
+
   const triggerReviewsComponentRefresh = () => {
     setRefreshReviewsCounter((prevCounter) => prevCounter + 1);
     setPendingReviews([])

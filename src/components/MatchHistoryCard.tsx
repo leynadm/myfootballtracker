@@ -8,11 +8,8 @@ import {
   Stack,
   Text,
   Heading,
-  ButtonGroup,
-  Button,
   Grid,
   Box,
-  Container,
   Stat,
   StatLabel,
   StatNumber,
@@ -31,13 +28,20 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
 } from "@chakra-ui/react";
+import deleteMatch from "../utils/firebaseFunctions/deleteMatch";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { TbMathFunctionOff } from "react-icons/tb";
 import { PiRoadHorizonFill } from "react-icons/pi";
 import { PiKeyholeFill } from "react-icons/pi";
 import { TbOlympics } from "react-icons/tb";
 import { TbNeedleThread } from "react-icons/tb";
-import { GiSteeltoeBoots } from "react-icons/gi";
+import { GiFox, GiSteeltoeBoots } from "react-icons/gi";
 import { PiHighHeelFill } from "react-icons/pi";
 import { GiPuppet } from "react-icons/gi";
 import { GiBrain } from "react-icons/gi";
@@ -88,22 +92,29 @@ import { GiAngryEyes } from "react-icons/gi";
 import { FaGitkraken } from "react-icons/fa";
 import { GiAngelWings } from "react-icons/gi";
 import { GiGalaxy } from "react-icons/gi";
-import { GiLockedFortress } from "react-icons/gi";
-import { GiGoalKeeper } from "react-icons/gi";
-import { GiFeline } from "react-icons/gi";
-import { BsFillHeartPulseFill } from "react-icons/bs";
+
 import { GiPathDistance } from "react-icons/gi";
-import { MdOutlineScoreboard } from "react-icons/md";
-import { BiSolidEditAlt } from "react-icons/bi";
-import { BsCalendarDate } from "react-icons/bs";
 import { GiSlingshot } from "react-icons/gi";
 import { GiWingfoot } from "react-icons/gi";
 import { LuFlagTriangleLeft } from "react-icons/lu";
 import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
 import { BsStarHalf } from "react-icons/bs";
-import { GiSoccerField } from "react-icons/gi";
-function MatchHistoryCard({ match }: { match: any }) {
+import { AuthContext } from "../context/Auth";
+import { useContext } from "react";
+import { OverallStatsContext } from "../context/OverallStats";
+interface Props {
+  match: any;
+  triggerMatchHistoryComponentRefresh?: () => void;
+}
+
+function MatchHistoryCard({
+  match,
+  triggerMatchHistoryComponentRefresh,
+}: Props) {
+  const { currentUser } = useContext(AuthContext);
+  const {triggerDataRefresh} = useContext(OverallStatsContext)
+  const toast = useToast();
   const boxStyle = {
     weight: "100%",
     height: "100%",
@@ -117,19 +128,6 @@ function MatchHistoryCard({ match }: { match: any }) {
   };
 
   const calculateBackgroundColor = (value: boolean) => {
-    console.log("inside calcualteBackgroundColor:");
-    console.log(value);
-
-    const colorRange = [
-      "#228B22", // Forestgreen
-      "#00A36C", // Olive
-      "#8FBC8F", // Mediumseagreen
-      "#9ACD32", // Yellowgreen
-      "#32CD32", // Lime Green
-      "#00FF00", // Lime
-      "#ADFF2F", // Greenyellow
-    ];
-
     let backgroundColorToUse = "";
     if (!value) {
       backgroundColorToUse = "green";
@@ -141,16 +139,6 @@ function MatchHistoryCard({ match }: { match: any }) {
   };
 
   const calculateTextColor = (value: boolean) => {
-    const colorRange = [
-      "#228B22", // Forestgreen
-      "#00A36C", // Olive
-      "#8FBC8F", // Mediumseagreen
-      "#9ACD32", // Yellowgreen
-      "#32CD32", // Lime Green
-      "#00FF00", // Lime
-      "#ADFF2F", // Greenyellow
-    ];
-
     let textColorToUse = "";
     if (!value) {
       textColorToUse = "white";
@@ -161,10 +149,26 @@ function MatchHistoryCard({ match }: { match: any }) {
     return textColorToUse;
   };
 
+  async function handleDeleteMatch() {
+    
+    await deleteMatch(match, currentUser.uid);
+
+    toast({
+      title: "Your match was successfully deleted!",
+      status: "success",
+      isClosable: true,
+      position: "top",
+    });
+    if(triggerMatchHistoryComponentRefresh){
+      triggerMatchHistoryComponentRefresh();
+    }
+    triggerDataRefresh()
+  } 
+
   return (
     <>
       <Card variant="elevated">
-        <CardHeader pb={0} mb={0}>
+        <CardHeader pb={0} mb={0} display="flex" justifyContent="space-between">
           <Heading fontSize="1rem">
             {match.matchDate.replace("T", " ")} - {match.stadiumName}
             <Box display="flex" alignItems="center" gap={2}>
@@ -201,6 +205,20 @@ function MatchHistoryCard({ match }: { match: any }) {
               )}
             </Box>
           </Heading>
+          {match.userId === currentUser.uid && (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<BsThreeDotsVertical />}
+                variant="filled"
+              />
+
+              <MenuList>
+                <MenuItem onClick={handleDeleteMatch}>Delete Match</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
         </CardHeader>
         <CardBody justifyContent="center" p={2}>
           <Divider variant="solid" color="black" borderColor="blackAlpha.300" />
@@ -209,7 +227,7 @@ function MatchHistoryCard({ match }: { match: any }) {
             <TabList>
               <Tab _selected={{ color: "white", bg: "blue.500" }}>Match</Tab>
 
-              {match.matchImage !== "" && (
+              {match.matchImage !== null && (
                 <Tab _selected={{ color: "white", bg: "red.400" }}>Photo</Tab>
               )}
 
@@ -711,6 +729,18 @@ function MatchHistoryCard({ match }: { match: any }) {
                         bg="red.200"
                       />
                       <Text>Cannonball</Text>
+                    </Box>
+                  )}
+
+                  {match.foxInTheBox && (
+                    <Box textAlign="center">
+                      <IconButton
+                        aria-label="highlight icon"
+                        icon={<GiFox />}
+                        fontSize="1rem"
+                        bg="red.200"
+                      />
+                      <Text>Fox In The Box</Text>
                     </Box>
                   )}
 

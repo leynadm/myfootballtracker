@@ -15,7 +15,8 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
-  Image
+  Image,
+  IconButton
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { HamburgerIcon, AddIcon } from '@chakra-ui/icons'
@@ -83,9 +84,12 @@ export default function Overview() {
         
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-              <HamburgerIcon />
-            </MenuButton>
+          <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<HamburgerIcon />}
+                variant="outline"
+              />
             
             <MenuList>
               <MenuItem onClick={handleMatchHistoryClick}>Match History</MenuItem>

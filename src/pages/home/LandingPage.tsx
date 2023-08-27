@@ -12,9 +12,9 @@ import {
   Image,
   Heading,
   Progress,
-  Tag
+  Tag,
 } from "@chakra-ui/react";
-
+import AutoplayCarousel from "../../components/Carousel/AutoplayCarousel";
 interface BeforeInstallPromptEventChoiceResult {
   outcome: "accepted" | "dismissed";
   platform: string;
@@ -85,15 +85,15 @@ export default function LandingPage() {
     justifyContent: "center",
     alignItems: "center",
     transition: "background-color 0.2s", // Add a smooth transition effect
-    backgroundColor: "green",
+
     color: "white",
   };
 
   const navigate = useNavigate();
   return (
     <>
-      <Container maxW="4xl" >
-        <Stack spacing={5} minH="100vh">
+      <Container maxW="4xl">
+        <Stack spacing={2} minH="100vh">
           <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
             <Text fontWeight="bold" fontSize="1.5em">
               My Football Tracker
@@ -109,48 +109,56 @@ export default function LandingPage() {
           </Flex>
 
           <Box display="flex" flexDirection="column">
-          <Box>
-            <Heading as="h1" size="xl" noOfLines={2} fontFamily="Outfit" p={1}>
-              <Text textAlign="center">Your football story,</Text>
-              <Text textAlign="center" className="typewriter">
-                documented with data.
-              </Text>
-            </Heading>
-          </Box>
-          
-          <Box  display="flex" justifyContent="center" alignItems="center">
-                <img  
+            <Box>
+              <Heading
+                as="h1"
+                size="xl"
+                noOfLines={2}
+                fontFamily="Outfit"
+                p={1}
+              >
+                <Text textAlign="center">Your football story,</Text>
+                <Text textAlign="center" className="typewriter">
+                  documented with data.
+                </Text>
+              </Heading>
+            </Box>
+
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <img
                 style={{
-                  maxWidth: window.innerWidth >= 768 ? '50%' : '80%', // Adjust the breakpoint as needed
+                  maxWidth: window.innerWidth >= 768 ? "50%" : "80%", // Adjust the breakpoint as needed
                 }}
-                src={Logo} alt="logo" />
-              </Box>
+                src={Logo}
+                alt="logo"
+              />
+            </Box>
 
-          <Box>
-            <Text fontSize="1.35em" textAlign="center">
-              Our app helps you track matches, goals, assists, and more, all in
-              one place.
-            </Text>
-          </Box>
+            <Box>
+              <Text fontSize="1.35em" textAlign="center">
+                Our app helps you track matches, goals, assists, and more, all
+                in one place.
+              </Text>
+            </Box>
 
-          <Box
-            p={10}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Button
-              rightIcon={<FiLogIn />}
-              colorScheme="blue"
-              variant="outline"
-              onClick={() => navigate("login")}
+            <Box
+              p={10}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
             >
-              Get Started
-            </Button>
-          </Box>
+              <Button
+                rightIcon={<FiLogIn />}
+                colorScheme="blue"
+                variant="outline"
+                onClick={() => navigate("login")}
+              >
+                Get Started
+              </Button>
+            </Box>
           </Box>
         </Stack>
-        <Stack spacing={10}>
+        <Stack spacing={5}>
           <Box gap={4} display="flex" flexDirection="column">
             <Text textAlign="center" fontSize="1.25em">
               Gain insights into a range of data analytics that spotlight your
@@ -166,8 +174,7 @@ export default function LandingPage() {
             gap={1}
           >
             <Text textAlign="center" fontSize="1.25em">
-              See comprehensive breakdowns of your performance, like your
-              position % played split.
+              See comprehensive breakdowns of your performance, like your most played position.
             </Text>
 
             <Grid
@@ -187,8 +194,8 @@ export default function LandingPage() {
               justifyContent="center"
               alignSelf="center"
             >
-              <Box style={boxStyle} gridArea="CF">
-              <Tag
+              <Box style={boxStyle} gridArea="CF" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -200,8 +207,8 @@ export default function LandingPage() {
                 </Tag>
               </Box>
 
-              <Box style={boxStyle} gridArea="SS">
-              <Tag
+              <Box style={boxStyle} gridArea="SS" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -213,8 +220,8 @@ export default function LandingPage() {
                 </Tag>
               </Box>
 
-              <Box style={boxStyle} gridArea="LWF">
-              <Tag
+              <Box style={boxStyle} gridArea="LWF" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -226,8 +233,8 @@ export default function LandingPage() {
                   LWF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="RWF">
-              <Tag
+              <Box style={boxStyle} gridArea="RWF" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -239,8 +246,8 @@ export default function LandingPage() {
                   RWF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="LMF">
-              <Tag
+              <Box style={boxStyle} gridArea="LMF" backgroundColor="orange">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -252,8 +259,8 @@ export default function LandingPage() {
                   LMF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="AMF">
-              <Tag
+              <Box style={boxStyle} gridArea="AMF" backgroundColor="gold" >
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -265,8 +272,8 @@ export default function LandingPage() {
                   AMF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="RMF">
-              <Tag
+              <Box style={boxStyle} gridArea="RMF" backgroundColor="orange">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -278,8 +285,8 @@ export default function LandingPage() {
                   RMF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="CMF">
-              <Tag
+              <Box style={boxStyle} gridArea="CMF" backgroundColor="yellow">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -291,8 +298,8 @@ export default function LandingPage() {
                   CMF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="DMF">
-              <Tag
+              <Box style={boxStyle} gridArea="DMF" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -304,8 +311,8 @@ export default function LandingPage() {
                   DMF
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="LB">
-              <Tag
+              <Box style={boxStyle} gridArea="LB" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -317,8 +324,8 @@ export default function LandingPage() {
                   LB
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="CB">
-              <Tag
+              <Box style={boxStyle} gridArea="CB" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -330,8 +337,8 @@ export default function LandingPage() {
                   CB
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="RB">
-              <Tag
+              <Box style={boxStyle} gridArea="RB" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -343,8 +350,8 @@ export default function LandingPage() {
                   RB
                 </Tag>
               </Box>
-              <Box style={boxStyle} gridArea="GK">
-              <Tag
+              <Box style={boxStyle} gridArea="GK" backgroundColor="green">
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -360,49 +367,52 @@ export default function LandingPage() {
           </Box>
 
           <Box>
-          <Text textAlign="center" fontSize="1.25em">
-            Reach significant milestones and unlock personalized achievements
-            and trophies, depending on your playstyle!
-          </Text>
-          <Grid templateColumns="repeat(2,1fr)" gap={5}>
-            <Box>
-              <Box
-                display="flex"
-                flexDirection="column"
-                gap={4}
-                justifyContent="center"
-                alignItems="center"
-                border="5px #FFD700 solid"
-                className="image-wrapper"
-              >
-                <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fassist_03_gold.jpeg?alt=media&token=bd5669f0-0ec7-49bb-8301-25b07654fb0a"
-                  alt="goal"
-                />
+            <Text textAlign="center" fontSize="1.25em">
+              Reach significant milestones and unlock personalized achievements
+              and trophies, depending on your playstyle!
+            </Text>
+            <Grid templateColumns="repeat(2,1fr)" gap={5}>
+              <Box>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  gap={4}
+                  justifyContent="center"
+                  alignItems="center"
+                  border="5px #FFD700 solid"
+                  className="image-wrapper"
+                >
+                  <Image
+                    src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fassist_03_gold.jpeg?alt=media&token=bd5669f0-0ec7-49bb-8301-25b07654fb0a"
+                    alt="goal"
+                  />
+                </Box>
+                <Text textAlign="center">Provide 75 assists</Text>
+                <Progress value={61} max={75} />
               </Box>
-              <Text textAlign="center">Provide 75 assists</Text>
-              <Progress value={61} max={75} />
-            </Box>
+              <Box>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  gap={4}
+                  justifyContent="center"
+                  alignItems="center"
+                  border="5px #C0C0C0 solid"
+                  className="image-wrapper"
+                >
+                  <Image
+                    src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fcup_02_silver.jpeg?alt=media&token=c4b3a640-6e3d-4c8e-a555-b34aef6c158e"
+                    alt="goal"
+                  />
+                </Box>
+                <Text textAlign="center">Win 50 matches</Text>
+                <Progress value={31} max={50} />
+              </Box>
+            </Grid>
+          </Box>
 
-            <Box>
-              <Box
-                display="flex"
-                flexDirection="column"
-                gap={4}
-                justifyContent="center"
-                alignItems="center"
-                border="5px #C0C0C0 solid"
-                className="image-wrapper"
-              >
-                <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/myfootballtracker-31e10.appspot.com/o/assets%2Fachievements%2Fcup_02_silver.jpeg?alt=media&token=c4b3a640-6e3d-4c8e-a555-b34aef6c158e"
-                  alt="goal"
-                />
-              </Box>
-              <Text textAlign="center">Win 50 matches</Text>
-              <Progress value={31} max={50} />
-            </Box>
-          </Grid>
+          <Box>
+            <AutoplayCarousel />
           </Box>
           <Box gap={1} display="flex" flexDirection="column">
             <Text textAlign="center" fontSize="1.25em">
@@ -482,8 +492,6 @@ export default function LandingPage() {
           </Box>
         </Stack>
       </Container>
-
-
     </>
   );
 }
