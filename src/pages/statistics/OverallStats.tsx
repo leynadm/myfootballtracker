@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import ReStackedAreaChart from "./ReStackedAreaChart";
 import ChartDataInterface from "../../utils/interfaces/chartDataInterface";
-
+import ReLineBarAreaComposedChart from "./ReLineBarAreaComposedChart";
 interface Props {
   chartsData:ChartDataInterface,
   userCheck:string
@@ -447,10 +447,20 @@ function OverallStats({chartsData,userCheck}:Props) {
           </Box>
         )}
 
+
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Goals Scored & Assists</Text>
-          <ReDoubleLineChart data={modeledChartData} />
+          <ReLineBarAreaComposedChart data={modeledChartData} />
         </Box>
+ 
+ 
+        
+{/*         
+        <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
+          <Text textAlign="center">Goals Scored & Assists</Text>
+          <ReSimpleBarChart data={modeledChartData} />
+        </Box>
+ */}
         <Box display="flex" flexDirection="column" w="100%" borderRadius="5px">
           <Text textAlign="center">Match Performance Rating</Text>
           <ReSingleLineChart

@@ -104,7 +104,7 @@ import { PiHighHeel } from "react-icons/pi";
 import { BiCross } from "react-icons/bi";
 import { BsStarHalf } from "react-icons/bs";
 import { AuthContext } from "../context/Auth";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { OverallStatsContext } from "../context/OverallStats";
 interface Props {
   match: any;
@@ -421,7 +421,7 @@ function MatchHistoryCard({
                 </Box>
               </TabPanel>
 
-              {match.matchImage !== "" && (
+              {match.matchImage !== null && (
                 <TabPanel>
                   <Image
                     src={match.matchImage}

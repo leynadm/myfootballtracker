@@ -1,4 +1,5 @@
 "use client";
+import Logo from "../../assets/logo.png"
 import {
   Box,
   Flex,
@@ -15,38 +16,8 @@ import {
   Stack,
   Input,
   InputGroup,
-  InputLeftAddon,
+  Image,
   InputLeftElement,
-  Text,
-  Container,
-  Grid,
-  IconButton,
-  Divider,
-  Badge,
-  WrapItem,
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
 } from "@chakra-ui/react";
 
 import Profile from "../game/Profile";
@@ -70,26 +41,7 @@ interface Props {
   children: React.ReactNode;
 }
 import Leaderboard from "./Leaderboard";
-const Links = ["Dashboard", "Projects", "Team"];
 
-const NavLink = (props: Props) => {
-  const { children } = props;
-  return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
-  );
-};
 
 export default function Social() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -129,10 +81,10 @@ export default function Social() {
       user.id = doc.id;
 
       if (
-        user.id !== currentUser.uid &&
+        /* 
+        user.id !== currentUser.uid && */
         !currentUserData.blocked.includes(user.id)
       ) {
-
         const userStats = await getStatsDoc(doc.id);
 
         if (userStats) {
@@ -149,11 +101,9 @@ export default function Social() {
   }
 
   async function getStatsDoc(docId: string) {
-    console.log("inside getStatsDoc function");
     const overallStatsDocRef = doc(db, "users", docId, "stats/overall-stats");
     const overallStatsDocSnap = await getDoc(overallStatsDocRef);
 
-    console.log(overallStatsDocSnap);
     if (overallStatsDocSnap.exists()) {
       const userOverallStatsData = overallStatsDocSnap.data();
       return userOverallStatsData;
@@ -191,15 +141,9 @@ export default function Social() {
             </InputGroup>
           </Stack>
           <HStack spacing={8} alignItems={"center"}>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-            </HStack>
+          <Box>
+              <Image w="4rem" src={Logo} alt="app logo" />
+            </Box>
           </HStack>
 
           <Flex alignItems={"center"}>
@@ -221,17 +165,14 @@ export default function Social() {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    currentUserData.profileImage
-                  }
-                />
+                <Avatar size={"sm"} src={currentUserData.profileImage} />
               </MenuButton>
               <MenuList>
-                <MenuItem>Settings</MenuItem>
+{/* 
                 <MenuItem>Account</MenuItem>
+     
                 <MenuDivider />
+     */}
                 <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
               </MenuList>
             </Menu>
@@ -255,7 +196,6 @@ export default function Social() {
           <Route path="profile" index element={<Profile />} />
           <Route path="results/*" element={<SocialSearchResults />} />
           <Route path="results/u/:id/*" element={<SearchUserProfile />} />
-
         </Routes>
       </Box>
     </>

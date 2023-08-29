@@ -100,7 +100,7 @@ function Login() {
  
 
   function handleLogIn(e: ChangeEvent<HTMLFormElement>) {
-    console.log('works?')
+
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {

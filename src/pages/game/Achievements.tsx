@@ -488,9 +488,9 @@ function Achievements({
               {matchPerfSilver >= 30 && <AiFillCheckCircle color="green" />}
             </Box>
 
-            {matchPerfBronze === 35 && (
+
               <Progress max={30} value={matchPerfSilver} />
-            )}
+
           </Box>
 
           <Box>
@@ -522,9 +522,9 @@ function Achievements({
               {matchPerfGold >= 25 && <AiFillCheckCircle color="green" />}
             </Box>
 
-            {matchPerfSilver === 30 && (
+
               <Progress max={25} value={matchPerfGold} />
-            )}
+
           </Box>
 
           <Box>
@@ -555,9 +555,9 @@ function Achievements({
               {matchPerfDiamond >= 10 && <AiFillCheckCircle color="green" />}
             </Box>
 
-            {matchPerfGold === 25 && (
+
               <Progress max={10} value={matchPerfDiamond} />
-            )}
+
           </Box>
         </Grid>
 

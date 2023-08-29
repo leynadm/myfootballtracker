@@ -87,8 +87,6 @@ function MatchHistory() {
 
 
   useEffect(() => {
-
-    console.log(userMatches)
     const fetchData = async () => {
       await getUserMatches();
     };

@@ -19,20 +19,19 @@ export default function ReLineBarAreaComposedChart({ data }) {
       height={400}
       data={data}
       margin={{
-        top: 20,
-        right: 20,
-        bottom: 20,
-        left: 20,
+        top: 10,
+        right: 0,
+        bottom: 0, 
+        left: 0,
       }}
     >
       <CartesianGrid stroke="#f5f5f5" />
-      <XAxis dataKey="name" scale="band" />
+      <XAxis dataKey="matchDate" scale="band" />
       <YAxis />
       <Tooltip />
       <Legend />
-      <Area type="monotone" dataKey="goalsContributions" fill="#8884d8" stroke="#8884d8" />
-      <Bar dataKey="goalsScored" barSize={20} fill="#413ea0" />
-      <Line type="monotone" dataKey="assistsProvided" stroke="#ff7300" />
+      <Bar dataKey="goalsScored" barSize={8} fill="#413ea0" />
+      <Line type="monotone" dataKey="assistsProvided" stroke="#5F9EA0" strokeWidth={3} />
       
     </ComposedChart>
   </ResponsiveContainer>

@@ -7,10 +7,6 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      workbox: {
-        globPatterns: ["**/*"],
-      },
-      includeAssets: ["**/*"],
       manifest: {
         name: "My Football Tracker",
         short_name: "My Football Tracker",
@@ -55,7 +51,7 @@ export default defineConfig({
         theme_color: "#000000",
         background_color: "#e8ebf2",
         display: "standalone",
-        scope: "/",
+        scope: "./",
         start_url: "/",
         orientation: "portrait",
       },

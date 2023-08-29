@@ -37,8 +37,7 @@ export default function Navbar() {
         left="0"
         right="0"
         display="flex"
-        justifyContent={{ base: "space-around", md: "center" }}
-
+        justifyContent={{ base: "space-around", md: "space-evenly" }} 
       >
         <Box textAlign="center">
           <IconButton

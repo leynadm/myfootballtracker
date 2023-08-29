@@ -41,6 +41,7 @@ import {
   Spinner,
   Tag,
 } from "@chakra-ui/react";
+import RatingHelpModal from "../../components/RatingHelpModal";
 import getTagTextColor from "../../utils/colorFunctions/getTagBackground";
 import { useNavigate } from "react-router-dom";
 import { GiFox } from "react-icons/gi";
@@ -2193,7 +2194,10 @@ export default function NewMatch() {
                 size="sm"
               />
 
+              <Box display="flex" gap={2} justifyContent="center" alignItems="center">
               <Text textAlign="center">Rate your match performance</Text>
+              <RatingHelpModal/>
+              </Box>
               <Box pt={6} pb={2} pl={3} pr={3}>
                 <Slider
                   max={10}
@@ -2225,7 +2229,7 @@ export default function NewMatch() {
                   <SliderTrack>
                     <SliderFilledTrack />
                   </SliderTrack>
-                  <SliderThumb />
+                  <SliderThumb zIndex={0} />
                 </Slider>
               </Box>
               <Button

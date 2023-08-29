@@ -483,7 +483,7 @@ export default function Profile() {
                 <option value="RB">Right-back (RB)</option>
                 <option value="DMF">Defensive Midfielder (DMF)</option>
                 <option value="CMF">Central Midfielder (CMF)</option>
-                <option value="MF">Left Midfielder (LMF)</option>
+                <option value="LMF">Left Midfielder (LMF)</option>
                 <option value="RMF">Right Midfielder (RMF)</option>
                 <option value="AMF">Attacking Midfielder (AMF)</option>
                 <option value="LWF">Left Winger (LWF)</option>

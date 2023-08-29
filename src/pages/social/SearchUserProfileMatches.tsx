@@ -64,7 +64,6 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
         setLoadButtonStatus(true);
       }
 
-      console.log(userData);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -91,7 +90,7 @@ function SearchUserProfileMatches({ queriedUser }: Props) {
 
   return (
     <>
-      <Box display="flex" justifyContent="center" pb="80px" flexDirection="column">
+      <Box display="flex" justifyContent="center" flexDirection="column">
         <Stack spacing={1}>
           {userMatches.map((match: any, index: number) => (
             <MatchHistoryCard key={index} match={match} />

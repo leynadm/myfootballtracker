@@ -35,7 +35,6 @@ import { AuthContext } from "../../context/Auth";
 import MatchHighlightsTable from "../../components/MatchHighlightsTable";
 export default function OverallMatchInfo() {
   const boxStyle = {
-    /*  */
     weight: "100%",
     height: "100%",
     display: "flex",
@@ -43,15 +42,31 @@ export default function OverallMatchInfo() {
     justifyContent: "center",
     alignItems: "center",
     transition: "background-color 0.2s", // Add a smooth transition effect
-    /*  */
     backgroundColor: "green",
     color: "white",
   };
 
   const { currentUserData } = useContext(AuthContext);
 
-  const { overallStatsData, dataLoadedTrigger } =
+  const { overallStatsData, overallChartsData, dataLoadedTrigger } =
     useContext(OverallStatsContext);
+
+  const [highestMatchScore, setHighestMatchScore] = useState(0);
+
+  function getHighestMatchScore() {
+    let matchScore = 0;
+
+    for (const match of overallChartsData.matchPerformance) {
+      for (const key in match) {
+        const matchRating = match[key];
+
+        if (matchRating >= matchScore) {
+          matchScore = matchRating;
+        }
+      }
+      setHighestMatchScore(matchScore);
+    }
+  }
 
   const [totalPositions, setTotalPositions] = useState(0);
 
@@ -65,8 +80,6 @@ export default function OverallMatchInfo() {
   }
 
   const calculateBackgroundColor = (value: number) => {
-
-
     const colorRange = [
       "#228B22", // Forestgreen
       "#00A36C", // Olive
@@ -110,7 +123,16 @@ export default function OverallMatchInfo() {
     return colorRange[index];
   };
 
-  useEffect(() => {}, [dataLoadedTrigger]);
+  useEffect(() => {
+    if (Object.keys(overallChartsData).length !== 0) {
+      getHighestMatchScore();
+    }
+  }, [dataLoadedTrigger]);
+
+  useEffect(() => {
+    console.log(overallChartsData);
+    typeof overallChartsData;
+  }, [overallChartsData]);
 
   return (
     <>
@@ -242,9 +264,9 @@ export default function OverallMatchInfo() {
                   color: calculateTextColor(overallStatsData.SS_p),
                 }}
                 gridArea="SS"
-              p={1}
+                p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -290,7 +312,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LWF"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -328,7 +350,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RWF"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -366,7 +388,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LMF"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -405,7 +427,7 @@ export default function OverallMatchInfo() {
                 gridArea="AMF"
                 p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -450,7 +472,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RMF"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -489,7 +511,7 @@ export default function OverallMatchInfo() {
                 gridArea="CMF"
                 p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -535,7 +557,7 @@ export default function OverallMatchInfo() {
                 gridArea="DMF"
                 p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -580,7 +602,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="LB"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -595,7 +617,8 @@ export default function OverallMatchInfo() {
                 <Text>
                   {`${
                     isNaN(
-                      (overallStatsData.LB_p / overallStatsData.numberOfPositionsPlayed) *
+                      (overallStatsData.LB_p /
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
@@ -618,7 +641,7 @@ export default function OverallMatchInfo() {
                 gridArea="CB"
                 p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -663,7 +686,7 @@ export default function OverallMatchInfo() {
                 }}
                 gridArea="RB"
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -678,7 +701,8 @@ export default function OverallMatchInfo() {
                 <Text>
                   {`${
                     isNaN(
-                      (overallStatsData.RB_p / overallStatsData.numberOfPositionsPlayed) *
+                      (overallStatsData.RB_p /
+                        overallStatsData.numberOfPositionsPlayed) *
                         100
                     )
                       ? 0
@@ -701,7 +725,7 @@ export default function OverallMatchInfo() {
                 gridArea="GK"
                 p={1}
               >
-               <Tag
+                <Tag
                   fontSize="1rem"
                   fontWeight="bold"
                   bg="black"
@@ -794,7 +818,10 @@ export default function OverallMatchInfo() {
                     }`}
                   </StatNumber>
                 </WrapItem>
-                <StatHelpText fontSize="small">Highest Score 9.0</StatHelpText>
+
+                <StatHelpText fontSize="small">
+                  Highest Rating {highestMatchScore.toFixed(1)}
+                </StatHelpText>
               </Stat>
             </Box>
             <Divider mt={2} />

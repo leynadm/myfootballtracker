@@ -16,25 +16,13 @@ const AuthRoute = ({ type }: AuthRouteProps) => {
   } */
 
   if (type === "login") {
-    return currentUser === null ? (
-      <Outlet />
-    ) : (
-      <Navigate to={"/home/game"} />
-    );
+    return currentUser === null ? (<Outlet />) : (<Navigate to={"/home/game/"} />);
   } else if (type === "home") {
     return currentUser !== null ? <Outlet /> : <Navigate to="/login" />;
   } else if (type === "signup") {
-    return currentUser === null ? (
-      <Outlet />
-    ) : (
-      <Navigate to={"/home/game"} />
-    );
+    return currentUser === null ? (  <Outlet />) : ( <Navigate to={"/home/game/"} />);
   } else if (type === "/") {
-    return currentUser === null ? (
-      <Outlet />
-    ) : (
-      <Navigate to={"/home/game"} />
-    );
+    return currentUser === null ? (<Outlet />) : (<Navigate to={"/home/game/"} />);
   } else {
     throw new Error("Invalid AuthRoute type");
   }

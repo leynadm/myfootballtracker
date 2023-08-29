@@ -7,7 +7,7 @@ import AuthRoute from "./context/AuthRoute";
 import SignUp from "./pages/authentication/SignUp";
 import LandingPage from "./pages/home/LandingPage";
 import Home from "./pages/home/Home";
-
+import NotFound from "./pages/others/NotFound";
 import "./App.css";
 
 function App() {
@@ -43,9 +43,13 @@ function App() {
               </Route>
 
               <Route element={<AuthRoute type="/" />}>
-                <Route path="/" element={<LandingPage />} />
+                <Route index path="/" element={<LandingPage />} />
               </Route>
+              
+              <Route path="*" element={<NotFound/>}/>
             </Routes>
+
+
           </Router>
         </AuthProvider>
       </ChakraProvider>
