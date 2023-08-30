@@ -10,9 +10,9 @@ export default function Home() {
       <OverallStatsProvider>
       <Navbar />
       <Routes>
-        <Route path="game/*" index element={<Overview />} />
-        <Route path="social/*" index element={<Social />} />
-        <Route path="statistics/*" index element={<Statistics />} />
+        <Route path="/game/*" index element={<Overview />} />
+        <Route path="/social/*" index element={<Social />} />
+        <Route path="/statistics/*" index element={<Statistics />} />
       </Routes>
       </OverallStatsProvider>
     </>

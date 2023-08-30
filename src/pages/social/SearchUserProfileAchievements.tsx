@@ -1,37 +1,8 @@
 import {
-    Button,
     Text,
-    Stack,
     Box,
     Container,
     Grid,
-    IconButton,
-    Divider,
-    Badge,
-    WrapItem,
-    Stat,
-    StatLabel,
-    StatNumber,
-    StatHelpText,
-    StatArrow,
-    StatGroup,
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
-    TableContainer,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    Skeleton,
-    SkeletonCircle,
-    SkeletonText,
     Image,
   } from "@chakra-ui/react";
   import "../../styles/Achievements.css";
@@ -48,10 +19,6 @@ import { useEffect } from "react";
   
   function SearchUserProfileAchievements({overallStatsData,queriedUser}:Props) {
     
-  
-    useEffect(()=>{
-        console.log(queriedUser) 
-    },[])
     return (
       <>
         <Container

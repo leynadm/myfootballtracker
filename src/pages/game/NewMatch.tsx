@@ -1,7 +1,6 @@
 import MatchHighlight from "../../components/MatchHighlight";
 import addNewMatchData from "../../utils/firebaseFunctions/addNewMatchData";
 import checkMatchesPlayed from "../../utils/firebaseFunctions/checkMatchesPlayed";
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
 import {
   Button,

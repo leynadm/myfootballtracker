@@ -413,20 +413,26 @@ function SearchUserProfile() {
 
         <Box display="flex" justifyContent="space-evenly" p={2}>
           {queriedUser.instagramProfile !== "" ? (
-            <a href={queriedUser.instagramProfile} target="_blank"></a>
+            <a href={queriedUser.instagramProfile} target="_blank">
+<FaInstagramSquare fontSize="1.5rem" onClick={handleNoProfile} />
+
+            </a>
           ) : (
             <FaInstagramSquare fontSize="1.5rem" onClick={handleNoProfile} />
           )}
 
           {queriedUser.facebookProfile !== "" ? (
-            <a href={queriedUser.facebookProfile} target="_blank"></a>
+            <a href={queriedUser.facebookProfile} target="_blank">
+<FaFacebook fontSize="1.5rem" onClick={handleNoProfile} />
+
+            </a>
           ) : (
             <FaFacebook fontSize="1.5rem" onClick={handleNoProfile} />
           )}
 
           {queriedUser.youtubeChannel !== "" ? (
             <a href={queriedUser.youtubeChannel} target="_blank">
-              <BsYoutube fontSize="1.5rem" />
+              <BsYoutube fontSize="1.5rem" onClick={handleNoProfile} />
             </a>
           ) : (
             <BsYoutube fontSize="1.5rem" onClick={handleNoProfile} />
